@@ -30,7 +30,9 @@
 		newPaper.forceMove(src)
 	else
 		internalPaper = new(src)
-	update_icon()
+	if(internalPaper.icon_state == "cpaper" || internalPaper.icon_state == "cpaper_words")
+		icon_state = "paperplane_carbon" // It's the purple carbon copy. Use the purple paper plane
+	update_appearance()
 
 /obj/item/paperplane/Exited(atom/movable/AM, atom/newLoc)
 	. = ..()
@@ -55,9 +57,11 @@
 
 /obj/item/paperplane/update_overlays()
 	. = ..()
-	if(internalPaper?.stamped)
-		for(var/S in internalPaper.stamped)
-			. += "paperplane_[S]"
+	var/list/stamped = internalPaper.stamped
+	if(!LAZYLEN(stamped))
+		return
+	for(var/S in stamped)
+		. += "paperplane_[S]"
 
 /obj/item/paperplane/attack_self(mob/user)
 	to_chat(user, "<span class='notice'>You unfold [src].</span>")
@@ -74,9 +78,9 @@
 		to_chat(user, "<span class='warning'>You should unfold [src] before changing it!</span>")
 		return
 
-	else if(istype(P, /obj/item/stamp)) 	//we don't randomize stamps on a paperplane
+	else if(istype(P, /obj/item/stamp)) //we don't randomize stamps on a paperplane
 		internalPaper.attackby(P, user) //spoofed attack to update internal paper.
-		update_icon()
+		update_appearance()
 		add_fingerprint(user)
 		return
 
