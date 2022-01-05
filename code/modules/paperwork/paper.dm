@@ -5,11 +5,15 @@
  * lipstick wiping is in code/game/objects/items/weapons/cosmetics.dm!
  */
 #define MAX_PAPER_LENGTH 5000
-#define MAX_PAPER_STAMPS 30		// Too low?
+#define MAX_PAPER_STAMPS 30 // Too low?
 #define MAX_PAPER_STAMPS_OVERLAYS 4
 #define MODE_READING 0
 #define MODE_WRITING 1
 #define MODE_STAMPING 2
+
+#define DEFAULT_ADD_INFO_COLOR "black"
+#define DEFAULT_ADD_INFO_FONT "Verdana"
+#define DEFAULT_ADD_INFO_SIGN "signature"
 
 /**
  * Paper is now using markdown (like in github pull notes) for ALL rendering
@@ -28,22 +32,32 @@
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
 	throw_speed = 1
+	pressure_resistance = 0
 	slot_flags = ITEM_SLOT_HEAD
 	body_parts_covered = HEAD
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
 	dog_fashion = /datum/dog_fashion/head
 	drop_sound = 'sound/items/handling/paper_drop.ogg'
-	pickup_sound =  'sound/items/handling/paper_pickup.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	grind_results = list(/datum/reagent/cellulose = 3)
 	color = "white"
 	/// What's actually written on the paper.
 	var/info = ""
+	/**
+	 * What's been written on the paper by things other than players.
+	 * Will be sanitized by the UI, and finally
+	 * added to info when the user edits the paper text.
+	 */
+	var/list/add_info
+	/// The font color, face and the signature of the above.
+	var/list/add_info_style
+
 	var/show_written_words = TRUE
 
 	/// The (text for the) stamps on the paper.
-	var/list/stamps			/// Positioning for the stamp in tgui
-	var/list/stamped		/// Overlay info
+	var/list/stamps /// Positioning for the stamp in tgui
+	var/list/stamped /// Overlay info
 
 	var/contact_poison // Reagent ID to transfer on contact
 	var/contact_poison_volume = 0
@@ -69,9 +83,13 @@
 	if(colored)
 		new_paper.color = color
 		new_paper.info = info
+		new_paper.add_info_style = add_info_style.Copy()
 	else //This basically just breaks the existing color tag, which we need to do because the innermost tag takes priority.
-		var/static/greyscale_info = regex("<font face=\"([PEN_FONT]|[CRAYON_FONT])\" color=", "i")
-		new_paper.info = replacetext(info, greyscale_info, "<font face=\"$1\" nocolor=")
+		var/static/greyscale_info = regex("(?<=<font style=\")color=(.*)?>", "i")
+		new_paper.info = replacetext(info, greyscale_info, "nocolor=$1>")
+		for(var/list/style as anything in add_info_style)
+			LAZYADD(new_paper.add_info_style, list(list(DEFAULT_ADD_INFO_COLOR, style[ADD_INFO_FONT], style[ADD_INFO_SIGN])))
+	new_paper.add_info = add_info?.Copy()
 	new_paper.stamps = stamps?.Copy()
 	new_paper.stamped = stamped?.Copy()
 	new_paper.form_fields = form_fields.Copy()
@@ -85,11 +103,14 @@
  * icons.  You can modify the pen_color after if need
  * be.
  */
-/obj/item/paper/proc/setText(text)
+/obj/item/paper/proc/setText(text, update_icon = TRUE)
 	info = text
+	add_info = null
+	add_info_style = null
 	form_fields = null
 	field_counter = 0
-	update_icon_state()
+	if(update_icon)
+		update_appearance()
 
 /obj/item/paper/pickup(user)
 	if(contact_poison && ishuman(user))
@@ -100,15 +121,16 @@
 			contact_poison = null
 	. = ..()
 
-/obj/item/paper/Initialize()
+/obj/item/paper/Initialize(mapload)
 	. = ..()
 	pixel_x = base_pixel_x + rand(-9, 9)
 	pixel_y = base_pixel_y + rand(-8, 8)
-	update_icon()
+	update_appearance()
 
 /obj/item/paper/update_icon_state()
-	if(info && show_written_words)
+	if((info || add_info) && show_written_words)
 		icon_state = "[initial(icon_state)]_words"
+	return ..()
 
 /obj/item/paper/verb/rename()
 	set name = "Rename paper"
@@ -120,21 +142,21 @@
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
 		if(HAS_TRAIT(H, TRAIT_CLUMSY) && prob(25))
-			to_chat(H, "<span class='warning'>You cut yourself on the paper! Ahhhh! Ahhhhh!</span>")
+			to_chat(H, span_warning("You cut yourself on the paper! Ahhhh! Ahhhhh!"))
 			H.damageoverlaytemp = 9001
 			H.update_damage_hud()
 			return
-	var/n_name = stripped_input(usr, "What would you like to label the paper?", "Paper Labelling", null, MAX_NAME_LEN)
+	var/n_name = tgui_input_text(usr, "Enter a paper label", "Paper Labelling", max_length = MAX_NAME_LEN)
 	if(((loc == usr || istype(loc, /obj/item/clipboard)) && usr.stat == CONSCIOUS))
 		name = "paper[(n_name ? text("- '[n_name]'") : null)]"
 	add_fingerprint(usr)
 
 /obj/item/paper/suicide_act(mob/user)
-	user.visible_message("<span class='suicide'>[user] scratches a grid on [user.p_their()] wrist with the paper! It looks like [user.p_theyre()] trying to commit sudoku...</span>")
+	user.visible_message(span_suicide("[user] scratches a grid on [user.p_their()] wrist with the paper! It looks like [user.p_theyre()] trying to commit sudoku..."))
 	return (BRUTELOSS)
 
 /obj/item/paper/proc/clearpaper()
-	info = ""
+	setText("", update_icon = FALSE)
 	stamps = null
 	LAZYCLEARLIST(stamped)
 	cut_overlays()
@@ -143,12 +165,12 @@
 /obj/item/paper/examine(mob/user)
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
-		. += "<span class='warning'>You're too far away to read it!</span>"
+		. += span_warning("You're too far away to read it!")
 		return
 	if(user.can_read(src))
 		ui_interact(user)
 		return
-	. += "<span class='warning'>You cannot read it!</span>"
+	. += span_warning("You cannot read it!")
 
 /obj/item/paper/ui_status(mob/user,/datum/ui_state/state)
 		// Are we on fire?  Hard ot read if so
@@ -180,8 +202,8 @@
 		return
 	. = TRUE
 	if(!bypass_clumsy && HAS_TRAIT(user, TRAIT_CLUMSY) && prob(10) && Adjacent(user))
-		user.visible_message("<span class='warning'>[user] accidentally ignites [user.p_them()]self!</span>", \
-							"<span class='userdanger'>You miss [src] and accidentally light yourself on fire!</span>")
+		user.visible_message(span_warning("[user] accidentally ignites [user.p_them()]self!"), \
+							span_userdanger("You miss [src] and accidentally light yourself on fire!"))
 		if(user.is_holding(I)) //checking if they're holding it in case TK is involved
 			user.dropItemToGround(I)
 		user.adjust_fire_stacks(1)
@@ -194,6 +216,21 @@
 	add_fingerprint(user)
 	fire_act(I.get_temperature())
 
+/obj/item/paper/proc/add_info(text, color = DEFAULT_ADD_INFO_COLOR, font = DEFAULT_ADD_INFO_FONT, signature = DEFAULT_ADD_INFO_SIGN)
+	LAZYADD(add_info, text)
+	LAZYADD(add_info_style, list(list(color, font, signature)))
+
+/obj/item/paper/proc/get_info_length()
+	. = length_char(info)
+	for(var/index in 1 to length(add_info))
+		var/style = LAZYACCESS(add_info_style, index)
+		if(style)
+			var/static/regex/sign_regex = regex("%s(?:ign)?(?=\\s|$)?", "igm")
+			var/signed_text = sign_regex.Replace(add_info[index], style[ADD_INFO_SIGN])
+			. += length_char(PAPER_MARK_TEXT(signed_text, style[ADD_INFO_COLOR], style[ADD_INFO_FONT]))
+		else
+			. += length_char(add_info[index])
+
 /obj/item/paper/attackby(obj/item/P, mob/living/user, params)
 	if(burn_paper_product_attackby_check(P, user))
 		SStgui.close_uis(src)
@@ -204,18 +241,18 @@
 		P.attackby(src, user)
 		return
 	else if(istype(P, /obj/item/pen) || istype(P, /obj/item/toy/crayon))
-		if(length(info) >= MAX_PAPER_LENGTH) // Sheet must have less than 1000 charaters
-			to_chat(user, "<span class='warning'>This sheet of paper is full!</span>")
+		if(get_info_length() >= MAX_PAPER_LENGTH) // Sheet must have less than 5000 charaters
+			to_chat(user, span_warning("This sheet of paper is full!"))
 			return
 		ui_interact(user)
 		return
 	else if(istype(P, /obj/item/stamp))
-		to_chat(user, "<span class='notice'>You ready your stamp over the paper! </span>")
+		to_chat(user, span_notice("You ready your stamp over the paper! "))
 		ui_interact(user)
 		return /// Normaly you just stamp, you don't need to read the thing
 	else
 		// cut paper?  the sky is the limit!
-		ui_interact(user)	// The other ui will be created with just read mode outside of this
+		ui_interact(user) // The other ui will be created with just read mode outside of this
 
 	return ..()
 
@@ -224,6 +261,8 @@
 	. = ..()
 	if(.)
 		info = "[stars(info)]"
+		for(var/index in 1 to length(add_info))
+			add_info[index] = "[stars(add_info[index])]"
 
 /obj/item/paper/ui_assets(mob/user)
 	return list(
@@ -237,15 +276,28 @@
 		ui = new(user, src, "PaperSheet", name)
 		ui.open()
 
-
 /obj/item/paper/ui_static_data(mob/user)
 	. = list()
 	.["text"] = info
-	.["max_length"] = MAX_PAPER_LENGTH
-	.["paper_color"] = !color || color == "white" ? "#FFFFFF" : color	// color might not be set
-	.["paper_state"] = icon_state	/// TODO: show the sheet will bloodied or crinkling?
-	.["stamps"] = stamps
+	if(length(add_info))
+		.["add_text"] = add_info
+		.["add_color"] = list()
+		.["add_font"] = list()
+		.["add_sign"] = list()
+		for(var/index in 1 to length(add_info))
+			var/list/style = LAZYACCESS(add_info_style, index)
+			if(!islist(index) || length(style) < ADD_INFO_SIGN) // failsafe for malformed add_info_style.
+				var/list/corrected_style = list(DEFAULT_ADD_INFO_COLOR, DEFAULT_ADD_INFO_FONT, DEFAULT_ADD_INFO_SIGN)
+				LAZYADD(add_info_style, corrected_style)
+				style = corrected_style
+			.["add_color"] += style[ADD_INFO_COLOR]
+			.["add_font"] += style[ADD_INFO_FONT]
+			.["add_sign"] += style[ADD_INFO_SIGN]
 
+	.["max_length"] = MAX_PAPER_LENGTH
+	.["paper_color"] = !color || color == "white" ? "#FFFFFF" : color // color might not be set
+	.["paper_state"] = icon_state /// TODO: show the sheet will bloodied or crinkling?
+	.["stamps"] = stamps
 
 
 /obj/item/paper/ui_data(mob/user)
@@ -308,14 +360,14 @@
 		if("stamp")
 			var/stamp_x = text2num(params["x"])
 			var/stamp_y = text2num(params["y"])
-			var/stamp_r = text2num(params["r"])	// rotation in degrees
+			var/stamp_r = text2num(params["r"]) // rotation in degrees
 			var/stamp_icon_state = params["stamp_icon_state"]
 			var/stamp_class = params["stamp_class"]
 			if (isnull(stamps))
 				stamps = list()
 			if(stamps.len < MAX_PAPER_STAMPS)
 				// I hate byond when dealing with freaking lists
-				stamps[++stamps.len] = list(stamp_class, stamp_x, stamp_y, stamp_r)	/// WHHHHY
+				stamps[++stamps.len] = list(stamp_class, stamp_x, stamp_y, stamp_r) /// WHHHHY
 
 				/// This does the overlay stuff
 				if (isnull(stamped))
@@ -330,7 +382,7 @@
 
 				update_static_data(usr,ui)
 				var/obj/O = ui.user.get_active_held_item()
-				ui.user.visible_message("<span class='notice'>[ui.user] stamps [src] with \the [O.name]!</span>", "<span class='notice'>You stamp [src] with \the [O.name]!</span>")
+				ui.user.visible_message(span_notice("[ui.user] stamps [src] with \the [O.name]!"), span_notice("You stamp [src] with \the [O.name]!"))
 			else
 				to_chat(usr, pick("You try to stamp but you miss!", "There is no where else you can stamp!"))
 			. = TRUE
@@ -353,10 +405,11 @@
 				if(info != in_paper)
 					to_chat(ui.user, "You have added to your paper masterpiece!");
 					info = in_paper
+					add_info = null
+					add_info_style = null
 					update_static_data(usr,ui)
 
-
-			update_icon()
+			update_appearance()
 			. = TRUE
 
 /obj/item/paper/ui_host(mob/user)
@@ -369,14 +422,14 @@
  */
 /obj/item/paper/construction
 
-/obj/item/paper/construction/Initialize()
+/obj/item/paper/construction/Initialize(mapload)
 	. = ..()
 	color = pick("FF0000", "#33cc33", "#ffb366", "#551A8B", "#ff80d5", "#4d94ff")
 
 /**
  * Natural paper
  */
-/obj/item/paper/natural/Initialize()
+/obj/item/paper/natural/Initialize(mapload)
 	. = ..()
 	color = "#FFF5ED"
 
@@ -385,9 +438,6 @@
 	icon_state = "scrap"
 	slot_flags = null
 	show_written_words = FALSE
-
-/obj/item/paper/crumpled/update_icon_state()
-	return
 
 /obj/item/paper/crumpled/bloody
 	icon_state = "scrap_bloodied"
@@ -401,3 +451,6 @@
 #undef MODE_READING
 #undef MODE_WRITING
 #undef MODE_STAMPING
+#undef DEFAULT_ADD_INFO_COLOR
+#undef DEFAULT_ADD_INFO_FONT
+#undef DEFAULT_ADD_INFO_SIGN
