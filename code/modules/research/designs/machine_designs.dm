@@ -541,12 +541,12 @@
 	id = "skill_station"
 	build_path = /obj/item/circuitboard/machine/skill_station
 	category = list ("Misc. Machinery")
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE | DEPARTMENTAL_FLAG_CARGO | DEPARTMENTAL_FLAG_ENGINEERING | DEPARTMENTAL_FLAG_SERVICE
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_CARGO | DEPARTMENT_BITFLAG_ENGINEERING | DEPARTMENT_BITFLAG_SERVICE
 
-/datum/design/board/accounting
-	name = "Machine Design (Account Registration Device)"
-	desc = "The circuit board for a Account Registration Device."
-	id = "accounting"
-	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
-	build_path = /obj/item/circuitboard/machine/accounting
+/datum/design/board/fax
+	name = "Machine Design (Fax Machine)"
+	desc = "The circuit board for a fax machine."
+	id = "fax"
+	build_path = /obj/item/circuitboard/machine/fax
 	category = list ("Misc. Machinery")
+	departmental_flags = DEPARTMENT_BITFLAG_ENGINEERING | DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_SERVICE
