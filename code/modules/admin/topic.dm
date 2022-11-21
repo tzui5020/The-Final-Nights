@@ -2382,6 +2382,15 @@
 	else if (href_list["searchwhitelistckey"])
 		whitelist_panel(href_list["searchwhitelistckey"])
 
+	else if(href_list["show_paper"])
+		if(!check_rights(R_ADMIN))
+			return
+
+		var/obj/item/paper/paper_to_show = locate(href_list["show_paper"])
+		if(!paper_to_show)
+			return
+		paper_to_show.ui_interact(usr)
+
 /datum/admins/proc/HandleCMode()
 	if(!check_rights(R_ADMIN))
 		return
