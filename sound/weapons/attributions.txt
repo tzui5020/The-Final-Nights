@@ -31,3 +31,5 @@ mbox_full.ogg and mbox_end.ogg make use of The Ragtime Drummer by James Lent, in
 growl1.ogg and growl2.ogg in /sound/creatures/dog are adapted from Glitchedtones's Freesound shih-tzu uploads https://freesound.org/people/Glitchedtones/
 
 eject.ogg is by magedu, adapted from https://freesound.org/people/magedu/sounds/267832/
+
+standard_stamp.ogg is adapted from tom_woysky's "Stamp.wav" https://freesound.org/people/tom_woysky/sounds/348316/
