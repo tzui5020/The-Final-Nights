@@ -232,22 +232,31 @@
 				computer.inventory_update()
 				to_chat(user, span_notice("[scanner]'s screen flashes: 'Book stored in buffer. Title added to general inventory.'"))
 
-	else if(((attacking_item.sharpness & SHARP_EDGED) || (attacking_item.tool_behaviour == TOOL_KNIFE) || (attacking_item.tool_behaviour == TOOL_WIRECUTTER)) && !(flags_1 & HOLOGRAM_1))
-		to_chat(user, span_notice("You begin to carve out [book_data.title]..."))
-		if(do_after(user, 30, target = src))
-			to_chat(user, span_notice("You carve out the pages from [book_data.title]! You didn't want to read it anyway."))
-			var/obj/item/storage/book/carved_out = new
-			carved_out.name = src.name
-			carved_out.title = book_data.title
-			carved_out.icon_state = src.icon_state
-			if(user.is_holding(src))
-				qdel(src)
-				user.put_in_hands(carved_out)
-				return
-			else
-				carved_out.forceMove(drop_location())
-				qdel(src)
-				return
-		return
-	else
-		return ..()
+/// Generates a random icon state for the book
+/obj/item/book/proc/gen_random_icon_state()
+	icon_state = "book[rand(1, maximum_book_state)]"
+
+/// Called when user attempts to carve the book with an item
+/obj/item/book/proc/try_carve(obj/item/carving_item, mob/living/user, params)
+	if(carved)
+		return FALSE
+	if(!user.combat_mode)
+		return FALSE
+	//special check for wirecutter's because they don't have a sharp edge
+	if((carving_item.sharpness & SHARP_EDGED) || (carving_item.tool_behaviour == TOOL_WIRECUTTER))
+		balloon_alert(user, "carving out...")
+		if(!do_after(user, 3 SECONDS, target = src))
+			balloon_alert(user, "interrupted!")
+			return FALSE
+		carve_out(carving_item, user)
+		return TRUE
+	return FALSE
+
+/// Called when the book gets carved successfully
+/obj/item/book/proc/carve_out(obj/item/carving_item, mob/living/user)
+	if(user)
+		balloon_alert(user, "carved out")
+		playsound(src, 'sound/effects/cloth_rip.ogg', vol = 75, vary = TRUE)
+	carved = TRUE
+	create_storage(max_slots = 1)
+	return TRUE
