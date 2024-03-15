@@ -123,7 +123,7 @@
 		return
 	if(istype(I, /obj/item/paper))
 		var/obj/item/paper/paper = I
-		if(!user.transferItemToLoc(paper, src))
+		if(!user.transferItemToLoc(paper, src, silent = FALSE))
 			return
 		to_chat(user, span_notice("You put [paper] in [src]."))
 		paper_stack += paper
@@ -131,7 +131,7 @@
 		update_appearance()
 	else if(istype(I, /obj/item/pen) && !bin_pen)
 		var/obj/item/pen/pen = I
-		if(!user.transferItemToLoc(pen, src))
+		if(!user.transferItemToLoc(pen, src, silent = FALSE))
 			return
 		to_chat(user, span_notice("You put [pen] in [src]."))
 		bin_pen = pen
