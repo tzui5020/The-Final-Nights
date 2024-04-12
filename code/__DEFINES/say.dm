@@ -90,6 +90,10 @@
 // Double the maximum message length.
 #define MAX_FLAVOR_LEN 4096
 
+#define MAX_PLAQUE_LEN 144
+#define MAX_LABEL_LEN 64
+#define MAX_DESC_LEN 280
+
 // Is something in the IC chat filter? This is config dependent.
 #define CHAT_FILTER_CHECK(T) (config.ic_filter_regex && findtext(T, config.ic_filter_regex))
 
