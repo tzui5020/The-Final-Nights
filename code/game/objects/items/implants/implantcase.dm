@@ -13,21 +13,13 @@
 	var/obj/item/implant/imp = null
 	var/imp_type
 
-
 /obj/item/implantcase/update_icon_state()
-	if(imp)
-		icon_state = "implantcase-[imp.implant_color]"
-	else
-		icon_state = "implantcase-0"
+	icon_state = "implantcase-[imp ? imp.implant_color : 0]"
+	return ..()
 
-
-/obj/item/implantcase/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/pen))
-		if(!user.is_literate())
-			to_chat(user, "<span class='notice'>You scribble illegibly on the side of [src]!</span>")
-			return
-		var/t = stripped_input(user, "What would you like the label to be?", name, null)
-		if(user.get_active_held_item() != W)
+/obj/item/implantcase/attackby(obj/item/used_item, mob/living/user, params)
+	if(IS_WRITING_UTENSIL(used_item))
+		if(!user.can_write(used_item))
 			return
 		if(!user.canUseTopic(src, BE_CLOSE))
 			return

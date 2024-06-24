@@ -158,29 +158,38 @@
 		update_icon()
 		return
 
-	if(IS_WRITING_UTENSIL(attacking_item))
-		if(!user.canUseTopic(src) || !user.can_write(attacking_item))
-			return ..()
-		var/newname = tgui_input_text(user, "What would you like to title this bookshelf?", "Bookshelf Renaming", max_length = MAX_NAME_LEN)
-		if(!user.canUseTopic(src) || !user.can_write(attacking_item))
-			return ..()
-		if(!newname)
-			return
-		name = "bookcase ([sanitize(newname)])"
-		return
-
-	if(attacking_item.tool_behaviour == TOOL_CROWBAR)
-		if(length(contents))
-			balloon_alert(user, "remove the books first")
-			return
-		attacking_item.play_tool_sound(src, 100)
-		balloon_alert(user, "pried the shelf out")
-		new /obj/item/stack/sheet/mineral/wood(drop_location(), 2)
-		state = BOOKCASE_ANCHORED
-		update_icon()
-		return
-
-	return ..()
+		if(BOOKCASE_FINISHED)
+			if(isbook(I))
+				if(!user.transferItemToLoc(I, src))
+					return
+				update_appearance()
+			else if(atom_storage)
+				for(var/obj/item/T in I.contents)
+					if(istype(T, /obj/item/book) || istype(T, /obj/item/spellbook))
+						atom_storage.attempt_remove(T, src)
+				to_chat(user, span_notice("You empty \the [I] into \the [src]."))
+				update_appearance()
+			else if(IS_WRITING_UTENSIL(I))
+				if(!user.can_perform_action(src) || !user.can_write(I))
+					return
+				var/newname = tgui_input_text(user, "What would you like to title this bookshelf?", "Bookshelf Renaming", max_length = MAX_NAME_LEN)
+				if(!user.can_perform_action(src) || !user.can_write(I))
+					return
+				if(!newname)
+					return
+				else
+					name = "bookcase ([sanitize(newname)])"
+			else if(I.tool_behaviour == TOOL_CROWBAR)
+				if(length(contents))
+					to_chat(user, span_warning("You need to remove the books first!"))
+				else
+					I.play_tool_sound(src, 100)
+					to_chat(user, span_notice("You pry the shelf out."))
+					new /obj/item/stack/sheet/mineral/wood(drop_location(), 2)
+					state = BOOKCASE_ANCHORED
+					update_appearance()
+			else
+				return ..()
 
 /obj/structure/bookcase/attack_hand(mob/living/user, list/modifiers)
 	. = ..()

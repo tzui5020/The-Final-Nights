@@ -83,8 +83,11 @@
 	display_content(user)
 
 /obj/item/book/attackby(obj/item/attacking_item, mob/living/user, params)
+	if(burn_paper_product_attackby_check(attacking_item, user))
+		return
+
 	if(IS_WRITING_UTENSIL(attacking_item))
-		if(!user.canUseTopic(src) || !user.can_write(attacking_item))
+		if(!user.can_perform_action(src) || !user.can_write(attacking_item))
 			return
 		if(user.is_blind())
 			to_chat(user, span_warning("As you are trying to write on the book, you suddenly feel very stupid!"))

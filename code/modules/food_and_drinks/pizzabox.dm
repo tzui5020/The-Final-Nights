@@ -200,8 +200,8 @@
 			update_icon()
 			return
 		else if(bomb)
-			to_chat(user, "<span class='warning'>[src] already has a bomb in it!</span>")
-	else if(istype(I, /obj/item/pen))
+			balloon_alert(user, "already rigged!")
+	else if(IS_WRITING_UTENSIL(I))
 		if(!open)
 			if(!user.is_literate())
 				to_chat(user, "<span class='notice'>You scribble illegibly on [src]!</span>")

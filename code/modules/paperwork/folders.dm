@@ -83,10 +83,10 @@
 		//Add paper, photo or documents into the folder
 		if(!user.transferItemToLoc(weapon, src))
 			return
-		to_chat(user, "<span class='notice'>You put [weapon] into [src].</span>")
-		update_icon()
-	else if(istype(weapon, /obj/item/pen))
-		rename(user)
+		to_chat(user, span_notice("You put [weapon] into [src]."))
+		update_appearance()
+	else if(IS_WRITING_UTENSIL(weapon))
+		rename(user, weapon)
 
 /obj/item/folder/attack_self(mob/user)
 	add_fingerprint(usr)

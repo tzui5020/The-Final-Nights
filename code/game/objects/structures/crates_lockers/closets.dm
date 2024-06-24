@@ -258,85 +258,79 @@
 
 /obj/structure/closet/proc/tool_interact(obj/item/W, mob/user)//returns TRUE if attackBy call shouldn't be continued (because tool was used/closet was of wrong type), FALSE if otherwise
 	. = TRUE
-	if(opened)
-		if(istype(W, cutting_tool))
-			if(W.tool_behaviour == TOOL_WELDER)
-				if(!W.tool_start_check(user, amount=0))
-					return
-
-				to_chat(user, "<span class='notice'>You begin cutting \the [src] apart...</span>")
-				if(W.use_tool(src, user, 40, volume=50))
-					if(!opened)
-						return
-					user.visible_message("<span class='notice'>[user] slices apart \the [src].</span>",
-									"<span class='notice'>You cut \the [src] apart with \the [W].</span>",
-									"<span class='hear'>You hear welding.</span>")
-					deconstruct(TRUE)
-				return
-			else // for example cardboard box is cut with wirecutters
-				user.visible_message("<span class='notice'>[user] cut apart \the [src].</span>", \
-									"<span class='notice'>You cut \the [src] apart with \the [W].</span>")
-				deconstruct(TRUE)
-				return
-		if(user.transferItemToLoc(W, drop_location())) // so we put in unlit welder too
+	var/obj/item/card/id/id = null
+	if(!opened && istype(weapon, /obj/item/airlock_painter))
+		if(!length(paint_jobs))
 			return
-	else if(W.tool_behaviour == TOOL_WELDER && can_weld_shut)
-		if(!W.tool_start_check(user, amount=0))
+		var/choice = tgui_input_list(user, "Set Closet Paintjob", "Paintjob", paint_jobs)
+		if(isnull(choice))
 			return
 
-		to_chat(user, "<span class='notice'>You begin [welded ? "unwelding":"welding"] \the [src]...</span>")
-		if(W.use_tool(src, user, 40, volume=50))
-			if(opened)
-				return
-			welded = !welded
-			after_weld(welded)
-			user.visible_message("<span class='notice'>[user] [welded ? "welds shut" : "unwelded"] \the [src].</span>",
-							"<span class='notice'>You [welded ? "weld" : "unwelded"] \the [src] with \the [W].</span>",
-							"<span class='hear'>You hear welding.</span>")
-			log_game("[key_name(user)] [welded ? "welded":"unwelded"] closet [src] with [W] at [AREACOORD(src)]")
-			update_icon()
-	else if(W.tool_behaviour == TOOL_WRENCH && anchorable)
-		if(isinspace() && !anchored)
+		var/obj/item/airlock_painter/painter = weapon
+		if(!painter.use_paint(user))
 			return
-		set_anchored(!anchored)
-		W.play_tool_sound(src, 75)
-		user.visible_message("<span class='notice'>[user] [anchored ? "anchored" : "unanchored"] \the [src] [anchored ? "to" : "from"] the ground.</span>", \
-						"<span class='notice'>You [anchored ? "anchored" : "unanchored"] \the [src] [anchored ? "to" : "from"] the ground.</span>", \
-						"<span class='hear'>You hear a ratchet.</span>")
-	else if(user.a_intent != INTENT_HARM)
-		var/item_is_id = W.GetID()
-		if(!item_is_id)
-			return FALSE
-		if(item_is_id || !toggle(user))
-			togglelock(user)
-	else
-		return FALSE
+		var/list/paint_job = paint_jobs[choice]
+		icon_state = paint_job["icon_state"]
+		base_icon_state = icon_state
+		icon_door = paint_job["icon_door"]
 
-/obj/structure/closet/proc/after_weld(weld_state)
-	return
+		update_appearance()
 
-/obj/structure/closet/MouseDrop_T(atom/movable/O, mob/living/user)
-	if(!istype(O) || O.anchored || istype(O, /atom/movable/screen))
-		return
-	if(!istype(user) || user.incapacitated() || user.body_position == LYING_DOWN)
-		return
-	if(!Adjacent(user) || !user.Adjacent(O))
-		return
-	if(user == O) //try to climb onto it
-		return ..()
-	if(!opened)
-		return
-	if(!isturf(O.loc))
-		return
+	else if(istype(weapon, /obj/item/electronics/airlock) && can_install_airlock_electronics(user))
+		user.visible_message(span_notice("[user] installs the electronics into the [src]."),\
+			span_notice("You start to install electronics into the [src]..."))
 
-	var/actuallyismob = 0
-	if(isliving(O))
-		actuallyismob = 1
-	else if(!isitem(O))
-		return
-	var/turf/T = get_turf(src)
-	var/list/targets = list(O, src)
-	add_fingerprint(user)
+		if(!do_after(user, 4 SECONDS, target = src, extra_checks = CALLBACK(src, PROC_REF(can_install_airlock_electronics), user)))
+			return
+		if(!user.transferItemToLoc(weapon, src))
+			return
+
+		CheckParts(list(weapon))
+		secure = TRUE
+		balloon_alert(user, "electronics installed")
+
+		update_appearance()
+
+	else if(weapon.tool_behaviour == TOOL_SCREWDRIVER && can_unscrew_airlock_electronics(user))
+		user.visible_message(span_notice("[user] begins to remove the electronics from the [src]."),\
+			span_notice("You begin to remove the electronics from the [src]..."))
+
+		if (!weapon.use_tool(src, user, 40, volume = 50, extra_checks = CALLBACK(src, PROC_REF(can_unscrew_airlock_electronics), user)))
+			return
+
+		var/obj/item/electronics/airlock/airlock_electronics = new(drop_location())
+		if(length(req_one_access))
+			airlock_electronics.one_access = TRUE
+			airlock_electronics.accesses = req_one_access
+		else
+			airlock_electronics.accesses = req_access
+
+		req_access = list()
+		req_one_access = null
+		id_card = null
+		secure = FALSE
+		balloon_alert(user, "electronics removed")
+
+		update_appearance()
+
+	else if(istype(weapon, /obj/item/stock_parts/card_reader) && can_install_card_reader(user))
+		user.visible_message(span_notice("[user] is installing a card reader."),
+					span_notice("You begin installing the card reader."))
+
+		if(!do_after(user, 4 SECONDS, target = src, extra_checks = CALLBACK(src, PROC_REF(can_install_card_reader), user)))
+			return
+
+		qdel(weapon)
+		card_reader_installed = TRUE
+
+		balloon_alert(user, "card reader installed")
+
+	else if(weapon.tool_behaviour == TOOL_CROWBAR && can_pryout_card_reader(user))
+		user.visible_message(span_notice("[user] begins to pry the card reader out from [src]."),\
+
+		if(!weapon.use_tool(src, user, 4 SECONDS, extra_checks = CALLBACK(src, PROC_REF(can_pryout_card_reader), user)))
+			return
+
 	user.visible_message("<span class='warning'>[user] [actuallyismob ? "tries to ":""]stuff [O] into [src].</span>", \
 		"<span class='warning'>You [actuallyismob ? "try to ":""]stuff [O] into [src].</span>", \
 		"<span class='hear'>You hear clanging.</span>")

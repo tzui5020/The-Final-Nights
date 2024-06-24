@@ -71,7 +71,7 @@
 	blood_type = "U"
 
 /obj/item/reagent_containers/blood/attackby(obj/item/I, mob/user, params)
-	if (istype(I, /obj/item/pen) || istype(I, /obj/item/toy/crayon))
+	if (IS_WRITING_UTENSIL(I))
 		if(!user.is_literate())
 			to_chat(user, "<span class='notice'>You scribble illegibly on the label of [src]!</span>")
 			return

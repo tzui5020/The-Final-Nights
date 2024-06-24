@@ -55,10 +55,9 @@
 			to_chat(user, "<span class='notice'>*[tag]*</span>")
 			sortTag = O.currTag
 			playsound(loc, 'sound/machines/twobeep_high.ogg', 100, TRUE)
-
-	else if(istype(W, /obj/item/pen))
-		if(!user.is_literate())
-			to_chat(user, "<span class='notice'>You scribble illegibly on the side of [src]!</span>")
+			update_appearance()
+	else if(IS_WRITING_UTENSIL(item))
+		if(!user.can_write(item))
 			return
 		var/str = stripped_input(user, "Label text?", "Set label", "", MAX_NAME_LEN)
 		if(!user.canUseTopic(src, BE_CLOSE))
