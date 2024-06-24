@@ -689,10 +689,21 @@
 	icon = 'icons/obj/library.dmi'
 	icon_state = "bigscanner"
 	desc = "It's an industrial strength book scanner. Perfect!"
+	circuit = /obj/item/circuitboard/machine/libraryscanner
 	density = TRUE
 	var/obj/item/book/held_book
 	///Our scanned-in book
 	var/datum/book_info/cache
+
+/obj/machinery/libraryscanner/screwdriver_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(default_deconstruction_screwdriver(user, "bigscanner2", "bigscanner", tool))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/libraryscanner/crowbar_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(default_deconstruction_crowbar(tool))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/libraryscanner/Destroy()
 	held_book = null
@@ -761,6 +772,7 @@
 	icon = 'icons/obj/library.dmi'
 	icon_state = "binder"
 	desc = "Only intended for binding paper products."
+	circuit = /obj/item/circuitboard/machine/bookbinder
 	density = TRUE
 
 	/// Are we currently binding a book?
@@ -769,10 +781,15 @@
 	/// Name of the author for the book, set by scanning your ID.
 	var/scanned_name
 
-/obj/machinery/bookbinder/wrench_act(mob/living/user, obj/item/tool)
+/obj/machinery/bookbinder/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
-	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	if(default_deconstruction_screwdriver(user, "binder2", "binder", tool))
+		return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/bookbinder/crowbar_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(default_deconstruction_crowbar(tool))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bookbinder/attackby(obj/hitby, mob/user, params)
 	if(istype(hitby, /obj/item/paper))
