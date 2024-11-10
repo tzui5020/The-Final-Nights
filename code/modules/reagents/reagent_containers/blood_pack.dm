@@ -81,8 +81,10 @@
 		if(user.get_active_held_item() != I)
 			return
 		if(t)
-			labelled = 1
+			labelled = TRUE
 			name = "blood pack - [t]"
+			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
+			balloon_alert(user, "new label set")
 		else
 			labelled = 0
 			update_pack_name()

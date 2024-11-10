@@ -28,6 +28,7 @@
 		if(!user.canUseTopic(src, BE_CLOSE))
 			return
 		if(t)
+			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 			name = "implant case - '[t]'"
 		else
 			name = "implant case"
