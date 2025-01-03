@@ -15,6 +15,10 @@
 		/obj/item/documents,
 		/obj/item/paperwork,
 	))
+	/// Do we hide the contents on examine?
+	var/contents_hidden = FALSE
+	/// icon_state of overlay for papers inside of this folder
+	var/paper_overlay_state = "folder_paper"
 
 /obj/item/folder/suicide_act(mob/living/user)
 	user.visible_message("<span class='suicide'>[user] begins filing an imaginary death warrant! It looks like [user.p_theyre()] trying to commit suicide!</span>")
@@ -65,7 +69,14 @@
 /obj/item/folder/update_overlays()
 	. = ..()
 	if(contents.len)
-		. += "folder_paper"
+		var/to_add = get_paper_overlay()
+		if (to_add)
+			. += to_add
+
+/obj/item/folder/proc/get_paper_overlay()
+	var/mutable_appearance/paper_overlay = mutable_appearance(icon, paper_overlay_state, offset_spokesman = src, appearance_flags = KEEP_APART)
+	paper_overlay = contents[1].color_atom_overlay(paper_overlay)
+	return paper_overlay
 
 /obj/item/folder/attackby(obj/item/weapon, mob/user, params)
 	if(burn_paper_product_attackby_check(weapon, user))
