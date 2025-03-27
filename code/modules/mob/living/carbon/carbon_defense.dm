@@ -70,8 +70,8 @@
 /mob/living/carbon/attacked_by(obj/item/I, mob/living/user)
 	var/meleemod = 1
 	if(ishuman(user))
-		var/mob/living/carbon/human/user = user
-		meleemod = user.dna?.species.meleemod
+		var/mob/living/carbon/human/USR = user
+		meleemod = USR.dna?.species.meleemod
 	if(I.force)
 		do_rage_from_attack(user)
 	var/obj/item/bodypart/affecting
