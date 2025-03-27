@@ -129,8 +129,8 @@
 /obj/attacked_by(obj/item/I, mob/living/user)
 	var/meleemod = 1
 	if(ishuman(user))
-		var/mob/living/carbon/human/USR = user
-		meleemod = USR.dna?.species.meleemod
+		var/mob/living/carbon/human/M = user
+		meleemod = M.dna?.species.meleemod
 	if(I.force)
 		user.visible_message("<span class='danger'>[user] hits [src] with [I]!</span>", \
 					"<span class='danger'>You hit [src] with [I]!</span>", null, COMBAT_MESSAGE_RANGE)
@@ -143,8 +143,8 @@
 	if(I.force)
 		var/meleemod = 1
 		if(ishuman(user))
-			var/mob/living/carbon/human/USR = user
-			meleemod = USR.dna?.species.meleemod
+			var/mob/living/carbon/human/M = user
+			meleemod = M.dna?.species.meleemod
 		apply_damage((I.force*meleemod), I.damtype)
 		if(I.damtype == BRUTE)
 			if(prob(33))

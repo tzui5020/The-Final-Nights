@@ -1535,10 +1535,10 @@ GLOBAL_LIST_EMPTY(selectable_races)
 	// Allows you to put in item-specific reactions based on species
 	var/meleemod = 1
 	if(ishuman(user))
-		var/mob/living/carbon/human/USR = user
-		if(USR.dna)
-			if(USR.dna.species)
-				meleemod = USR.dna.species.meleemod
+		var/mob/living/carbon/human/M = user
+		if(M.dna)
+			if(M.dna.species)
+				meleemod = M.dna.species.meleemod
 		//if(ishuman(user)) //Commented due to the prevalence of Physique 5 turning this into unaccounted math. Reutilize if stat XP caps ever become a thing, idk.
 			//meleemod = (meleemod/3)*(user.get_total_physique())
 	if(user != H)
