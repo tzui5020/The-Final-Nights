@@ -50,6 +50,10 @@
 /datum/discipline_power/dominate/command/pre_activation_checks(mob/living/target)
 	var/mypower = owner.get_total_social()
 	var/theirpower = target.get_total_mentality()
+	var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
+
+	if(owner == conditioner)
+		return TRUE
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
@@ -89,6 +93,10 @@
 /datum/discipline_power/dominate/mesmerize/pre_activation_checks(mob/living/target)
 	var/mypower = owner.get_total_social()
 	var/theirpower = target.get_total_mentality()
+	var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
+
+	if(owner == conditioner)
+		return TRUE
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
@@ -130,6 +138,10 @@
 /datum/discipline_power/dominate/the_forgetful_mind/pre_activation_checks(mob/living/target)
 	var/mypower = owner.get_total_social()
 	var/theirpower = target.get_total_mentality()
+	var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
+
+	if(owner == conditioner)
+		return TRUE
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
@@ -170,13 +182,18 @@
 /datum/discipline_power/dominate/conditioning/pre_activation_checks(mob/living/target)
 	var/mypower = owner.get_total_social()
 	var/theirpower = target.get_total_mentality()
+	var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
+
+	if(owner == conditioner)
+		to_chat(owner, span_warning("[target]'s mind is already under my sway!"))
+		return FALSE
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		if(human_target.clane?.name == "Gargoyle")
 			return TRUE
 
-	if((theirpower >= mypower) || (owner.generation > target.generation))
+	if((theirpower > mypower) || (owner.generation > target.generation)) //Extended roll (do_after), so wins on tiebreaker.
 		to_chat(owner, span_warning("[target]'s mind is too powerful to dominate!"))
 		return FALSE
 
@@ -184,9 +201,11 @@
 
 /datum/discipline_power/dominate/conditioning/activate(mob/living/target)
 	. = ..()
-	to_chat(target, "<span class='userdanger'><b>THINK TWICE</b></span>")
-	owner.say("THINK TWICE!!")
-	target.add_movespeed_modifier(/datum/movespeed_modifier/dominate)
+	to_chat(target, "<span class='userdanger'><b>LOOK AT ME</b></span>")
+	owner.say("Look at me.")
+	if(do_after(owner, 100, target = target))
+		target.conditioner = WEAKREF(owner)
+		to_chat(target, "<span class='userdanger'><b>Your mind is filled with thoughts surrounding [owner]. Their word carries weight to you.</b></span>")
 
 /datum/discipline_power/dominate/conditioning/deactivate(mob/living/target)
 	. = ..()
@@ -209,6 +228,10 @@
 /datum/discipline_power/dominate/possession/pre_activation_checks(mob/living/target)
 	var/mypower = owner.get_total_social()
 	var/theirpower = target.get_total_mentality()
+	var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
+
+	if(owner == conditioner)
+		return TRUE
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
