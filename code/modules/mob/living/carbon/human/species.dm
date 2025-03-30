@@ -1540,8 +1540,8 @@ GLOBAL_LIST_EMPTY(selectable_races)
 		if(M.dna)
 			if(M.dna.species)
 				meleemod = M.dna.species.meleemod
-		//if(ishuman(user)) //Commented due to the prevalence of Physique 5 turning this into unaccounted math. Reutilize if stat XP caps ever become a thing, idk.
-			//meleemod = (meleemod/3)*(user.get_total_physique())
+		if(user.get_total_physique() > 4)
+			meleemod = (meleemod/5)*(user.get_total_physique() + 1) //1.2x at Physique 5, increasing by 0.2x per point higher than that.
 	if(user != H)
 		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armour_penetration))
 			return FALSE
