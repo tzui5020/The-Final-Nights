@@ -203,7 +203,7 @@
 	. = ..()
 	to_chat(target, "<span class='userdanger'><b>LOOK AT ME</b></span>")
 	owner.say("Look at me.")
-	if(do_after(owner, 100, target = target))
+	if(do_mob(owner, target, 100))
 		target.conditioner = WEAKREF(owner)
 		to_chat(target, "<span class='userdanger'><b>Your mind is filled with thoughts surrounding [owner]. Their word carries weight to you.</b></span>")
 
