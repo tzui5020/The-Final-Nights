@@ -187,6 +187,9 @@
 	if(owner == conditioner)
 		to_chat(owner, span_warning("[target]'s mind is already under my sway!"))
 		return FALSE
+	else if(target.conditioned)
+		to_chat(owner, span_warning("[target]'s mind appears to already be under someone else's sway!"))
+		return FALSE
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
@@ -204,7 +207,10 @@
 	to_chat(target, "<span class='userdanger'><b>LOOK AT ME</b></span>")
 	owner.say("Look at me.")
 	if(do_mob(owner, target, 100))
+		target.conditioned = TRUE
 		target.conditioner = WEAKREF(owner)
+		target.additional_mentality += 2
+		target.additional_social -= 2 //Lessened charisma and ability to lead independently
 		to_chat(target, "<span class='userdanger'><b>Your mind is filled with thoughts surrounding [owner]. Their word carries weight to you.</b></span>")
 
 /datum/discipline_power/dominate/conditioning/deactivate(mob/living/target)

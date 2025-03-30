@@ -257,7 +257,8 @@
 	var/maxbloodpool = 5
 	var/generation = 13
 	var/masquerade = 5
-	var/datum/weakref/conditioner = null
+	var/datum/weakref/conditioner
+	var/conditioned = FALSE
 	var/last_masquerade_violation = 0
 	var/last_nonraid = 0
 	var/warrant = FALSE
