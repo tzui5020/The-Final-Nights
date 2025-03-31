@@ -75,6 +75,9 @@
 	if(owner == conditioner)
 		return TRUE
 
+	if(target.conditioned)
+		theirpower += 3
+
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
 		if(human_target.clane?.name == "Gargoyle")
@@ -202,12 +205,12 @@
 
 /datum/discipline_power/dominate/conditioning/activate(mob/living/target)
 	. = ..()
+	target.dir = get_dir(target, owner)
 	to_chat(target, "<span class='userdanger'><b>LOOK AT ME</b></span>")
 	owner.say("Look at me.")
 	if(do_mob(owner, target, 20 SECONDS)) //20 seconds, VERY deliberate. This is not meant to be tossed around lightly.
 		target.conditioned = TRUE
 		target.conditioner = WEAKREF(owner)
-		target.additional_mentality += 2
 		target.additional_social -= 3 //Lessened charisma and ability to lead independently.
 		to_chat(target, "<span class='userdanger'><b>Your mind is filled with thoughts surrounding [owner]. Their every word and gesture carries weight to you.</b></span>")
 
