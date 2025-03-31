@@ -9,6 +9,44 @@
 	if(level >= 1)
 		var/obj/effect/proc_holder/spell/voice_of_god/voice_of_domination = new(owner)
 		owner.mind.AddSpell(voice_of_domination)
+		RegisterSignal(owner, COMSIG_MOB_EMOTE, PROC_REF(on_snap))
+
+/datum/discipline/dominate/proc/on_snap(atom/source, datum/emote/emote_args)
+	SIGNAL_HANDLER
+
+	INVOKE_ASYNC(src, PROC_REF(handle_snap), source, emote_args)
+
+/datum/discipline/dominate/proc/handle_snap(atom/source, datum/emote/emote_args)
+	var/list/emote_list = list("snap", "snap2", "snap3", "whistle")
+	if(locate(emote_args.key) in emote_list)
+		return
+	for(var/mob/living/carbon/human/target in hearers(world.view / 2, owner))
+		var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
+		if(conditioner != owner)
+			continue
+		switch(emote_args.key)
+			if("snap")
+				target.SetSleeping(0)
+				target.silent += 3
+				target.dir = get_dir(target, owner)
+				target.emote("me", 1, "faces towards <b>[owner]</b> attentively.", TRUE)
+				to_chat(target, span_danger("ATTENTION"))
+			if("snap2")
+				target.dir = get_dir(target, owner)
+				target.Immobilize(50)
+				target.emote("me",1,"flinches in response to <b>[owner]'s</b> snapping.", TRUE)
+				to_chat(target, span_danger("HALT"))
+			if("snap3")
+				target.Knockdown(50)
+				target.Stun(80, TRUE)
+				target.emote("me",1,"'s knees buckle under the weight of their body.",TRUE)
+				target.do_jitter_animation(0.1 SECONDS)
+				to_chat(target, span_danger("DROP"))
+			if("whistle")
+				var/datum/cb = CALLBACK(target, /mob/living/carbon/human/proc/walk_to_caster, owner)
+				to_chat(target, span_danger("HITHER"))
+				for(var/i in 1 to 30)
+					addtimer(cb, (i - 1) * target.total_multiplicative_slowdown())
 
 /datum/discipline_power/dominate
 	name = "Dominate power name"
@@ -42,14 +80,10 @@
 		if(human_target.clane?.name == "Gargoyle")
 			return TRUE
 
-	if(tiebreaker)
-		if((theirpower > mypower) || (owner.generation > target.generation))
-			to_chat(owner, span_warning("[target]'s mind is too powerful to dominate!"))
-			return FALSE
-	else
-		if((theirpower >= mypower) || (owner.generation > target.generation))
-			to_chat(owner, span_warning("[target]'s mind is too powerful to dominate!"))
-			return FALSE
+
+	if((theirpower >= mypower) && !tiebreaker || (owner.generation > target.generation) || (theirpower > mypower))
+		to_chat(owner, span_warning("[target]'s mind is too powerful to dominate!"))
+		return FALSE
 
 	return TRUE
 
