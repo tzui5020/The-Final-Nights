@@ -20,7 +20,7 @@
 	var/list/emote_list = list("snap", "snap2", "snap3", "whistle")
 	if(locate(emote_args.key) in emote_list)
 		return
-	for(var/mob/living/carbon/human/target in hearers(world.view / 2, owner))
+	for(var/mob/living/carbon/human/target in hearers(6, owner))
 		var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
 		if(conditioner != owner)
 			continue
@@ -38,7 +38,7 @@
 				to_chat(target, span_danger("HALT"))
 			if("snap3")
 				target.Knockdown(50)
-				target.Stun(80, TRUE)
+				target.Immobilize(80)
 				target.emote("me",1,"'s knees buckle under the weight of their body.",TRUE)
 				target.do_jitter_animation(0.1 SECONDS)
 				to_chat(target, span_danger("DROP"))
@@ -80,7 +80,6 @@
 		if(human_target.clane?.name == "Gargoyle")
 			return TRUE
 
-
 	if((theirpower >= mypower) && !tiebreaker || (owner.generation > target.generation) || (theirpower > mypower))
 		to_chat(owner, span_warning("[target]'s mind is too powerful to dominate!"))
 		return FALSE
@@ -107,23 +106,6 @@
 
 /datum/discipline_power/dominate/command/pre_activation_checks(mob/living/target)
 	return dominate_check(owner, target)
-	/*var/mypower = owner.get_total_social()
-	var/theirpower = target.get_total_mentality()
-	var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
-
-	if(owner == conditioner)
-		return TRUE
-
-	if(ishuman(target))
-		var/mob/living/carbon/human/human_target = target
-		if(human_target.clane?.name == "Gargoyle")
-			return TRUE
-
-	if((theirpower >= mypower) || (owner.generation > target.generation))
-		to_chat(owner, span_warning("[target]'s mind is too powerful to dominate!"))
-		return FALSE
-
-	return TRUE*/
 
 /datum/discipline_power/dominate/command/activate(mob/living/target)
 	. = ..()
@@ -204,7 +186,7 @@
 	multi_activate = TRUE
 	cooldown_length = 15 SECONDS
 	duration_length = 6 SECONDS
-	range = 7
+	range = 2
 
 /datum/discipline_power/dominate/conditioning/pre_activation_checks(mob/living/target)
 	var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
@@ -222,16 +204,15 @@
 	. = ..()
 	to_chat(target, "<span class='userdanger'><b>LOOK AT ME</b></span>")
 	owner.say("Look at me.")
-	if(do_mob(owner, target, 100))
+	if(do_mob(owner, target, 20 SECONDS)) //20 seconds, VERY deliberate. This is not meant to be tossed around lightly.
 		target.conditioned = TRUE
 		target.conditioner = WEAKREF(owner)
 		target.additional_mentality += 2
-		target.additional_social -= 2 //Lessened charisma and ability to lead independently
-		to_chat(target, "<span class='userdanger'><b>Your mind is filled with thoughts surrounding [owner]. Their word carries weight to you.</b></span>")
+		target.additional_social -= 3 //Lessened charisma and ability to lead independently.
+		to_chat(target, "<span class='userdanger'><b>Your mind is filled with thoughts surrounding [owner]. Their every word and gesture carries weight to you.</b></span>")
 
 /datum/discipline_power/dominate/conditioning/deactivate(mob/living/target)
 	. = ..()
-	target.remove_movespeed_modifier(/datum/movespeed_modifier/dominate)
 
 //POSSESSION
 /datum/discipline_power/dominate/possession
