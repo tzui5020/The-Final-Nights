@@ -20,7 +20,7 @@
 	var/list/emote_list = list("snap", "snap2", "snap3", "whistle")
 	if(locate(emote_args.key) in emote_list)
 		return
-	for(var/mob/living/carbon/human/target in hearers(6, owner))
+	for(var/mob/living/carbon/human/target in get_hearers_in_view(6, owner))
 		var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
 		if(conditioner != owner)
 			continue
