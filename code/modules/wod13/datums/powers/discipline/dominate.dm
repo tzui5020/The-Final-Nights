@@ -18,7 +18,7 @@
 
 /datum/discipline/dominate/proc/handle_snap(atom/source, datum/emote/emote_args)
 	var/list/emote_list = list("snap", "snap2", "snap3", "whistle")
-	if(locate(emote_args.key) in emote_list)
+	if(!emote_list.Find(emote_args.key))
 		return
 	for(var/mob/living/carbon/human/target in hearers(6, owner))
 		var/mob/living/carbon/human/conditioner = target.conditioner?.resolve()
@@ -43,10 +43,9 @@
 				target.do_jitter_animation(0.1 SECONDS)
 				to_chat(target, span_danger("DROP"))
 			if("whistle")
-				var/datum/cb = CALLBACK(target, /mob/living/carbon/human/proc/walk_to_caster, owner)
+				target.apply_status_effect(STATUS_EFFECT_AWE, owner)
 				to_chat(target, span_danger("HITHER"))
-				for(var/i in 1 to 30)
-					addtimer(cb, (i - 1) * target.total_multiplicative_slowdown())
+
 
 /datum/discipline_power/dominate
 	name = "Dominate power name"
