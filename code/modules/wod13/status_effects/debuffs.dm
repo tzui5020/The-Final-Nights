@@ -991,7 +991,7 @@
 /atom/movable/screen/alert/status_effect/awe
 	name = "Awe"
 	desc = "That person sure seems alluring... I should get closer."
-	icon_state = "high"
+	icon_state = "hypnosis"
 
 /datum/status_effect/awe/on_creation(mob/living/carbon/new_owner, mob/living/carbon/human/new_source)
 	. = ..()

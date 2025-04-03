@@ -27,7 +27,7 @@
 		switch(emote_args.key)
 			if("snap")
 				target.SetSleeping(0)
-				target.silent += 3
+				target.silent == 3
 				target.dir = get_dir(target, owner)
 				target.emote("me", 1, "faces towards <b>[owner]</b> attentively.", TRUE)
 				to_chat(target, span_danger("ATTENTION"))
