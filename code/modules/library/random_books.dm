@@ -36,7 +36,7 @@
 	. = ..()
 	if(books_to_load && isnum(books_to_load))
 		books_to_load += pick(-1,-1,0,1,1)
-	update_appearance()
+	update_icon()
 
 /**
  * Create a random book or books.
@@ -55,10 +55,9 @@
 		return
 	if (!SSdbcore.Connect())
 		if(existing_book && (fail_loud || prob(5)))
-			existing_book.author = "???"
-			existing_book.title = "Strange book"
-			existing_book.name = "Strange book"
-			existing_book.dat = "There once was a book from Nantucket<br>But the database failed us, so f*$! it.<br>I tried to be good to you<br>Now this is an I.O.U<br>If you're feeling entitled, well, stuff it!<br><br><font color='gray'>~</font>"
+			existing_book.starting_author = "???"
+			existing_book.starting_title = "Strange book"
+			existing_book.starting_content = "There once was a book from Nantucket<br>But the database failed us, so f*$! it.<br>I tried to be good to you<br>Now this is an I.O.U<br>If you're feeling entitled, well, stuff it!<br><br><font color='gray'>~</font>"
 		return
 	if(category == BOOK_CATEGORY_RANDOM)
 		category = null
@@ -72,10 +71,9 @@
 		while(query_get_random_books.NextRow())
 			var/obj/item/book/B
 			B = existing_book ? existing_book : new(location)
-			B.author = query_get_random_books.item[1]
-			B.title = query_get_random_books.item[2]
-			B.dat = query_get_random_books.item[3]
-			B.name = "Book: [B.title]"
+			B.starting_author = query_get_random_books.item[1]
+			B.starting_title = query_get_random_books.item[2]
+			B.starting_content = query_get_random_books.item[3]
 			if(!existing_book)
 				B.icon_state= "book[rand(1,B.maximum_book_state)]"
 	qdel(query_get_random_books)
@@ -85,11 +83,6 @@
 	random_category = BOOK_CATEGORY_FICTION
 	///have we spawned the chuuni granter
 	var/static/chuuni_book_spawned = FALSE
-
-/obj/structure/bookcase/random/fiction/after_random_load()
-	if(!chuuni_book_spawned && is_station_level(z))
-		chuuni_book_spawned = TRUE
-		new /obj/item/book/granter/chuunibyou(src)
 
 /obj/structure/bookcase/random/nonfiction
 	name = "bookcase (Non-Fiction)"

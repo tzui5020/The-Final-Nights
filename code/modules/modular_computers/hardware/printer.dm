@@ -34,7 +34,7 @@
 		printed_paper.add_raw_text(text_to_print)
 	if(paper_title)
 		printed_paper.name = paper_title
-	printed_paper.update_appearance()
+	printed_paper.update_icon()
 	stored_paper--
 
 	return TRUE
@@ -80,7 +80,7 @@
 				num_to_add = 1
 				stored_paper += 1
 
-			bin.update_appearance()
+			bin.update_icon()
 			if(!num_to_add)
 				balloon_alert(user, "everything is written on!")
 			else

@@ -36,8 +36,8 @@
 	if(starting_tape_type)
 		mytape = new starting_tape_type(src)
 	soundloop = new(src)
-	update_appearance()
-	become_hearing_sensitive()
+	update_icon()
+	//become_hearing_sensitive()
 
 /obj/item/taperecorder/Destroy()
 	QDEL_NULL(soundloop)
@@ -93,7 +93,7 @@
 		mytape = I
 		to_chat(user, span_notice("You insert [I] into [src]."))
 		playsound(src, 'sound/items/taperecorder/taperecorder_close.ogg', 50, FALSE)
-		update_appearance()
+		update_icon()
 
 
 /obj/item/taperecorder/proc/eject(mob/user)
@@ -103,7 +103,7 @@
 		stop()
 		user.put_in_hands(mytape)
 		mytape = null
-		update_appearance()
+		update_icon()
 
 /obj/item/taperecorder/fire_act(exposed_temperature, exposed_volume)
 	mytape.unspool() //Fires unspool the tape, which makes sense if you don't think about it
@@ -174,7 +174,7 @@
 		recording = TRUE
 		say("Recording started.")
 		update_sound()
-		update_appearance()
+		update_icon()
 		var/used = mytape.used_capacity //to stop runtimes when you eject the tape
 		var/max = mytape.max_capacity
 		while(recording && used < max)
@@ -208,7 +208,7 @@
 		say("Playback stopped.")
 		playing = FALSE
 	time_warned = FALSE
-	update_appearance()
+	update_icon()
 	update_sound()
 
 /obj/item/taperecorder/verb/play()
@@ -225,7 +225,7 @@
 		return
 
 	playing = TRUE
-	update_appearance()
+	update_icon()
 	update_sound()
 	say("Playback started.")
 	playsound(src, 'sound/items/taperecorder/taperecorder_play.ogg', 50, FALSE)
@@ -317,7 +317,7 @@
 			var/obj/item/paper/transcript_paper = new /obj/item/paper(get_turf(src))
 			transcript_paper.add_raw_text(transcribed_text)
 			transcript_paper.name = "[paper_name] page [page_count]"
-			transcript_paper.update_appearance()
+			transcript_paper.update_icon()
 			transcribed_text = ""
 			page_count++
 
@@ -326,7 +326,7 @@
 	var/obj/item/paper/transcript_paper = new /obj/item/paper(get_turf(src))
 	transcript_paper.add_raw_text(transcribed_text)
 	transcript_paper.name = "[paper_name] page [page_count]"
-	transcript_paper.update_appearance()
+	transcript_paper.update_icon()
 
 	say("Transcript printed, [page_count] pages.")
 	playsound(src, 'sound/items/taperecorder/taperecorder_print.ogg', 50, FALSE)

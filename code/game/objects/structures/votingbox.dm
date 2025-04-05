@@ -71,7 +71,7 @@
 		switch(href_list["act"])
 			if("toggle_vote")
 				voting_active = !voting_active
-				update_appearance()
+				update_icon()
 			if("toggle_auth")
 				id_auth = !id_auth
 			if("reset_voted")
@@ -133,7 +133,7 @@
 /obj/structure/votebox/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 4 SECONDS)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return TRUE
 
 /obj/structure/votebox/crowbar_act(mob/living/user, obj/item/I)
 	. = ..()
@@ -213,7 +213,7 @@
 
 	vote_tally_paper.add_raw_text(tally.Join())
 	vote_tally_paper.name = "Voting Results"
-	vote_tally_paper.update_appearance()
+	vote_tally_paper.update_icon()
 	user.put_in_hands(vote_tally_paper)
 	to_chat(user,span_notice("[src] prints out the voting tally."))
 

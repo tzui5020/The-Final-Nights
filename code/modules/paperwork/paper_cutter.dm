@@ -24,8 +24,7 @@
 /obj/item/papercutter/Initialize(mapload)
 	. = ..()
 	stored_blade = new /obj/item/hatchet/cutterblade(src)
-	register_context()
-	update_appearance()
+	update_icon()
 
 /obj/item/papercutter/Destroy(force)
 	if(!isnull(stored_paper))
@@ -33,33 +32,6 @@
 	if(!isnull(stored_blade))
 		QDEL_NULL(stored_blade)
 	return ..()
-
-/obj/item/papercutter/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	. = ..()
-
-	if(!isnull(held_item))
-		if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-			if(isnull(stored_blade))
-				return NONE
-			context[SCREENTIP_CONTEXT_LMB] = "[(blade_secured ? "Unsecure" : "Secure")] blade"
-		if(istype(held_item, /obj/item/paper))
-			if(!isnull(stored_paper))
-				return NONE
-			context[SCREENTIP_CONTEXT_LMB] = "Insert paper"
-		if(istype(held_item, /obj/item/hatchet/cutterblade))
-			if(!isnull(stored_blade))
-				return NONE
-			context[SCREENTIP_CONTEXT_LMB] = "Insert blade"
-
-	if(!isnull(stored_paper))
-		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove paper"
-		if(!(isnull(stored_blade)) && blade_secured)
-			context[SCREENTIP_CONTEXT_RMB] = "Cut paper"
-
-	else if(!isnull(stored_blade) && !blade_secured)
-		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove blade"
-
-	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/papercutter/deconstruct(disassembled)
 	..()
@@ -87,7 +59,7 @@
 			return SHAME
 		user.visible_message(span_suicide("[user] is beheading [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 		user_head.drop_limb()
-		playsound(loc, SFX_DESECRATION, 50, TRUE, -1)
+		playsound(loc, "desecration", 50, TRUE, -1)
 		return BRUTELOSS
 	// If we have no blade, just beat ourselves up
 	user.visible_message(span_suicide("[user] repeatedly bashes [src] against [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -109,7 +81,7 @@
 	tool.play_tool_sound(src)
 	balloon_alert(user, "[blade_secured ? "un" : ""]secured")
 	blade_secured = !blade_secured
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return TRUE
 
 /obj/item/papercutter/attackby(obj/item/inserted_item, mob/user, params)
 	if(istype(inserted_item, /obj/item/paper))
@@ -124,7 +96,7 @@
 			return
 		if(!user.transferItemToLoc(inserted_item, src))
 			return
-		playsound(loc, SFX_PAGE_TURN, 60, TRUE)
+		playsound(loc, "page_turn", 60, TRUE)
 		balloon_alert(user, "paper inserted")
 		stored_paper = inserted_item
 
@@ -138,7 +110,7 @@
 		inserted_item.forceMove(src)
 		stored_blade = inserted_item
 
-	update_appearance()
+	update_icon()
 
 	return ..()
 
@@ -151,19 +123,7 @@
 		user.put_in_hands(stored_paper)
 	else if(!isnull(stored_blade) && !blade_secured)
 		user.put_in_hands(stored_blade)
-	update_appearance()
-
-/obj/item/papercutter/attack_hand_secondary(mob/user, list/modifiers)
-	if(!stored_blade)
-		balloon_alert(user, "no blade!")
-	else if(!blade_secured)
-		balloon_alert(user, "blade unsecured!")
-	else if(!stored_paper)
-		balloon_alert(user, "nothing to cut!")
-	else
-		cut_paper(user)
-
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	update_icon()
 
 /obj/item/papercutter/proc/cut_paper(mob/user)
 	playsound(src.loc, 'sound/weapons/slash.ogg', 50, TRUE)
@@ -172,12 +132,12 @@
 	if(clumsy)
 		var/obj/item/bodypart/finger = user.get_active_hand()
 		var/datum/wound/slash/moderate/papercut = new
-		papercut.apply_wound(finger, wound_source = "paper cut")
+		papercut.apply_wound(finger)
 	stored_paper = null
 	qdel(stored_paper)
 	new /obj/item/paper/paperslip(get_turf(src))
 	new /obj/item/paper/paperslip(get_turf(src))
-	update_appearance()
+	update_icon()
 
 /obj/item/papercutter/MouseDrop(atom/over_object)
 	. = ..()

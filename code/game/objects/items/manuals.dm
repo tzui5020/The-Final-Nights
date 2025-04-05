@@ -238,7 +238,6 @@
 // A book that links to the wiki
 /obj/item/book/manual/wiki
 	var/page_link = ""
-	window_size = "970x710"
 
 /obj/item/book/manual/wiki/attack_self()
 	if(!book_data.content)
@@ -299,8 +298,8 @@
 /obj/item/book/manual/wiki/engineering_singulo_tesla
 	name = "Singularity and Tesla for Dummies"
 	icon_state ="bookEngineeringSingularitySafety"
-	author = "Engineering Encyclopedia"
-	title = "Singularity and Tesla for Dummies"
+	starting_author = "Engineering Encyclopedia"
+	starting_title = "Singularity and Tesla for Dummies"
 	page_link = "Singularity_and_Tesla_engines"
 
 /obj/item/book/manual/wiki/security_space_law

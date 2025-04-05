@@ -10,7 +10,7 @@
 		icon_state = "paper"
 	else
 		icon_state = "paper_stack"
-	if(info)
+	if(get_total_length())
 		icon_state = "[icon_state]_words"
 	return ..()
 
@@ -19,6 +19,13 @@
 	if(copied)
 		return
 	. += span_notice("Right-click to tear off the carbon-copy (you must use both hands).")
+
+/obj/item/paper/carbon/AltClick(mob/living/user, obj/item/I)
+	. = ..()
+	if(!copied)
+		to_chat(user, span_notice("Take off the carbon copy first."))
+		return FALSE
+	return TRUE
 
 /obj/item/paper/carbon/proc/removecopy(mob/living/user)
 	if(copied)
@@ -31,15 +38,6 @@
 	copied = TRUE
 	update_icon_state()
 	user.put_in_hands(copy)
-
-/obj/item/paper/carbon/attack_hand_secondary(mob/user, list/modifiers)
-	. = ..()
-	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
-		return
-
-	if(loc == user && user.is_holding(src))
-		removecopy(user)
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/paper/carbon_copy
 	icon_state = "cpaper"

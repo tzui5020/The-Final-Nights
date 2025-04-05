@@ -3,16 +3,16 @@
 /obj/machinery/newscaster
 	name = "newscaster"
 	desc = "A standard Nanotrasen-licensed newsfeed handler for use in commercial space stations. All the news you absolutely have no use for, in one place!"
-	icon = 'icons/obj/machines/wallmounts.dmi'
+	icon = 'icons/obj/terminals.dmi'
 	icon_state = "newscaster_off"
 	base_icon_state = "newscaster"
 	verb_say = "beeps"
 	verb_ask = "beeps"
 	verb_exclaim = "beeps"
-	armor_type = /datum/armor/machinery_newscaster
+	armor = /datum/armor/machinery_newscaster
 	max_integrity = 200
 	integrity_failure = 0.25
-	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_REQUIRES_LITERACY
+	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON
 	///Reference to the currently logged in user.
 	var/datum/bank_account/current_user
 	///Name of the logged in user.
@@ -64,16 +64,13 @@
 	acid = 30
 
 /obj/machinery/newscaster/pai/ui_state(mob/user)
-	return GLOB.reverse_contained_state
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
+	return GLOB.deep_inventory_state
 
 /obj/machinery/newscaster/Initialize(mapload, ndir, building)
 	. = ..()
 	GLOB.allCasters += src
 	GLOB.allbountyboards += src
-	update_appearance()
-	find_and_hang_on_wall()
+	update_icon()
 
 /obj/machinery/newscaster/Destroy()
 	GLOB.allCasters -= src
@@ -85,7 +82,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	newscaster_username = null
 	return ..()
 
-/obj/machinery/newscaster/update_appearance(updates=ALL)
+/obj/machinery/newscaster/update_icon(updates=ALL)
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		set_light(0)
@@ -99,25 +96,25 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	if(!(machine_stat & (NOPOWER|BROKEN)))
 		var/state = "[base_icon_state]_[GLOB.news_network.wanted_issue.active ? "wanted" : "normal"]"
 		. += mutable_appearance(icon, state)
-		. += emissive_appearance(icon, state, src, alpha = src.alpha)
+		//. += emissive_appearance(icon, state, src, alpha = src.alpha)
 
 		if(GLOB.news_network.wanted_issue.active && alert)
 			. += mutable_appearance(icon, "[base_icon_state]_alert")
-			. += emissive_appearance(icon, "[base_icon_state]_alert", src, alpha = src.alpha,)
+		//	. += emissive_appearance(icon, "[base_icon_state]_alert", src, alpha = src.alpha,)
 
-	var/hp_percent = atom_integrity * 100 / max_integrity
+	var/hp_percent = obj_integrity * 100 / max_integrity
 	switch(hp_percent)
 		if(75 to 100)
 			return
 		if(50 to 75)
 			. += "crack1"
-			. += emissive_blocker(icon, "crack1", src, alpha = src.alpha)
+			//. += emissive_blocker(icon, "crack1", src, alpha = src.alpha)
 		if(25 to 50)
 			. += "crack2"
-			. += emissive_blocker(icon, "crack2", src, alpha = src.alpha)
+			//. += emissive_blocker(icon, "crack2", src, alpha = src.alpha)
 		else
 			. += "crack3"
-			. += emissive_blocker(icon, "crack3", src, alpha = src.alpha)
+			//. += emissive_blocker(icon, "crack3", src, alpha = src.alpha)
 
 /obj/machinery/newscaster/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
@@ -150,7 +147,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			data["user"]["department"] = card.registered_account.account_job.paycheck_department
 		else
 			data["user"]["job"] = "No Job"
-			data["user"]["department"] = DEPARTMENT_UNASSIGNED
+			data["user"]["department"] = "Unknown"
 	else if(issilicon(user))
 		var/mob/living/silicon/silicon_user = user
 		data["user"] = list()
@@ -401,7 +398,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		if("toggleWanted")
 			alert = FALSE
 			viewing_wanted = TRUE
-			update_appearance()
+			update_icon()
 			return TRUE
 
 		if("setCriminalName")
@@ -428,7 +425,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		if("clearWantedIssue")
 			clear_wanted_issue(user = usr)
 			for(var/obj/machinery/newscaster/other_newscaster in GLOB.allCasters)
-				other_newscaster.update_appearance()
+				other_newscaster.update_icon()
 				return TRUE
 
 		if("printNewspaper")
@@ -473,7 +470,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 
 /obj/machinery/newscaster/on_set_machine_stat(old_value)
 	. = ..()
-	update_appearance()
+	update_icon()
 
 /obj/machinery/newscaster/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(istype(attacking_item, /obj/item/paper))
@@ -490,9 +487,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	return (machine_stat & BROKEN)
 
 /obj/machinery/newscaster/welder_act(mob/living/user, obj/item/tool)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return
-	. = ITEM_INTERACT_SUCCESS
+	. = TRUE
 	if(!(machine_stat & BROKEN))
 		to_chat(user, span_notice("[src] does not need repairs."))
 		return
@@ -504,7 +501,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		user.balloon_alert_to_viewers("stopped welding!", "interrupted the repair!")
 		return
 	user.balloon_alert_to_viewers("repaired [src]")
-	atom_integrity = max_integrity
+	obj_integrity = max_integrity
 	set_machine_stat(machine_stat & ~BROKEN)
 
 /obj/machinery/newscaster/wrench_act(mob/living/user, obj/item/tool)
@@ -514,14 +511,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 	if((machine_stat & BROKEN))
 		to_chat(user, span_warning("The broken remains of [src] fall on the ground."))
-		new /obj/item/stack/sheet/iron(loc, 5)
+		new /obj/item/stack/sheet/metal(loc, 5)
 		new /obj/item/shard(loc)
 		new /obj/item/shard(loc)
 	else
 		to_chat(user, span_notice("You [anchored ? "un" : ""]secure [src]."))
 		new /obj/item/wallframe/newscaster(loc)
 	qdel(src)
-	return ITEM_INTERACT_SUCCESS
+	return TRUE
 
 /obj/machinery/newscaster/play_attack_sound(damage, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
@@ -534,28 +531,26 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			playsound(src.loc, 'sound/items/welder.ogg', 100, TRUE)
 
 
-/obj/machinery/newscaster/deconstruct(disassembled = TRUE)
-	if(!(obj_flags & NO_DECONSTRUCTION))
-		new /obj/item/stack/sheet/iron(loc, 2)
-		new /obj/item/shard(loc)
-		new /obj/item/shard(loc)
-	qdel(src)
+/obj/machinery/newscaster/on_deconstruction(disassembled)
+	new /obj/item/stack/sheet/metal(loc, 2)
+	new /obj/item/shard(loc)
+	new /obj/item/shard(loc)
 
-/obj/machinery/newscaster/atom_break(damage_flag)
+/obj/machinery/newscaster/obj_break(damage_flag)
 	. = ..()
 	if(.)
 		playsound(loc, 'sound/effects/glassbr3.ogg', 100, TRUE)
 
 
 /obj/machinery/newscaster/attack_paw(mob/living/user, list/modifiers)
-	if(!user.combat_mode)
+	if(!user.a_intent != INTENT_HARM)
 		to_chat(user, span_warning("The newscaster controls are far too complicated for your tiny brain!"))
 	else
 		take_damage(5, BRUTE, MELEE)
 
 /obj/machinery/newscaster/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	. = ..()
-	update_appearance()
+	update_icon()
 
 /**
  * Sends photo data to build the newscaster article.
@@ -607,7 +602,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 		return TRUE
 	SSblackbox.record_feedback("amount", "newspapers_printed", 1)
 	var/obj/item/newspaper/new_newspaper = new(loc)
-	playsound(loc, SFX_PAGE_TURN, 50, TRUE)
+	playsound(loc, "page_turn", 50, TRUE)
 	try_put_in_hand(new_newspaper, user)
 	paper_remaining--
 
@@ -616,7 +611,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
  */
 /obj/machinery/newscaster/proc/remove_alert()
 	alert = FALSE
-	update_appearance()
+	update_icon()
 
 /**
  * When a new feed message is made that will alert all newscasters, this causes the newscasters to sent out a spoken message as well as create a sound.
@@ -627,7 +622,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			say("Breaking news from [channel]!")
 			playsound(loc, 'sound/machines/twobeep_high.ogg', 75, TRUE)
 		alert = TRUE
-		update_appearance()
+		update_icon()
 		addtimer(CALLBACK(src, PROC_REF(remove_alert)), ALERT_DELAY, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	else if(!channel && update_alert)
@@ -807,7 +802,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 	name = "newscaster frame"
 	desc = "Used to build newscasters, just secure to the wall."
 	icon_state = "newscaster_assembly"
-	custom_materials = list(/datum/material/iron= SHEET_MATERIAL_AMOUNT * 7, /datum/material/glass= SHEET_MATERIAL_AMOUNT * 4)
+	custom_materials = list(/datum/material/iron= MINERAL_MATERIAL_AMOUNT * 7, /datum/material/glass= MINERAL_MATERIAL_AMOUNT * 4)
 	result_path = /obj/machinery/newscaster
 	pixel_shift = 30
 

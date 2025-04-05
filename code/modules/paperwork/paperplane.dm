@@ -32,7 +32,7 @@
 		internalPaper = new(src)
 	if(internalPaper.icon_state == "cpaper" || internalPaper.icon_state == "cpaper_words")
 		icon_state = "paperplane_carbon" // It's the purple carbon copy. Use the purple paper plane
-	update_appearance()
+	update_icon()
 
 /obj/item/paperplane/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -80,7 +80,7 @@
 
 	else if(istype(P, /obj/item/stamp)) //we don't randomize stamps on a paperplane
 		internalPaper.attackby(P, user) //spoofed attack to update internal paper.
-		update_appearance()
+		update_icon()
 		add_fingerprint(user)
 		return
 

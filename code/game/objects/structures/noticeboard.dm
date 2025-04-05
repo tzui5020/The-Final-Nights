@@ -1,32 +1,15 @@
-#define MAX_NOTICES 5
+#define MAX_NOTICES 8
 
 /obj/structure/noticeboard
 	name = "notice board"
-	desc = "A board for pinning important notices upon."
-	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "nboard00"
+	desc = "A board for pinning important notices upon. It is made of the finest Spanish cork."
+	icon = 'icons/obj/wallmounts.dmi'
+	icon_state = "noticeboard"
 	density = FALSE
 	anchored = TRUE
 	max_integrity = 150
 	/// Current number of a pinned notices
 	var/notices = 0
-
-/obj/structure/noticeboard/directional/north
-	dir = SOUTH
-	pixel_y = 32
-
-/obj/structure/noticeboard/directional/south
-	dir = NORTH
-	pixel_y = -32
-
-/obj/structure/noticeboard/directional/east
-	dir = WEST
-	pixel_x = 32
-
-/obj/structure/noticeboard/directional/west
-	dir = EAST
-	pixel_x = -32
-
 /obj/structure/noticeboard/Initialize(mapload)
 	. = ..()
 
@@ -39,22 +22,23 @@
 		if(istype(I, /obj/item/paper))
 			I.forceMove(src)
 			notices++
-	icon_state = "nboard0[notices]"
+	update_icon()
+	find_and_hang_on_wall()
 
 //attaching papers!!
 /obj/structure/noticeboard/attackby(obj/item/O, mob/user, params)
 	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo))
 		if(!allowed(user))
-			to_chat(user, "<span class='warning'>You are not authorized to add notices!</span>")
+			to_chat(user, span_warning("You are not authorized to add notices!"))
 			return
 		if(notices < MAX_NOTICES)
 			if(!user.transferItemToLoc(O, src))
 				return
 			notices++
-			icon_state = "nboard0[notices]"
-			to_chat(user, "<span class='notice'>You pin the [O] to the noticeboard.</span>")
+			update_icon()
+			to_chat(user, span_notice("You pin the [O] to the noticeboard."))
 		else
-			to_chat(user, "<span class='warning'>The notice board is full!</span>")
+			to_chat(user, span_warning("The notice board is full!"))
 	else
 		return ..()
 
@@ -79,7 +63,7 @@
 		data["items"] += list(content_data)
 	return data
 
-/obj/structure/noticeboard/ui_act(action, params)
+/obj/structure/noticeboard/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
@@ -103,6 +87,11 @@
 			remove_item(item, user)
 			return TRUE
 
+/obj/structure/noticeboard/update_overlays()
+	. = ..()
+	if(notices)
+		. += "notices_[notices]"
+
 /**
  * Removes an item from the notice board
  *
@@ -116,20 +105,21 @@
 		user.put_in_hands(item)
 		balloon_alert(user, "removed from board")
 	notices--
-	icon_state = "nboard0[notices]"
+	update_icon()
 
-/obj/structure/noticeboard/deconstruct(disassembled = TRUE)
-	if(!(flags_1 & NODECONSTRUCT_1))
-		new /obj/item/stack/sheet/iron (loc, 1)
+/obj/structure/noticeboard/atom_deconstruct(disassembled = TRUE)
+	if(!disassembled)
+		new /obj/item/stack/sheet/mineral/wood(loc)
+	else
+		new /obj/item/wallframe/noticeboard(loc)
 	for(var/obj/item/content in contents)
 		remove_item(content)
-	qdel(src)
 
 /obj/item/wallframe/noticeboard
 	name = "notice board"
 	desc = "Right now it's more of a clipboard. Attach to a wall to use."
-	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "nboard00"
+	icon = 'icons/obj/wallmounts.dmi'
+	icon_state = "noticeboard"
 	custom_materials = list(
 		/datum/material/wood = MINERAL_MATERIAL_AMOUNT,
 	)
@@ -177,6 +167,6 @@
 /obj/structure/noticeboard/staff
 	name = "Staff Notice Board"
 	desc = "Important notices from the heads of staff."
-	req_access = list(ACCESS_HEADS)
+	req_access = list(ACCESS_COMMAND)
 
 #undef MAX_NOTICES

@@ -19,7 +19,6 @@
 		"Black" = "clipboard_black",
 		"White" = "clipboard_white",
 	)
-	unique_reskin_changes_inhand = TRUE
 
 	/// The stored pen
 	var/obj/item/pen/pen
@@ -37,7 +36,7 @@
 	return BRUTELOSS //The clipboard's clip is very strong. Industrial duty. Can kill a man easily.
 
 /obj/item/clipboard/Initialize(mapload)
-	update_appearance()
+	update_icon()
 	. = ..()
 
 /obj/item/clipboard/Destroy()
@@ -78,16 +77,17 @@
 	top_paper = locate(/obj/item/paper) in src
 	update_icon()
 
-/obj/item/clipboard/click_alt(mob/user)
+/obj/item/clipboard/AltClick(mob/user)
+	. = ..()
 	if(isnull(pen))
-		return CLICK_ACTION_BLOCKING
+		return FALSE
 
 	if(integrated_pen)
 		to_chat(user, span_warning("You can't seem to find a way to remove [src]'s [pen]."))
-		return CLICK_ACTION_BLOCKING
+		return FALSE
 
 	remove_pen(user)
-	return CLICK_ACTION_SUCCESS
+	return TRUE
 
 /obj/item/clipboard/update_overlays()
 	. = ..()
@@ -102,13 +102,12 @@
 	if(isnull(top_paper))
 		return
 
-	var/mutable_appearance/paper_overlay = mutable_appearance(icon, top_paper.icon_state, offset_spokesman = src, appearance_flags = KEEP_APART)
-	paper_overlay = top_paper.color_atom_overlay(paper_overlay)
+	var/mutable_appearance/paper_overlay = mutable_appearance(icon, top_paper.icon_state)
 	paper_overlay.overlays += top_paper.overlays
 	return paper_overlay
 
 /obj/item/clipboard/attack_hand(mob/user, list/modifiers)
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(LAZYACCESS(modifiers, "right"))
 		remove_paper(top_paper, user)
 		return TRUE
 	. = ..()
@@ -131,7 +130,7 @@
 		to_chat(usr, span_notice("You slot [weapon] into [src]."))
 	else if(top_paper)
 		top_paper.attackby(user.get_active_held_item(), user)
-	update_appearance()
+	update_icon()
 
 /obj/item/clipboard/attack_self(mob/user)
 	add_fingerprint(usr)
@@ -210,8 +209,8 @@
 				. = TRUE
 
 /**
- * This is a simple proc to handle calling update_icon() upon receiving the top paper's `COMSIG_ATOM_UPDATE_APPEARANCE`.
+ * This is a simple proc to handle calling update_icon() upon receiving the top paper's `COMSIG_ATOM_update_icon`.
  */
 /obj/item/clipboard/proc/on_top_paper_change()
 	SIGNAL_HANDLER
-	update_appearance()
+	update_icon()

@@ -22,15 +22,12 @@
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
 	throw_speed = 1
-	pressure_resistance = 0
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
 	drop_sound = 'sound/items/handling/paper_drop.ogg'
 	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	grind_results = list(/datum/reagent/cellulose = 3)
 	color = COLOR_WHITE
-	item_flags = SKIP_FANTASY_ON_SPAWN
-	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 
 	/// Lazylist of raw, unsanitised, unparsed text inputs that have been made to the paper.
 	var/list/datum/paper_input/raw_text_inputs
@@ -64,9 +61,6 @@
 	///If TRUE, staff can read paper everywhere, but usually from requests panel.
 	var/request_state = FALSE
 
-	///If this paper can be selected as a candidate for a future message in a bottle when spawned outside of mapload. Doesn't affect manually doing that.
-	var/can_become_message_in_bottle = TRUE
-
 /obj/item/paper/Initialize(mapload)
 	. = ..()
 	pixel_x = base_pixel_x + rand(-9, 9)
@@ -75,15 +69,11 @@
 	if(default_raw_text)
 		add_raw_text(default_raw_text)
 
-	update_appearance()
-
-	if(can_become_message_in_bottle && !mapload && prob(MESSAGE_BOTTLE_CHANCE))
-		LAZYADD(SSpersistence.queued_message_bottles, src)
+	update_icon()
 
 /obj/item/paper/Destroy()
 	camera_holder = null
 	clear_paper()
-	LAZYREMOVE(SSpersistence.queued_message_bottles, src)
 	return ..()
 
 /// Determines whether this paper has been written or stamped to.
@@ -219,7 +209,7 @@
 	if(is_signature)
 		field_text = signature_name
 	else if(is_date)
-		field_text = "[time2text(world.timeofday, "DD/MM")]/[CURRENT_STATION_YEAR]"
+		field_text = "[time2text(world.timeofday, "DD/MM")]/[GLOB.year_integer]"
 	else if(is_time)
 		field_text = time2text(world.timeofday, "hh:mm")
 
@@ -278,7 +268,7 @@
 	if(LAZYLEN(stamp_cache) > MAX_PAPER_STAMPS_OVERLAYS)
 		return
 
-	var/mutable_appearance/stamp_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_[stamp_icon_state]", appearance_flags = KEEP_APART | RESET_COLOR)
+	var/mutable_appearance/stamp_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_[stamp_icon_state]")
 	stamp_overlay.pixel_w = rand(-2, 2)
 	stamp_overlay.pixel_z = rand(-3, 2)
 	add_overlay(stamp_overlay)
@@ -292,7 +282,7 @@
 	LAZYNULL(stamp_cache)
 
 	cut_overlays()
-	update_appearance()
+	update_icon()
 
 /obj/item/paper/pickup(user)
 	if(contact_poison && ishuman(user))
@@ -419,7 +409,7 @@
 		if(user.is_holding(attacking_item)) //checking if they're holding it in case TK is involved
 			user.dropItemToGround(attacking_item)
 		user.adjust_fire_stacks(attacking_item)
-		user.ignite_mob()
+		user.IgniteMob()
 		return TRUE
 
 	if(user.is_holding(src)) //no TK shit here.
@@ -643,7 +633,7 @@
 			user.visible_message(span_notice("[user] stamps [src] with \the [holding.name]!"), span_notice("You stamp [src] with \the [holding.name]!"))
 			playsound(src, 'sound/items/handling/standard_stamp.ogg', 50, vary = TRUE)
 
-			update_appearance()
+			update_icon()
 			update_static_data_for_all_viewers()
 			return TRUE
 		if("add_text")
@@ -693,7 +683,7 @@
 			to_chat(user, "You have added to your paper masterpiece!");
 
 			update_static_data_for_all_viewers()
-			update_appearance()
+			update_icon()
 			return TRUE
 		if("fill_input_field")
 			// If the paper is on an unwritable noticeboard, this usually shouldn't be possible.

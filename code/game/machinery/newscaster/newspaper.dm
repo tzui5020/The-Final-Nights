@@ -9,8 +9,8 @@
 	icon = 'icons/obj/service/bureaucracy.dmi'
 	icon_state = "newspaper"
 	inhand_icon_state = "newspaper"
-	lefthand_file = 'icons/mob/inhands/items/books_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/items/books_righthand.dmi'
+	lefthand_file = 'icons/mob/inhands/misc/books_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/misc/books_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("baps")
 	attack_verb_simple = list("bap")
@@ -36,7 +36,6 @@
 
 /obj/item/newspaper/Initialize(mapload)
 	. = ..()
-	register_context()
 	creation_time = GLOB.news_network.last_action
 	for(var/datum/feed_channel/iterated_feed_channel in GLOB.news_network.network_channels)
 		news_content += iterated_feed_channel
@@ -48,24 +47,15 @@
 	if(GLOB.news_network.wanted_issue.img)
 		saved_wanted_icon = GLOB.news_network.wanted_issue.img
 
-/obj/item/newspaper/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
-	if(held_item)
-		if(istype(held_item, /obj/item/pen))
-			context[SCREENTIP_CONTEXT_LMB] = "Scribble"
-			return CONTEXTUAL_SCREENTIP_SET
-		if(held_item.get_temperature())
-			context[SCREENTIP_CONTEXT_LMB] = "Burn"
-			return CONTEXTUAL_SCREENTIP_SET
-
 /obj/item/newspaper/suicide_act(mob/living/user)
 	user.visible_message(span_suicide(\
 		"[user] is focusing intently on [src]! It looks like [user.p_theyre()] trying to commit sudoku... \
 		until [user.p_their()] eyes light up with realization!"\
 	))
 	user.say(";JOURNALISM IS MY CALLING! EVERYBODY APPRECIATES UNBIASED REPORTI-GLORF", forced = "newspaper suicide")
-	var/obj/item/reagent_containers/cup/glass/bottle/whiskey/last_drink = new(user.loc)
+	var/obj/item/reagent_containers/food/drinks/bottle/whiskey/last_drink = new(user.loc)
 	playsound(user, 'sound/items/drink.ogg', vol = rand(10, 50), vary = TRUE)
-	last_drink.reagents.trans_to(user, last_drink.reagents.total_volume, transferred_by = user)
+	last_drink.reagents.trans_to(user, last_drink.reagents.total_volume, transfered_by = user)
 	user.visible_message(span_suicide("[user] downs the contents of [last_drink.name] in one gulp! Shoulda stuck to sudoku!"))
 	return TOXLOSS
 
@@ -130,7 +120,7 @@
 		else
 			return TRUE
 	SStgui.update_uis(src)
-	playsound(src, SFX_PAGE_TURN, 50, TRUE)
+	playsound(src, "page_turn", 50, TRUE)
 	return TRUE
 
 /obj/item/newspaper/ui_static_data(mob/user)

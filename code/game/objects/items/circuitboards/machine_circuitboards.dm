@@ -403,7 +403,6 @@
 
 /obj/item/circuitboard/machine/fax
 	name = "Fax Machine"
-	greyscale_colors = CIRCUIT_COLOR_GENERIC
 	build_path = /obj/machinery/fax
 	req_components = list(
 		/obj/item/stock_parts/subspace/crystal = 1,

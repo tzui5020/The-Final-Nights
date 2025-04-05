@@ -284,7 +284,6 @@ GLOBAL_LIST_INIT(bamboo_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/mineral/bamboo
 	grind_results = list(/datum/reagent/cellulose = 10)
 	material_type = /datum/material/bamboo
-	walltype = /turf/closed/wall/mineral/bamboo
 	drop_sound = null
 	pickup_sound = null
 
@@ -719,7 +718,6 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	material_modifier = 1 //None of that wussy stuff
 	drop_sound = null
 	pickup_sound = null
-	walltype = /turf/closed/wall/mineral/meat
 
 /obj/item/stack/sheet/meat/fifty
 	amount = 50
@@ -739,7 +737,6 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	material_modifier = 1
 	drop_sound = null
 	pickup_sound = null
-	walltype = /turf/closed/wall/mineral/pizza
 
 /obj/item/stack/sheet/pizza/fifty
 	amount = 50

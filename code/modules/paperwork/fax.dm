@@ -37,7 +37,6 @@
 	/// List of types which should be allowed to be faxed if hacked
 	var/static/list/exotic_types = list(
 		/obj/item/food/pizzaslice,
-		/obj/item/food/root_flatbread,
 		/obj/item/food/salami,
 		/obj/item/throwing_star,
 		/obj/item/stack/spacecash,
@@ -57,7 +56,6 @@
 	if (!fax_name)
 		fax_name = "Unregistered fax " + fax_id
 	wires = new /datum/wires/fax(src)
-	register_context()
 
 /obj/machinery/fax/Destroy()
 	QDEL_NULL(loaded_item_ref)
@@ -104,13 +102,13 @@
 		return
 	if (!(obj_flags & EMAGGED))
 		obj_flags |= EMAGGED
-		playsound(src, 'sound/creatures/dog/growl2.ogg', 50, FALSE)
+		playsound(src, 'sound/hallucinations/growl2.ogg', 50, FALSE)
 		to_chat(user, span_warning("An image appears on [src] screen for a moment with Ian in the cap of a Syndicate officer."))
 
 /obj/machinery/fax/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return TRUE
 
 /**
  * Open and close the wire panel.
@@ -118,7 +116,7 @@
 /obj/machinery/fax/screwdriver_act(mob/living/user, obj/item/screwdriver)
 	. = ..()
 	default_deconstruction_screwdriver(user, icon_state, icon_state, screwdriver)
-	update_appearance()
+	update_icon()
 	return TRUE
 
 /**
@@ -129,16 +127,16 @@
 		return
 	var/new_fax_name = tgui_input_text(user, "Enter a new name for the fax machine.", "New Fax Name", , 128)
 	if (!new_fax_name)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return TRUE
 	if (new_fax_name != fax_name)
 		if (fax_name_exist(new_fax_name))
 			// Being able to set the same name as another fax machine will give a lot of gimmicks for the traitor.
 			if (syndicate_network != TRUE && obj_flags != EMAGGED)
 				to_chat(user, span_warning("There is already a fax machine with this name on the network."))
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return TRUE
 		user.log_message("renamed [fax_name] (fax machine) to [new_fax_name].", LOG_GAME)
 		fax_name = new_fax_name
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return TRUE
 
 /obj/machinery/fax/attackby(obj/item/item, mob/user, params)
 	if (jammed && clear_jam(item, user))
@@ -151,7 +149,7 @@
 		if (!loaded_item_ref?.resolve())
 			loaded_item_ref = WEAKREF(item)
 			item.forceMove(src)
-			update_appearance()
+			update_icon()
 		return
 	return ..()
 
@@ -165,11 +163,11 @@
 		if(!clean_spray.reagents.has_reagent(/datum/reagent/space_cleaner, clean_spray.amount_per_transfer_from_this))
 			return FALSE
 		clean_spray.reagents.remove_reagent(/datum/reagent/space_cleaner, clean_spray.amount_per_transfer_from_this, 1)
-		playsound(loc, 'sound/effects/spray3.ogg', 50, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+		playsound(loc, 'sound/effects/spray3.ogg', 50, TRUE, -5)
 		user.visible_message(span_notice("[user] cleans \the [src]."), span_notice("You clean \the [src]."))
 		jammed = FALSE
 		return TRUE
-	if (istype(item, /obj/item/soap) || istype(item, /obj/item/reagent_containers/cup/rag))
+	if (istype(item, /obj/item/soap) || istype(item, /obj/item/reagent_containers/glass/rag))
 		var/cleanspeed = 50
 		if (istype(item, /obj/item/soap))
 			var/obj/item/soap/used_soap = item
@@ -249,9 +247,9 @@
 			loaded.forceMove(drop_location())
 			loaded_item_ref = null
 			playsound(src, 'sound/machines/eject.ogg', 50, FALSE)
-			update_appearance()
+			update_icon()
 			return TRUE
-		
+
 		if("send")
 			var/obj/item/loaded = loaded_item_ref?.resolve()
 			if (!loaded)
@@ -260,15 +258,15 @@
 			if(send(loaded, destination))
 				log_fax(loaded, destination, params["name"])
 				loaded_item_ref = null
-				update_appearance()
+				update_icon()
 				return TRUE
-		
+
 		if("send_special")
 			var/obj/item/paper/fax_paper = loaded_item_ref?.resolve()
 			if(!istype(fax_paper))
 				to_chat(usr, icon2html(src.icon, usr) + span_warning("Fax cannot send all above paper on this protected network, sorry."))
-				return 
-			
+				return
+
 			fax_paper.request_state = TRUE
 			fax_paper.loc = null
 
@@ -276,13 +274,13 @@
 			playsound(src, 'sound/machines/high_tech_confirm.ogg', 50, vary = FALSE)
 
 			history_add("Send", params["name"])
-			
-			GLOB.requests.fax_request(usr.client, "sent a fax message from [fax_name]/[fax_id] to [params["name"]]", fax_paper)
+
+			//GLOB.requests.fax_request(usr.client, "sent a fax message from [fax_name]/[fax_id] to [params["name"]]", fax_paper)
 			to_chat(GLOB.admins, span_adminnotice("[icon2html(src.icon, GLOB.admins)]<b><font color=green>FAX REQUEST: </font>[ADMIN_FULLMONTY(usr)]:</b> [span_linkify("sent a fax message from [fax_name]/[fax_id][ADMIN_FLW(src)] to [params["name"]]")] [ADMIN_SHOW_PAPER(fax_paper)]"), confidential = TRUE)
 			log_fax(fax_paper, params["id"], params["name"])
 			loaded_item_ref = null
-			update_appearance()
-				
+			update_icon()
+
 		if("history_clear")
 			history_clear()
 			return TRUE
@@ -450,55 +448,3 @@
 	do_sparks(5, TRUE, src)
 	var/check_range = TRUE
 	return electrocute_mob(user, get_area(src), src, 0.7, check_range)
-
-
-/obj/machinery/fax/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	. = ..()
-	if (!held_item)
-		if (!panel_open)
-			context[SCREENTIP_CONTEXT_LMB] = "Open interface"
-			return CONTEXTUAL_SCREENTIP_SET
-		context[SCREENTIP_CONTEXT_LMB] = "Manipulate wires"
-		return CONTEXTUAL_SCREENTIP_SET
-
-	switch (held_item.tool_behaviour)
-		if (TOOL_SCREWDRIVER)
-			if (panel_open)
-				context[SCREENTIP_CONTEXT_LMB] = "Close maintenance panel"
-				return CONTEXTUAL_SCREENTIP_SET
-			context[SCREENTIP_CONTEXT_LMB] = "Open maintenance panel"
-			return CONTEXTUAL_SCREENTIP_SET
-		if (TOOL_WRENCH)
-			if (anchored)
-				context[SCREENTIP_CONTEXT_LMB] = "Unsecure"
-				return CONTEXTUAL_SCREENTIP_SET
-			context[SCREENTIP_CONTEXT_LMB] = "Secure"
-			return CONTEXTUAL_SCREENTIP_SET
-		if (TOOL_MULTITOOL)
-			if (panel_open)
-				context[SCREENTIP_CONTEXT_LMB] = "Pulse wires"
-				return CONTEXTUAL_SCREENTIP_SET
-			context[SCREENTIP_CONTEXT_LMB] = "Rename in network"
-			return CONTEXTUAL_SCREENTIP_SET
-		if (TOOL_WIRECUTTER)
-			if (!panel_open)
-				return .
-			context[SCREENTIP_CONTEXT_LMB] = "Manipulate wires"
-			return CONTEXTUAL_SCREENTIP_SET
-
-	if (jammed && is_type_in_list(held_item, list(/obj/item/reagent_containers/spray, /obj/item/soap, /obj/item/reagent_containers/cup/rag)))
-		context[SCREENTIP_CONTEXT_LMB] = "Clean output tray"
-		return CONTEXTUAL_SCREENTIP_SET
-
-	if (panel_open)
-		if (istype(held_item, /obj/item/card/emag))
-			context[SCREENTIP_CONTEXT_LMB] = "Remove network safeties"
-			return CONTEXTUAL_SCREENTIP_SET
-		return .
-
-	if (is_allowed_type(held_item))
-		context[SCREENTIP_CONTEXT_LMB] = "Insert into fax machine"
-		return CONTEXTUAL_SCREENTIP_SET
-
-	return .
-

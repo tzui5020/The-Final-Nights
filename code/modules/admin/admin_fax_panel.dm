@@ -34,7 +34,7 @@
 	//Get all stamps
 	for(var/stamp in subtypesof(/obj/item/stamp))
 		var/obj/item/stamp/real_stamp = new stamp()
-		if(!istype(real_stamp, /obj/item/stamp/chameleon) && !istype(real_stamp, /obj/item/stamp/mod))
+		if(!istype(real_stamp, /obj/item/stamp/chameleon))
 			var/stamp_detail = real_stamp.get_writing_implement_details()
 			stamp_list += list(list(real_stamp.name, real_stamp.icon_state, stamp_detail["stamp_class"]))
 

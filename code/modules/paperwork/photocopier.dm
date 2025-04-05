@@ -280,7 +280,6 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 /// Will invoke `do_copy_loop` asynchronously. Passes the supplied arguments on to it.
 /obj/machinery/photocopier/proc/do_copies(datum/callback/copy_cb, mob/user, paper_use, toner_use, copies_amount)
 	busy = TRUE
-	update_use_power(ACTIVE_POWER_USE)
 	// fucking god proc
 	INVOKE_ASYNC(src, PROC_REF(do_copy_loop), copy_cb, user, paper_use, toner_use, copies_amount)
 
@@ -346,7 +345,6 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /// Sets busy to `FALSE`.
 /obj/machinery/photocopier/proc/reset_busy()
-	update_use_power(IDLE_POWER_USE)
 	busy = FALSE
 
 /// Determines if the printer is currently busy, informs the user if it is.
@@ -471,7 +469,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 	printblank.name = "paper - '[printname]'"
 	printblank.add_raw_text(printinfo, color = copy_colour)
-	printblank.update_appearance()
+	printblank.update_icon()
 
 	toner_cartridge.charges -= PAPER_TONER_USE
 	return printblank
@@ -532,7 +530,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 /obj/machinery/photocopier/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return TRUE
 
 /obj/machinery/photocopier/attackby(obj/item/object, mob/user, params)
 	if(istype(object, /obj/item/paper) || istype(object, /obj/item/photo) || istype(object, /obj/item/documents))
@@ -584,7 +582,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	balloon_alert(user, "copy object inserted")
 	flick("photocopier1", src)
 
-/obj/machinery/photocopier/atom_break(damage_flag)
+/obj/machinery/photocopier/obj_break(damage_flag)
 	. = ..()
 	if(. && toner_cartridge.charges)
 		new /obj/effect/decal/cleanable/oil(get_turf(src))
@@ -592,7 +590,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /obj/machinery/photocopier/MouseDrop_T(mob/target, mob/user)
 	check_ass() //Just to make sure that you can re-drag somebody onto it after they moved off.
-	if(!istype(target) || target.anchored || target.buckled || !Adjacent(target) || !user.can_perform_action(src) || target == ass || copier_blocked())
+	if(!istype(target) || target.anchored || target.buckled || !Adjacent(target) || !user.canUseTopic(src) || target == ass || copier_blocked())
 		return
 	add_fingerprint(user)
 	if(target == user)

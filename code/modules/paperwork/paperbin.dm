@@ -12,7 +12,6 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	throw_speed = 3
 	throw_range = 7
-	pressure_resistance = 8
 	var/papertype = /obj/item/paper
 	var/total_paper = 30
 	var/list/paper_stack = list()
@@ -33,7 +32,7 @@
 		if(pen && !bin_pen)
 			pen.forceMove(src)
 			bin_pen = pen
-	update_appearance()
+	update_icon()
 
 /obj/item/paper_bin/Destroy()
 	QDEL_LIST(paper_stack)
@@ -44,7 +43,7 @@
 	var/obj/item/paper/paper = new papertype
 	if(SSevents.holidays && SSevents.holidays[APRIL_FOOLS])
 		if(prob(30))
-			paper.info = "<font face=\"[CRAYON_FONT]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>"
+			paper.default_raw_text = "<font face=\"[CRAYON_FONT]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>"
 			paper.AddComponent(/datum/component/honkspam)
 	return paper
 
@@ -73,13 +72,13 @@
 		pen.forceMove(droppoint)
 		bin_pen = null
 	total_paper = 0
-	update_appearance()
+	update_icon()
 
 /obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume)
 	if(total_paper > 0)
 		total_paper = 0
 		QDEL_LIST(paper_stack)
-		update_appearance()
+		update_icon()
 
 	..()
 
@@ -103,7 +102,7 @@
 		user.put_in_hands(pen)
 		to_chat(user, span_notice("You take [pen] out of [src]."))
 		bin_pen = null
-		update_appearance()
+		update_icon()
 	else if(total_paper > 0)
 		var/obj/item/paper/top_paper = pop(paper_stack) || generate_paper()
 		total_paper -= 1
@@ -111,7 +110,7 @@
 		top_paper.forceMove(user.loc)
 		user.put_in_hands(top_paper)
 		to_chat(user, span_notice("You take [top_paper] out of [src]."))
-		update_appearance()
+		update_icon()
 	else
 		to_chat(user, span_warning("[src] is empty!"))
 	add_fingerprint(user)
@@ -128,14 +127,14 @@
 		to_chat(user, span_notice("You put [paper] in [src]."))
 		paper_stack += paper
 		total_paper += 1
-		update_appearance()
+		update_icon()
 	else if(istype(I, /obj/item/pen) && !bin_pen)
 		var/obj/item/pen/pen = I
 		if(!user.transferItemToLoc(pen, src, silent = FALSE))
 			return
 		to_chat(user, span_notice("You put [pen] in [src]."))
 		bin_pen = pen
-		update_appearance()
+		update_icon()
 	else
 		return ..()
 

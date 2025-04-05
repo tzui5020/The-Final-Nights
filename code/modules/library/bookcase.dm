@@ -12,7 +12,7 @@
 	opacity = FALSE
 	resistance_flags = FLAMMABLE
 	max_integrity = 200
-	armor_type = /datum/armor/structure_bookcase
+	armor = /datum/armor/structure_bookcase
 	var/state = BOOKCASE_UNANCHORED
 	/// When enabled, books_to_load number of random books will be generated for this bookcase
 	var/load_random_books = FALSE
@@ -37,7 +37,7 @@
 		if(!isbook(I))
 			continue
 		I.forceMove(src)
-	update_appearance()
+	update_icon()
 
 	if(SSlibrary.initialized)
 		INVOKE_ASYNC(src, PROC_REF(load_shelf))
@@ -77,7 +77,7 @@
 			create_random_books(amount = books_to_load, location = src, category = randomizing_categories ? BOOK_CATEGORY_RANDOM : random_category)
 
 		after_random_load()
-		update_appearance() //Make sure you look proper
+		update_icon() //Make sure you look proper
 
 	var/area/our_area = get_area(src)
 	var/area_type = our_area.type //Save me from the dark
@@ -116,7 +116,7 @@
 			if(!isbook(I))
 				continue
 			I.forceMove(Tsec)
-	update_appearance()
+	update_icon()
 
 /obj/structure/bookcase/attackby(obj/item/attacking_item, mob/user, params)
 	if(state == BOOKCASE_UNANCHORED)
@@ -142,7 +142,7 @@
 			W.use(2)
 			balloon_alert(user, "shelf added")
 			state = BOOKCASE_FINISHED
-			update_appearance()
+			update_icon()
 			return
 
 		if(attacking_item.tool_behaviour == TOOL_WRENCH)
@@ -155,26 +155,14 @@
 	if(isbook(attacking_item))
 		if(!user.transferItemToLoc(attacking_item, src))
 			return ..()
-		update_appearance()
+		update_icon()
 		return
 
-	if(atom_storage)
-		var/found_anything = FALSE
-		for(var/obj/item/T in attacking_item.contents)
-			if(istype(T, /obj/item/book) || istype(T, /obj/item/spellbook))
-				atom_storage.attempt_remove(T, src)
-				found_anything = TRUE
-
-		if (found_anything)
-			balloon_alert(user, "emptied into [src]")
-			update_appearance()
-			return
-
 	if(IS_WRITING_UTENSIL(attacking_item))
-		if(!user.can_perform_action(src) || !user.can_write(attacking_item))
+		if(!user.canUseTopic(src) || !user.can_write(attacking_item))
 			return ..()
 		var/newname = tgui_input_text(user, "What would you like to title this bookshelf?", "Bookshelf Renaming", max_length = MAX_NAME_LEN)
-		if(!user.can_perform_action(src) || !user.can_write(attacking_item))
+		if(!user.canUseTopic(src) || !user.can_write(attacking_item))
 			return ..()
 		if(!newname)
 			return
@@ -189,7 +177,7 @@
 		balloon_alert(user, "pried the shelf out")
 		new /obj/item/stack/sheet/mineral/wood(drop_location(), 2)
 		state = BOOKCASE_ANCHORED
-		update_appearance()
+		update_icon()
 		return
 
 	return ..()
@@ -202,7 +190,7 @@
 		return
 	if(!length(contents))
 		return
-	var/obj/item/book/choice = tgui_input_list(user, "Book to remove from the shelf", "Remove Book", sort_names(contents.Copy()))
+	var/obj/item/book/choice = tgui_input_list(user, "Book to remove from the shelf", "Remove Book", sortNames(contents.Copy()))
 	if(isnull(choice))
 		return
 	if(!(user.mobility_flags & MOBILITY_USE) || user.stat != CONSCIOUS || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED) || !in_range(loc, user))
@@ -212,9 +200,10 @@
 			user.put_in_hands(choice)
 	else
 		choice.forceMove(drop_location())
-	update_appearance()
+	update_icon()
 
-/obj/structure/bookcase/atom_deconstruct(disassembled = TRUE)
+/obj/structure/bookcase/deconstruct(disassembled = TRUE)
+	. = ..()
 	var/atom/Tsec = drop_location()
 	new /obj/item/stack/sheet/mineral/wood(Tsec, 4)
 	for(var/obj/item/I in contents)
@@ -239,7 +228,7 @@
 	new /obj/item/book/manual/wiki/engineering_hacking(src)
 	new /obj/item/book/manual/wiki/engineering_guide(src)
 	new /obj/item/book/manual/wiki/robotics_cyborgs(src)
-	update_appearance()
+	update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
 	name = "\improper R&D manuals bookcase"
@@ -247,7 +236,7 @@
 /obj/structure/bookcase/manuals/research_and_development/Initialize(mapload)
 	. = ..()
 	new /obj/item/book/manual/wiki/research_and_development(src)
-	update_appearance()
+	update_icon()
 
 #undef BOOKCASE_UNANCHORED
 #undef BOOKCASE_ANCHORED

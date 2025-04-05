@@ -4,7 +4,6 @@
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "folder"
 	w_class = WEIGHT_CLASS_SMALL
-	pressure_resistance = 2
 	resistance_flags = FLAMMABLE
 	/// The background color for tgui in hex (with a `#`)
 	var/bg_color = "#7f7f7f"
@@ -61,7 +60,7 @@
 		update_icon()
 
 /obj/item/folder/attack_hand(mob/user, list/modifiers)
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(LAZYACCESS(modifiers, "right"))
 		remove_item(contents[1], user)
 		return TRUE
 	. = ..()
@@ -74,8 +73,7 @@
 			. += to_add
 
 /obj/item/folder/proc/get_paper_overlay()
-	var/mutable_appearance/paper_overlay = mutable_appearance(icon, paper_overlay_state, offset_spokesman = src, appearance_flags = KEEP_APART)
-	paper_overlay = contents[1].color_atom_overlay(paper_overlay)
+	var/mutable_appearance/paper_overlay = mutable_appearance(icon, paper_overlay_state)
 	return paper_overlay
 
 /obj/item/folder/attackby(obj/item/weapon, mob/user, params)
@@ -86,7 +84,7 @@
 		if(!user.transferItemToLoc(weapon, src))
 			return
 		to_chat(user, "<span class='notice'>You put [weapon] into [src].</span>")
-		update_appearance()
+		update_icon()
 	else if(istype(weapon, /obj/item/pen))
 		rename(user)
 
