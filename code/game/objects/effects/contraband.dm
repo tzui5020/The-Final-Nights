@@ -177,8 +177,6 @@
 	never_random = TRUE
 	random_basetype = /obj/structure/sign/poster/contraband
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/random, 32)
-
 /obj/structure/sign/poster/contraband/free_tonto
 	name = "Free Tonto"
 	desc = "A salvaged shred of a much larger flag, colors bled together and faded from age."
