@@ -84,7 +84,7 @@
 		if(!user.transferItemToLoc(weapon, src))
 			return
 		to_chat(user, span_notice("You put [weapon] into [src]."))
-		update_appearance()
+		update_icon()
 	else if(IS_WRITING_UTENSIL(weapon))
 		rename(user, weapon)
 
