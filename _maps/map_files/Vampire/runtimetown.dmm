@@ -173,7 +173,7 @@
 "GO" = (/obj/structure/table,/obj/machinery/button/door{id = "debughouse"; pixel_y = 6},/turf/open/floor/plating/rough,/area/vtm/pacificheights)
 "GS" = (/obj/structure/vampdoor/police,/turf/open/floor/plating/concrete,/area/vtm/interior/shop)
 "GX" = (/obj/structure/barrels/rand,/obj/machinery/light{pixel_y = 32},/turf/open/floor/plating/vampbeach,/area/vtm/pacificheights)
-"Hg" = (/obj/item/paper{info = "Error room!!"},/turf/open/floor/plating/rough/cave,/area/vtm/pacificheights)
+"Hg" = (/obj/item/paper{default_raw_text = "Error room!!"},/turf/open/floor/plating/rough/cave,/area/vtm/pacificheights)
 "Hh" = (/obj/vampire_car/rand{locked = 0},/turf/open/floor/plating/asphalt,/area/vtm/pacificheights)
 "Hp" = (/obj/effect/decal/wallpaper,/turf/closed/wall/vampwall/brick,/area/vtm/interior/shop)
 "HJ" = (/obj/effect/decal/stock,/turf/open/floor/plating/asphalt,/area/vtm/pacificheights)

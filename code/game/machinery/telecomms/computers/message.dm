@@ -57,7 +57,7 @@
 		spark_system.start()
 		var/obj/item/paper/monitorkey/MK = new(loc, linkedServer)
 		// Will help make emagging the console not so easy to get away with.
-		MK.default_raw_text += "<br><br><font color='red'>£%@%(*$%&(£&?*(%&£/{}</font>"
+		MK.add_raw_text("<br><br><font color='red'>£%@%(*$%&(£&?*(%&£/{}</font>")
 		var/time = 100 * length(linkedServer.decryptkey)
 		addtimer(CALLBACK(src, PROC_REF(UnmagConsole)), time)
 		message = rebootmsg

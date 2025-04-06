@@ -46,17 +46,17 @@
 	var/obj/item/paper/P = new(T)
 
 	P.name = "requisition form - #[id] ([pack.name])"
-	P.default_raw_text += "<h2>[station_name()] Supply Requisition</h2>"
-	P.default_raw_text += "<hr/>"
-	P.default_raw_text += "Order #[id]<br/>"
-	P.default_raw_text += "Time of Order: [station_time_timestamp()]<br/>"
-	P.default_raw_text += "Item: [pack.name]<br/>"
-	P.default_raw_text += "Access Restrictions: [get_access_desc(pack.access)]<br/>"
-	P.default_raw_text += "Requested by: [orderer]<br/>"
+	P.add_raw_text("<h2>[station_name()] Supply Requisition</h2>")
+	P.add_raw_text("<hr/>")
+	P.add_raw_text("Order #[id]<br/>")
+	P.add_raw_text("Time of Order: [station_time_timestamp()]<br/>")
+	P.add_raw_text("Item: [pack.name]<br/>")
+	P.add_raw_text("Access Restrictions: [get_access_desc(pack.access)]<br/>")
+	P.add_raw_text("Requested by: [orderer]<br/>")
 	if(paying_account)
-		P.default_raw_text += "Paid by: [paying_account.account_holder]<br/>"
-	P.default_raw_text += "Rank: [orderer_rank]<br/>"
-	P.default_raw_text += "Comment: [reason]<br/>"
+		P.add_raw_text("Paid by: [paying_account.account_holder]<br/>")
+	P.add_raw_text("Rank: [orderer_rank]<br/>")
+	P.add_raw_text("Comment: [reason]<br/>")
 
 	P.update_icon()
 	return P
@@ -67,26 +67,26 @@
 	var/station_name = (P.errors & MANIFEST_ERROR_NAME) ? new_station_name() : station_name()
 
 	P.name = "shipping manifest - [packname?"#[id] ([pack.name])":"(Grouped Item Crate)"]"
-	P.default_raw_text += "<h2>[command_name()] Shipping Manifest</h2>"
-	P.default_raw_text += "<hr/>"
+	P.add_raw_text("<h2>[command_name()] Shipping Manifest</h2>")
+	P.add_raw_text("<hr/>")
 	if(owner && !(owner == "Cargo"))
-		P.default_raw_text += "Direct purchase from [owner]<br/>"
+		P.add_raw_text("Direct purchase from [owner]<br/>")
 		P.name += " - Purchased by [owner]"
-	P.default_raw_text += "Order[packname?"":"s"]: [id]<br/>"
-	P.default_raw_text += "Destination: [station_name]<br/>"
+	P.add_raw_text("Order[packname?"":"s"]: [id]<br/>")
+	P.add_raw_text("Destination: [station_name]<br/>")
 	if(packname)
-		P.default_raw_text += "Item: [packname]<br/>"
-	P.default_raw_text += "Contents: <br/>"
-	P.default_raw_text += "<ul>"
+		P.add_raw_text("Item: [packname]<br/>")
+	P.add_raw_text("Contents: <br/>")
+	P.add_raw_text("<ul>")
 	for(var/atom/movable/AM in container.contents - P)
 		if((P.errors & MANIFEST_ERROR_CONTENTS))
 			if(prob(50))
-				P.default_raw_text += "<li>[AM.name]</li>"
+				P.add_raw_text("<li>[AM.name]</li>")
 			else
 				continue
-		P.default_raw_text += "<li>[AM.name]</li>"
-	P.default_raw_text += "</ul>"
-	P.default_raw_text += "<h4>Stamp below to confirm receipt of goods:</h4>"
+		P.add_raw_text("<li>[AM.name]</li>")
+	P.add_raw_text("</ul>")
+	P.add_raw_text("<h4>Stamp below to confirm receipt of goods:</h4>")
 
 	if(P.errors & MANIFEST_ERROR_ITEM)
 		if(istype(container, /obj/structure/closet/crate/secure) || istype(container, /obj/structure/closet/crate/large))

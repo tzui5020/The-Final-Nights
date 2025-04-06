@@ -12,7 +12,7 @@
 	opacity = FALSE
 	resistance_flags = FLAMMABLE
 	max_integrity = 200
-	armor = /datum/armor/structure_bookcase
+	armor = list("fire" = 50)
 	var/state = BOOKCASE_UNANCHORED
 	/// When enabled, books_to_load number of random books will be generated for this bookcase
 	var/load_random_books = FALSE
@@ -22,9 +22,6 @@
 	var/category_prob = 25
 	/// How many random books to generate.
 	var/books_to_load = 0
-
-/datum/armor/structure_bookcase
-	fire = 50
 
 /obj/structure/bookcase/Initialize(mapload)
 	. = ..()

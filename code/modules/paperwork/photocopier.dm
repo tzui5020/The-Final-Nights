@@ -88,7 +88,6 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 /obj/machinery/photocopier/Initialize(mapload)
 	. = ..()
 	toner_cartridge = new(src)
-	setup_components()
 
 /obj/machinery/photocopier/handle_atom_del(atom/deleting_atom)
 	if(deleting_atom == object_copy)

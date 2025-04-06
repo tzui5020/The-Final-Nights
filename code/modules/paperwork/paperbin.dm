@@ -43,7 +43,7 @@
 	var/obj/item/paper/paper = new papertype
 	if(SSevents.holidays && SSevents.holidays[APRIL_FOOLS])
 		if(prob(30))
-			paper.default_raw_text = "<font face=\"[CRAYON_FONT]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>"
+			paper.add_raw_text("<font face=\"[CRAYON_FONT]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>")
 			paper.AddComponent(/datum/component/honkspam)
 	return paper
 

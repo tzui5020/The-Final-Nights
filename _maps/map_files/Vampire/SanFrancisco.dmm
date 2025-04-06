@@ -5520,7 +5520,7 @@
 /area/vtm/interior/police/upstairs)
 "bBv" = (
 /obj/item/paper{
-	info = "I'M STUCK HERE PLEASE HELP!!"
+	default_raw_text = "I'M STUCK HERE PLEASE HELP!!"
 	},
 /turf/open/floor/plating/sidewalk/poor,
 /area/vtm/interior)
@@ -5752,7 +5752,7 @@
 /area/vtm/interior/millennium_tower/f2)
 "bEV" = (
 /obj/item/paper/guides/conveyor{
-	info = "YOU ARE NOW THE KING OF SHIT";
+	default_raw_text = "YOU ARE NOW THE KING OF SHIT";
 	name = "Note"
 	},
 /turf/open/floor/plating/rough/cave,
@@ -14255,7 +14255,7 @@
 /area/vtm/interior/strip/toreador)
 "eed" = (
 /obj/item/paper{
-	info = "There was a hole here, it's gone now."
+	default_raw_text = "There was a hole here, it's gone now."
 	},
 /turf/open/floor/plating/vampgrass,
 /area/vtm/pacificheights/forest)
@@ -22131,7 +22131,7 @@
 /obj/fusebox,
 /obj/structure/table,
 /obj/item/paper/guides/conveyor{
-	info = "Communicate with your friends and your boss. Stay in a group, turn radio on, call Prince or Sheriff and ask for recommendations. If none of this is available - go to Clerk office nearby and look for him. In that case wait for anyone from upper Camarilla to appear in the city...";
+	default_raw_text = "Communicate with your friends and your boss. Stay in a group, turn radio on, call Prince or Sheriff and ask for recommendations. If none of this is available - go to Clerk office nearby and look for him. In that case wait for anyone from upper Camarilla to appear in the city...";
 	name = "COMMUNICATE GUIDE'"
 	},
 /turf/open/floor/plating/vampplating,
@@ -27166,9 +27166,7 @@
 /obj/structure/railing{
 	dir = 4
 	},
-/obj/structure/bookcase/random/nonfiction{
-	layer = 4
-	},
+/obj/structure/bookcase/random/nonfiction,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry)
 "hRI" = (
@@ -27507,7 +27505,7 @@
 /area/vtm/clinic/haven)
 "hWC" = (
 /obj/item/paper{
-	info = "I'M STUCK HERE PLEASE HELP!!"
+	default_raw_text = "I'M STUCK HERE PLEASE HELP!!"
 	},
 /turf/open/floor/plating/rough/cave,
 /area/vtm/interior)
@@ -28317,7 +28315,7 @@
 /area/vtm/interior/chantry)
 "iih" = (
 /obj/item/paper{
-	info = "Hello! The government sent some FBI to watch our work, but I've got a hint for you. I think their office is straight-east somewhere in the wall in ghetto. Good luck, buddy..."
+	default_raw_text = "Hello! The government sent some FBI to watch our work, but I've got a hint for you. I think their office is straight-east somewhere in the wall in ghetto. Good luck, buddy..."
 	},
 /turf/open/floor/plating/concrete,
 /area/vtm/interior/police)
@@ -30061,7 +30059,7 @@
 "iIZ" = (
 /obj/structure/table/wood,
 /obj/item/paper{
-	info = "06/03/2003Some strange guy gave a tip to this abandoned estate.... Damn, what the hell is going on there?After a long preparation, I understand that it’s time to move there...."
+	default_raw_text = "06/03/2003Some strange guy gave a tip to this abandoned estate.... Damn, what the hell is going on there?After a long preparation, I understand that it’s time to move there...."
 	},
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior)
@@ -37648,7 +37646,7 @@
 /obj/structure/table/wood,
 /obj/vampire_computer,
 /obj/item/paper{
-	info = "Clinic - 7008062 | Police Department - 7009221 | Millennium Tower - 7009121 | Cleaners - 7007349";
+	default_raw_text = "Clinic - 7008062 | Police Department - 7009221 | Millennium Tower - 7009121 | Cleaners - 7007349";
 	name = "Important Numbers"
 	},
 /turf/open/floor/plating/parquetry,
@@ -45068,7 +45066,7 @@
 /area/vtm/northbeach)
 "nfM" = (
 /obj/item/paper{
-	info = "Once, something horrible was here."
+	default_raw_text = "Once, something horrible was here."
 	},
 /turf/open/floor/plating/rough/cave,
 /area/vtm/sewer/nosferatu_town)
@@ -63724,9 +63722,7 @@
 /turf/open/floor/plating/vampplating,
 /area/vtm/interior/millennium_tower)
 "spk" = (
-/obj/structure/bookcase/random/nonfiction{
-	layer = 4
-	},
+/obj/structure/bookcase/random/nonfiction,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry)
 "spr" = (
@@ -66365,7 +66361,7 @@
 "teQ" = (
 /obj/structure/closet/crate,
 /obj/item/paper{
-	info = "Follow your calling."
+	default_raw_text = "Follow your calling."
 	},
 /obj/effect/turf_decal/weather/dirt{
 	dir = 6
@@ -81377,7 +81373,7 @@
 /obj/item/reagent_containers/food/drinks/beer/vampire,
 /obj/item/food/vampire/pizza,
 /obj/item/paper{
-	info = "Chetitutishes,peedor?Tvoymamuebalponyaldahuesos."
+	default_raw_text = "Chetitutishes,peedor?Tvoymamuebalponyaldahuesos."
 	},
 /turf/open/floor/plating/rough,
 /area/vtm/sewer)

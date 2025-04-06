@@ -84,20 +84,24 @@
 
 /obj/item/pen/fourcolor/attack_self(mob/living/carbon/user)
 	. = ..()
-	var/chosen_color = "black"
+
+	var/chosen_colour
 	switch(colour)
-		if("black")
+		if(COLOR_BLACK)
+			chosen_colour = "red"
 			colour = "red"
-			throw_speed++
 		if("red")
+			chosen_colour = "green"
 			colour = "green"
-			throw_speed = initial(throw_speed)
 		if("green")
+			chosen_colour = "blue"
 			colour = "blue"
 		else
+			chosen_colour = "black"
 			colour = COLOR_BLACK
-	to_chat(user, span_notice("\The [src] will now write in [chosen_color]."))
-	desc = "It's a fancy four-color ink pen, set to [chosen_color]."
+
+	to_chat(user, span_notice("\The [src] will now write in [chosen_colour]."))
+	desc = "It's a fancy four-color ink pen, set to [chosen_colour]."
 	balloon_alert(user, "clicked")
 	playsound(src, 'sound/machines/click.ogg', 30, TRUE, -3)
 
