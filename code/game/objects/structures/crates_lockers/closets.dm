@@ -337,7 +337,6 @@
 	var/turf/T = get_turf(src)
 	var/list/targets = list(O, src)
 	add_fingerprint(user)
-
 	user.visible_message("<span class='warning'>[user] [actuallyismob ? "tries to ":""]stuff [O] into [src].</span>", \
 		"<span class='warning'>You [actuallyismob ? "try to ":""]stuff [O] into [src].</span>", \
 		"<span class='hear'>You hear clanging.</span>")
