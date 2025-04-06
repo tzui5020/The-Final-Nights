@@ -143,6 +143,17 @@
 	else
 		. = ..()
 
+/obj/item/pen/get_writing_implement_details()
+	if (HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
+		return null
+	return list(
+		interaction_mode = MODE_WRITING,
+		font = font,
+		color = colour,
+		use_bold = FALSE,
+	)
+
+
 /obj/item/pen/afterattack(obj/O, mob/living/user, proximity)
 	. = ..()
 	//Changing name/description of items. Only works if they have the UNIQUE_RENAME object flag set
