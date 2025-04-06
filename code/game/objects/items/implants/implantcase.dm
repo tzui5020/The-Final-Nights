@@ -20,6 +20,10 @@
 /obj/item/implantcase/attackby(obj/item/used_item, mob/living/user, params)
 	if(IS_WRITING_UTENSIL(used_item))
 		if(!user.can_write(used_item))
+			to_chat(user, "<span class='notice'>You scribble illegibly on the side of [src]!</span>")
+			return
+		var/t = tgui_input_text(user, "What would you like the label to be?", name, null)
+		if(user.get_active_held_item() != used_item)
 			return
 		if(!user.canUseTopic(src, BE_CLOSE))
 			return
@@ -27,8 +31,8 @@
 			name = "implant case - '[t]'"
 		else
 			name = "implant case"
-	else if(istype(W, /obj/item/implanter))
-		var/obj/item/implanter/I = W
+	else if(istype(used_item, /obj/item/implanter))
+		var/obj/item/implanter/I = used_item
 		if(I.imp)
 			if(imp || I.imp.imp_in)
 				return

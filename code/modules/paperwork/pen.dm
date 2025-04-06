@@ -274,3 +274,8 @@
 	desc = "A pen with an infinitly sharpened tip. Capable of striking the weakest point of a strucutre or robot and annihilating it instantly. Good at putting holes in people too."
 	force = 5
 	wound_bonus = 100
+
+/obj/item/pen/edagger
+	name = "e-dagger"
+	desc = "A pen with an infinitly sharpened tip. Capable of striking the weakest point of a strucutre or robot and annihilating it instantly. Good at putting holes in people too."
+	icon_state = "pen-edagger"

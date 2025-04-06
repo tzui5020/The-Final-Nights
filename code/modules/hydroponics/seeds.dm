@@ -484,11 +484,27 @@
 	return
 
 /obj/item/seeds/attackby(obj/item/O, mob/user, params)
-	if(IS_WRITING_UTENSIL(O))
-		var/choice = tgui_input_list(usr, "What would you like to change?", "Seed Alteration", list("Plant Name", "Seed Description", "Product Description"))
-		if(isnull(choice))
-			return
-		if(!user.can_perform_action(src))
+	if (istype(O, /obj/item/plant_analyzer))
+		to_chat(user, "<span class='info'>*---------*\n This is \a <span class='name'>[src]</span>.</span>")
+		var/text
+		var/obj/item/plant_analyzer/P_analyzer = O
+		if(P_analyzer.scan_mode == PLANT_SCANMODE_STATS)
+			text = get_analyzer_text()
+			if(text)
+				to_chat(user, "<span class='notice'>[text]</span>")
+		if(reagents_add && P_analyzer.scan_mode == PLANT_SCANMODE_CHEMICALS)
+			to_chat(user, "<span class='notice'>- Plant Reagents -</span>")
+			to_chat(user, "<span class='notice'>*---------*</span>")
+			for(var/datum/plant_gene/reagent/G in genes)
+				to_chat(user, "<span class='notice'>- [G.get_name()] -</span>")
+			to_chat(user, "<span class='notice'>*---------*</span>")
+
+
+		return
+
+	if(istype(O, /obj/item/pen))
+		var/choice = input("What would you like to change?") in list("Plant Name", "Seed Description", "Product Description", "Cancel")
+		if(!user.canUseTopic(src, BE_CLOSE))
 			return
 		switch(choice)
 			if("Plant Name")

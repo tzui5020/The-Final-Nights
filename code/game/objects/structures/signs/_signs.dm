@@ -176,7 +176,6 @@
 		unwrenched_sign.sign_path = type
 		unwrenched_sign.set_custom_materials(custom_materials) //This is here so picture frames and wooden things don't get messed up.
 		unwrenched_sign.is_editable = is_editable
-	unwrenched_sign.update_integrity(get_integrity()) //Transfer how damaged it is.
 	unwrenched_sign.setDir(dir)
 	qdel(src) //The sign structure on the wall goes poof and only the sign item from unwrenching remains.
 
@@ -186,108 +185,6 @@
 	desc = "A plastic sign backing, use a pen to change the decal. It can be detached from the wall with a wrench."
 	is_editable = TRUE
 	sign_change_name = "Blank Sign"
-
-/obj/structure/sign/nanotrasen
-	name = "\improper Nanotrasen logo sign"
-	sign_change_name = "Corporate Logo - Nanotrasen"
-	desc = "A sign with the Nanotrasen logo on it. Glory to Nanotrasen!"
-	icon_state = "nanotrasen"
-	is_editable = TRUE
-
-/obj/structure/sign/logo
-	name = "\improper Nanotrasen logo sign"
-	desc = "The Nanotrasen corporate logo."
-	icon_state = "nanotrasen_sign1"
-	buildable_sign = FALSE
-
-/obj/item/sign
-	name = "sign backing"
-	desc = "A plastic sign backing, use a pen to change the decal. It can be placed on a wall."
-	icon = 'icons/obj/signs.dmi'
-	icon_state = "backing"
-	inhand_icon_state = "backing"
-	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
-	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/plastic =SHEET_MATERIAL_AMOUNT)
-	armor_type = /datum/armor/item_sign
-	resistance_flags = FLAMMABLE
-	max_integrity = 100
-	///The type of sign structure that will be created when placed on a turf, the default looks just like a sign backing item.
-	var/sign_path = /obj/structure/sign/blank
-	///This determines if you can select this sign type when using a pen on a sign backing. False by default, set to true per sign type to override.
-	var/is_editable = TRUE
-
-/datum/armor/item_sign
-	melee = 50
-	fire = 50
-	acid = 50
-
-/obj/item/sign/Initialize(mapload) //Signs not attached to walls are always rotated so they look like they're laying horizontal.
-	. = ..()
-	var/matrix/M = matrix()
-	M.Turn(90)
-	transform = M
-	register_context()
-
-/obj/item/sign/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	. = ..()
-	if(is_editable && IS_WRITING_UTENSIL(held_item))
-		context[SCREENTIP_CONTEXT_LMB] = "Change design"
-		return CONTEXTUAL_SCREENTIP_SET
-
-/obj/item/sign/attackby(obj/item/I, mob/user, params)
-	if(is_editable && IS_WRITING_UTENSIL(I))
-		if(!length(GLOB.editable_sign_types))
-			populate_editable_sign_types()
-			if(!length(GLOB.editable_sign_types))
-				CRASH("GLOB.editable_sign_types failed to populate")
-		var/choice = input(user, "Select a sign type.", "Sign Customization") as null|anything in GLOB.editable_sign_types
-		if(!choice)
-			return
-		if(!Adjacent(user)) //Make sure user is adjacent still.
-			to_chat(user, "<span class='warning'>You need to stand next to the sign to change it!</span>")
-			return
-		if(!choice)
-			return
-		user.visible_message("<span class='notice'>You begin changing [src].</span>")
-		if(!do_after(user, 4 SECONDS, target = src))
-			return
-		var/obj/structure/sign/sign_type = GLOB.editable_sign_types[choice]
-		name = initial(sign_type.name)
-		if(sign_type != /obj/structure/sign/blank)
-			desc = "[initial(sign_type.desc)] It can be placed on a wall."
-		else
-			desc = initial(desc) //If you're changing it to a blank sign, just use obj/item/sign's description.
-		icon_state = initial(sign_type.icon_state)
-		sign_path = sign_type
-		user.visible_message("<span class='notice'>You finish changing the sign.</span>")
-		return
-	return ..()
-
-/obj/item/sign/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!iswallturf(target) || !proximity)
-		return
-	var/turf/target_turf = target
-	var/turf/user_turf = get_turf(user)
-	var/obj/structure/sign/placed_sign = new sign_path(user_turf) //We place the sign on the turf the user is standing, and pixel shift it to the target wall, as below.
-	//This is to mimic how signs and other wall objects are usually placed by mappers, and so they're only visible from one side of a wall.
-	var/dir = get_dir(user_turf, target_turf)
-	if(dir & NORTH)
-		placed_sign.pixel_y = 32
-	else if(dir & SOUTH)
-		placed_sign.pixel_y = -32
-	if(dir & EAST)
-		placed_sign.pixel_x = 32
-	else if(dir & WEST)
-		placed_sign.pixel_x = -32
-	user.visible_message("<span class='notice'>[user] fastens [src] to [target_turf].</span>", \
-		"<span class='notice'>You attach the sign to [target_turf].</span>")
-	playsound(target_turf, 'sound/items/deconstruct.ogg', 50, TRUE)
-	placed_sign.obj_integrity = obj_integrity
-	placed_sign.setDir(dir)
-	qdel(src)
 
 /obj/structure/sign/nanotrasen
 	name = "\improper Nanotrasen logo sign"
