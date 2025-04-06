@@ -278,7 +278,7 @@
 	},
 	{
 		"code": "SCR-W",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Warrant",
 		"info": [
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Warrant</font></div></th></table></h1>",
@@ -302,7 +302,7 @@
 	},
 	{
 		"code": "SCR-SW",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Search warrant",
 		"info": [
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Search Warrant</font></div></th></table></h1>",
@@ -326,7 +326,7 @@
 	},
 	{
 		"code": "SCR-IR",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Interrogation Report",
 		"info": [
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Interrogation Report</font></div></th></table></h1>",
@@ -369,7 +369,7 @@
 	},
 	{
 		"code": "SCR-SR",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Security Report",
 		"info": [
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Security Report</font></div></th></table></h1>",
@@ -405,7 +405,7 @@
 	},
 	{
 		"code": "SCR-EO",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Execution order",
 		"info": [
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Execution order</font></div></th></table></h1>",
@@ -435,7 +435,7 @@
 	},
 	{
 		"code": "SCR-PP",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Permission to possess",
 		"info": [
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Permission to possess</font></div></th></table></h1>",
@@ -470,7 +470,7 @@
 	},
 	{
 		"code": "SCR-CS",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Court Summons",
 		"info": [
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Court Order</font></div></th></table></h1>",
@@ -488,7 +488,7 @@
 	},
 	{
 		"code": "SCR-LRF",
-		"category": "San Francisco Police Department",
+		"category": "SFPD",
 		"name": "Lawsuit Request Form",
 		"info":[
 			"<h1><table bgcolor=\"firebrick\" width=\"100%\"><th><div align=\"center\"><font color=\"white\">Lawsuit Request Form</font></div></th></table></h1>",
