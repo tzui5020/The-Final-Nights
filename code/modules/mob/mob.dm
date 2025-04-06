@@ -1221,18 +1221,12 @@
 		to_chat(src, span_warning("You try to write, but don't know how to spell anything!"))
 		return FALSE
 
-	if(!has_light_nearby() && !has_nightvision())
+	if(!has_light_nearby() && !HAS_TRAIT(src, TRAIT_NIGHT_VISION))
 		to_chat(src, span_warning("It's too dark in here to write anything!"))
 		return FALSE
 
 	if(has_gravity())
 		return TRUE
-
-	var/obj/item/pen/pen = writing_instrument
-
-	if(istype(pen) && pen.requires_gravity)
-		to_chat(src, span_warning("You try to write, but the [writing_instrument] doesn't work in zero gravity!"))
-		return FALSE
 
 	return TRUE
 

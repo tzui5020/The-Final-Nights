@@ -105,11 +105,6 @@
 			B.name = pick("Toolbox Manifesto","iGlove Assistants")
 		if("weeaboo","kawaii")
 			B.name = pick("Fanfiction Compendium","Japanese for Dummies","The Manganomicon","Establishing Your O.T.P")
-		else
-			if(new_bible == DEFAULT_BIBLE)
-				new_bible = DEFAULT_BIBLE_REPLACE(new_bible)
-
-	B.name = new_bible
 
 	GLOB.religion = new_religion
 	GLOB.bible_name = B.name

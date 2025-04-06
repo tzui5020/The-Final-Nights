@@ -404,9 +404,6 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 
 	return data
 
-/obj/machinery/computer/libraryconsole/bookmanagement/ui_assets(mob/user)
-	return list(get_asset_datum(/datum/asset/spritesheet_batched/bibles))
-
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/load_nearby_books()
 	for(var/datum/book_info/book as anything in SSlibrary.get_area_books(get_area(src)))
 		inventory[ref(book)] = book
@@ -634,7 +631,7 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	return TRUE
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_bible()
-	var/obj/item/book/bible/holy_book = new(loc)
+	var/obj/item/storage/book/bible/holy_book = new(loc)
 	if(!GLOB.bible_icon_state || !GLOB.bible_inhand_icon_state)
 		return
 	holy_book.icon_state = GLOB.bible_icon_state
@@ -689,7 +686,6 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	icon = 'icons/obj/service/library.dmi'
 	icon_state = "bigscanner"
 	desc = "It's an industrial strength book scanner. Perfect!"
-	circuit = /obj/item/circuitboard/machine/libraryscanner
 	density = TRUE
 	var/obj/item/book/held_book
 	///Our scanned-in book
@@ -698,12 +694,12 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 /obj/machinery/libraryscanner/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(default_deconstruction_screwdriver(user, "bigscanner2", "bigscanner", tool))
-		return ITEM_INTERACT_SUCCESS
+		return TRUE
 
 /obj/machinery/libraryscanner/crowbar_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(default_deconstruction_crowbar(tool))
-		return ITEM_INTERACT_SUCCESS
+		return TRUE
 
 /obj/machinery/libraryscanner/Destroy()
 	held_book = null
@@ -772,7 +768,6 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 	icon = 'icons/obj/service/library.dmi'
 	icon_state = "binder"
 	desc = "Only intended for binding paper products."
-	circuit = /obj/item/circuitboard/machine/bookbinder
 	density = TRUE
 
 	/// Are we currently binding a book?
@@ -784,12 +779,12 @@ GLOBAL_VAR_INIT(library_table_modified, 0)
 /obj/machinery/bookbinder/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(default_deconstruction_screwdriver(user, "binder2", "binder", tool))
-		return ITEM_INTERACT_SUCCESS
+		return TRUE
 
 /obj/machinery/bookbinder/crowbar_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(default_deconstruction_crowbar(tool))
-		return ITEM_INTERACT_SUCCESS
+		return TRUE
 
 /obj/machinery/bookbinder/attackby(obj/hitby, mob/user, params)
 	if(istype(hitby, /obj/item/paper))

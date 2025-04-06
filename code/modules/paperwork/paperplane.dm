@@ -47,21 +47,18 @@
 
 /obj/item/paperplane/suicide_act(mob/living/user)
 	var/obj/item/organ/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
-	user.Stun(200)
+	user.Stun(20 SECONDS)
 	user.visible_message(span_suicide("[user] jams [src] in [user.p_their()] nose. It looks like [user.p_theyre()] trying to commit suicide!"))
 	user.adjust_blurriness(6)
 	if(eyes)
 		eyes.applyOrganDamage(rand(6,8))
-	sleep(10)
+	sleep(1 SECONDS)
 	return (BRUTELOSS)
 
 /obj/item/paperplane/update_overlays()
 	. = ..()
-	var/list/stamped = internalPaper.stamped
-	if(!LAZYLEN(stamped))
-		return
-	for(var/S in stamped)
-		. += "paperplane_[S]"
+	for(var/stamp in internalPaper.stamp_cache)
+		. += "[base_icon_state]_[stamp]"
 
 /obj/item/paperplane/attack_self(mob/user)
 	to_chat(user, span_notice("You unfold [src]."))
@@ -96,7 +93,7 @@
 		if(C.can_catch_item(TRUE))
 			var/datum/action/innate/origami/origami_action = locate() in C.actions
 			if(origami_action?.active) //if they're a master of origami and have the ability turned on, force throwmode on so they'll automatically catch the plane.
-				C.throw_mode_on(THROW_MODE_TOGGLE)
+				C.throw_mode_on()
 
 	if(..() || !ishuman(hit_atom))//if the plane is caught or it hits a nonhuman
 		return
@@ -130,17 +127,3 @@
 	else
 		make_plane(user, I, /obj/item/paperplane)
 
-/**
- * Paper plane folding
- *
- * Arguments:
- * * mob/living/user - who's folding
- * * obj/item/I - what's being folded
- * * obj/item/paperplane/plane_type - what it will be folded into (path)
- */
-/obj/item/paper/proc/make_plane(mob/living/user, obj/item/I, obj/item/paperplane/plane_type = /obj/item/paperplane)
-	to_chat(user, span_notice("You fold [src] into the shape of a plane!"))
-	user.temporarilyRemoveItemFromInventory(src)
-	I = new plane_type(loc, src)
-	if(user.Adjacent(I))
-		user.put_in_hands(I)

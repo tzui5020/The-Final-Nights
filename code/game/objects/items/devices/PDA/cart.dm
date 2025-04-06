@@ -599,28 +599,6 @@ Code:
 		if("Supply Orders")
 			host_pda.mode =47
 
-		if("Newscaster Access")
-			host_pda.mode = 53
-
-		if("Newscaster Message")
-			var/host_pda_owner_name = host_pda.id ? "[host_pda.id.registered_name] ([host_pda.id.assignment])" : "Unknown"
-			var/message = host_pda.msg_input()
-			var/datum/newscaster/feed_channel/current
-			for(var/datum/newscaster/feed_channel/chan in GLOB.news_network.network_channels)
-				if (chan.channel_name == current_channel)
-					current = chan
-			if(current.locked && current.author != host_pda_owner_name)
-				host_pda.mode = 99
-				host_pda.Topic(null,list("choice"="Refresh"))
-				return
-			host_pda.Topic(null,list("choice"=num2text(host_pda.mode)))
-			return
-
-		if("Newscaster Switch Channel")
-			current_channel = host_pda.msg_input()
-			host_pda.Topic(null,list("choice"=num2text(host_pda.mode)))
-			return
-
 	//emoji previews
 	if(href_list["emoji"])
 		var/parse = emoji_parse(":[href_list["emoji"]]:")

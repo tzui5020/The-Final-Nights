@@ -288,7 +288,7 @@
 	if(contact_poison && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/clothing/gloves/G = H.gloves
-		if(!istype(G) || !(G.body_parts_covered & HANDS) || HAS_TRAIT(G, TRAIT_FINGERPRINT_PASSTHROUGH) || HAS_TRAIT(H, TRAIT_FINGERPRINT_PASSTHROUGH))
+		if(!istype(G) || G.transfer_prints)
 			H.reagents.add_reagent(contact_poison,contact_poison_volume)
 			contact_poison = null
 	. = ..()
@@ -305,7 +305,7 @@
 	set category = "Object"
 	set src in usr
 
-	if(!usr.can_read(src) || usr.is_blind() || INCAPACITATED_IGNORING(usr, INCAPABLE_RESTRAINTS|INCAPABLE_GRAB) || (isobserver(usr) && !isAdminGhostAI(usr)))
+	if(!usr.can_read(src) || usr.is_blind() || usr.incapacitated(ignore_restraints = TRUE, ignore_grab = TRUE) || (isobserver(usr) && !isAdminGhostAI(usr)))
 		return
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
@@ -350,7 +350,7 @@
 		return UI_UPDATE
 	if(!in_range(user, src) && !isobserver(user))
 		return UI_CLOSE
-	if(INCAPACITATED_IGNORING(user, INCAPABLE_RESTRAINTS|INCAPABLE_GRAB) || (isobserver(user) && !isAdminGhostAI(user)))
+	if(user.incapacitated(ignore_restraints = TRUE, ignore_grab = TRUE) || (isobserver(user) && !isAdminGhostAI(user)))
 		return UI_UPDATE
 	// Even harder to read if your blind...braile? humm
 	// .. or if you cannot read
@@ -368,14 +368,9 @@
 		return TRUE
 	return ..()
 
-/obj/item/paper/click_alt(mob/living/user)
-	if(HAS_TRAIT(user, TRAIT_PAPER_MASTER))
-		make_plane(user, /obj/item/paperplane/syndicate)
-		return CLICK_ACTION_SUCCESS
+/obj/item/paper/AltClick(mob/user)
 	make_plane(user, /obj/item/paperplane)
-	return CLICK_ACTION_SUCCESS
-
-
+	return TRUE
 
 /**
  * Paper plane folding
@@ -462,8 +457,14 @@
 	ui_interact(user)
 	return ..()
 
-/// Secondary right click interaction to quickly stamp things
-/obj/item/paper/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+/obj/item/paper/Click(location, control, params)
+	. = ..()
+	var/list/modifiers = params2list(params)
+	if(!modifiers["right"])
+		return
+
+	var/mob/living/carbon/human/user = usr
+	var/obj/item/tool = user.get_active_held_item()
 	var/list/writing_stats = tool.get_writing_implement_details()
 
 	if(!length(writing_stats))
@@ -480,7 +481,8 @@
 	)
 	playsound(src, 'sound/items/handling/standard_stamp.ogg', 50, vary = TRUE)
 
-	return ITEM_INTERACT_BLOCKING // Stop the UI from opening.
+	return FALSE // Stop the UI from opening.
+
 /**
  * Attempts to ui_interact the paper to the given user, with some sanity checking
  * to make sure the camera still exists via the weakref and that this paper is still
@@ -675,7 +677,7 @@
 			// Safe to assume there are writing implement details as user.can_write(...) fails with an invalid writing implement.
 			var/writing_implement_data = holding.get_writing_implement_details()
 
-			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
+			playsound(src, "writing_pen", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 
 			add_raw_text(paper_input, writing_implement_data["font"], writing_implement_data["color"], writing_implement_data["use_bold"], check_rights_for(user?.client, R_FUN))
 

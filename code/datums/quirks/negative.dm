@@ -394,9 +394,6 @@
 
 	var/mob/living/carbon/human/human_holder = quirk_holder
 
-	if(human_holder.dna?.species.id in list(SPECIES_SHADOW, SPECIES_NIGHTMARE))
-		return
-
 	if((human_holder.sight & SEE_TURFS) == SEE_TURFS)
 		return
 

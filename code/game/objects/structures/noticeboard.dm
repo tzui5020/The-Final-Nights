@@ -23,7 +23,6 @@
 			I.forceMove(src)
 			notices++
 	update_icon()
-	find_and_hang_on_wall()
 
 //attaching papers!!
 /obj/structure/noticeboard/attackby(obj/item/O, mob/user, params)
@@ -107,13 +106,14 @@
 	notices--
 	update_icon()
 
-/obj/structure/noticeboard/atom_deconstruct(disassembled = TRUE)
+/obj/structure/noticeboard/deconstruct(disassembled = TRUE)
 	if(!disassembled)
 		new /obj/item/stack/sheet/mineral/wood(loc)
 	else
 		new /obj/item/wallframe/noticeboard(loc)
 	for(var/obj/item/content in contents)
 		remove_item(content)
+	. = ..()
 
 /obj/item/wallframe/noticeboard
 	name = "notice board"
@@ -167,6 +167,5 @@
 /obj/structure/noticeboard/staff
 	name = "Staff Notice Board"
 	desc = "Important notices from the heads of staff."
-	req_access = list(ACCESS_COMMAND)
 
 #undef MAX_NOTICES

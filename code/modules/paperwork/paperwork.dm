@@ -114,7 +114,6 @@
 
 /obj/item/paperwork/cargo
 	stamp_requested = /obj/item/stamp/qm
-	stamp_job = /datum/job/quartermaster
 	stamp_icon = "paper_stamp-qm"
 
 /obj/item/paperwork/cargo/Initialize()
@@ -127,7 +126,6 @@
 
 /obj/item/paperwork/security
 	stamp_requested = /obj/item/stamp/hos
-	stamp_job = /datum/job/head_of_security
 	stamp_icon = "paper_stamp-hos"
 
 /obj/item/paperwork/security/Initialize()
@@ -140,7 +138,6 @@
 
 /obj/item/paperwork/service
 	stamp_requested = /obj/item/stamp/hop
-	stamp_job = /datum/job/head_of_personnel
 	stamp_icon = "paper_stamp-hop"
 
 /obj/item/paperwork/service/Initialize()
@@ -153,7 +150,6 @@
 
 /obj/item/paperwork/medical
 	stamp_requested = /obj/item/stamp/cmo
-	stamp_job = /datum/job/chief_medical_officer
 	stamp_icon = "paper_stamp-cmo"
 
 /obj/item/paperwork/medical/Initialize()
@@ -167,7 +163,6 @@
 
 /obj/item/paperwork/engineering
 	stamp_requested = /obj/item/stamp/ce
-	stamp_job = /datum/job/chief_engineer
 	stamp_icon = "paper_stamp-ce"
 
 /obj/item/paperwork/engineering/Initialize()
@@ -180,7 +175,6 @@
 
 /obj/item/paperwork/research
 	stamp_requested = /obj/item/stamp/rd
-	stamp_job = /datum/job/research_director
 	stamp_icon = "paper_stamp-rd"
 
 /obj/item/paperwork/research/Initialize()
