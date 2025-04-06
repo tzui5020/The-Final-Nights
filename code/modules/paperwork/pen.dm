@@ -37,16 +37,7 @@
 
 /obj/item/pen/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/dart_insert, \
-		dart_insert_icon, \
-		dart_insert_casing_icon_state, \
-		dart_insert_icon, \
-		dart_insert_projectile_icon_state, \
-		CALLBACK(src, PROC_REF(get_dart_var_modifiers))\
-	)
 	AddElement(/datum/element/tool_renaming)
-	RegisterSignal(src, COMSIG_DART_INSERT_ADDED, PROC_REF(on_inserted_into_dart))
-	RegisterSignal(src, COMSIG_DART_INSERT_REMOVED, PROC_REF(on_removed_from_dart))
 	if (!can_click)
 		return
 	create_transform_component()
@@ -382,15 +373,6 @@
 	dart_insert_projectile_icon_state = "overlay_survivalpen_proj"
 	can_click = FALSE
 
-/obj/item/pen/survival/on_inserted_into_dart(datum/source, obj/item/ammo_casing/dart, mob/user)
-	. = ..()
-	RegisterSignal(dart.loaded_projectile, COMSIG_PROJECTILE_SELF_ON_HIT, PROC_REF(on_dart_hit))
-
-/obj/item/pen/survival/on_removed_from_dart(datum/source, obj/item/ammo_casing/dart, obj/projectile/proj, mob/user)
-	. = ..()
-	if(istype(proj))
-		UnregisterSignal(proj, COMSIG_PROJECTILE_SELF_ON_HIT)
-
 /obj/item/pen/survival/proc/on_dart_hit(obj/projectile/source, atom/movable/firer, atom/target)
 	var/turf/target_turf = get_turf(target)
 	if(!target_turf)
@@ -404,7 +386,6 @@
 	desc = "A pen with an infinitly sharpened tip. Capable of striking the weakest point of a strucutre or robot and annihilating it instantly. Good at putting holes in people too."
 	force = 5
 	wound_bonus = 100
-	demolition_mod = 9000
 
 // screwdriver pen!
 
