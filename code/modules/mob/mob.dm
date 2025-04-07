@@ -794,6 +794,49 @@
 	set category = null
 	return
 
+/**
+ * Topic call back for any mob
+ *
+ * * Unset machines if "mach_close" sent
+ * * refresh the inventory of machines in range if "refresh" sent
+ * * handles the strip panel equip and unequip as well if "item" sent
+ */
+/mob/Topic(href, href_list)
+	var/mob/user = usr
+
+	if(href_list["mach_close"])
+		var/t1 = text("window=[href_list["mach_close"]]")
+		unset_machine()
+		src << browse(null, t1)
+
+	if(user != src)
+		if(href_list["item"] && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
+			var/slot = text2num(href_list["item"])
+			var/hand_index = text2num(href_list["hand_index"])
+			var/obj/item/what
+			if(hand_index)
+				what = get_item_for_held_index(hand_index)
+				slot = list(slot,hand_index)
+			else
+				what = get_item_by_slot(slot)
+			if(what)
+				if(!(what.item_flags & ABSTRACT))
+					user.stripPanelUnequip(what,src,slot)
+					if(isnpc(src))
+						var/mob/living/carbon/human/npc/N = src
+						N.Aggro(usr, TRUE)
+			else
+				user.stripPanelEquip(what,src,slot)
+				if(isnpc(src))
+					var/mob/living/carbon/human/npc/N = src
+					N.Aggro(usr, TRUE)
+
+		if(user.machine == src)
+			if(Adjacent(user))
+				show_inv(user)
+			else
+				user << browse(null,"window=mob[REF(src)]")
+
 // The src mob is trying to strip an item from someone
 // Defined in living.dm
 /mob/proc/stripPanelUnequip(obj/item/what, mob/who)
