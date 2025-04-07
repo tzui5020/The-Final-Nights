@@ -2090,9 +2090,6 @@
 	cost = CARGO_CRATE_VALUE * 3
 	access_view = ACCESS_LIBRARY
 	contains = list(/obj/item/book/codex_gigas,
-					/obj/item/book/manual/random/,
-					/obj/item/book/manual/random/,
-					/obj/item/book/manual/random/,
 					/obj/item/book/random,
 					/obj/item/book/random,
 					/obj/item/book/random)

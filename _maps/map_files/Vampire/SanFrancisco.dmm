@@ -33802,7 +33802,7 @@
 "jPn" = (
 /obj/structure/coclock,
 /obj/structure/table/wood,
-/obj/machinery/computer/bookmanagement{
+/obj/machinery/computer/libraryconsole/bookmanagement{
 	pixel_y = 9
 	},
 /turf/open/floor/plating/vampcarpet,
@@ -70978,7 +70978,7 @@
 /area/vtm/interior/millennium_tower/ventrue)
 "uzv" = (
 /obj/structure/table/wood/fancy/red,
-/obj/machinery/computer/bookmanagement,
+/obj/machinery/computer/libraryconsole/bookmanagement,
 /obj/machinery/light/prince{
 	pixel_y = 32
 	},

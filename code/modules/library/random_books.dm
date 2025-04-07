@@ -1,13 +1,3 @@
-/obj/item/book/manual/random
-	icon_state = "random_book"
-
-/obj/item/book/manual/random/Initialize(mapload)
-	..()
-	var/static/banned_books = list(/obj/item/book/manual/random)
-	var/newtype = pick(subtypesof(/obj/item/book/manual) - banned_books)
-	new newtype(loc)
-	return INITIALIZE_HINT_QDEL
-
 /obj/item/book/random
 	icon_state = "random_book"
 	/// The category of books to pick from when creating this book.
@@ -106,4 +96,4 @@
 	. = ..()
 	while(books_to_load > 0 && prob(ref_book_prob))
 		books_to_load--
-		new /obj/item/book/manual/random(src)
+		new /obj/item/book/random(src)
