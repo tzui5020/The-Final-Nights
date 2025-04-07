@@ -39,7 +39,7 @@
 
 	LAZYADDASSOC(user.progressbars, bar_loc, src)
 	var/list/bars = user.progressbars[bar_loc]
-	listindex = bars.len
+	listindex = length(bars)
 
 	if(user.client)
 		user_client = user.client
@@ -69,9 +69,7 @@
 		clean_user_client()
 
 	bar_loc = null
-
-	if(bar)
-		QDEL_NULL(bar)
+	bar = null
 
 	return ..()
 

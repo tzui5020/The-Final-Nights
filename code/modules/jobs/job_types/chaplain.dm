@@ -105,6 +105,9 @@
 			B.name = pick("Toolbox Manifesto","iGlove Assistants")
 		if("weeaboo","kawaii")
 			B.name = pick("Fanfiction Compendium","Japanese for Dummies","The Manganomicon","Establishing Your O.T.P")
+		else
+			B.name = "The Holy Book of [new_religion]"
+
 
 	GLOB.religion = new_religion
 	GLOB.bible_name = B.name
