@@ -68,13 +68,14 @@
 	INVOKE_ASYNC(src, PROC_REF(generate_image), text, target, owner, language, extra_classes, lifespan)
 
 /datum/chatmessage/Destroy()
-	if(!QDELING(owned_by))
+	if (owned_by)
 		if (owned_by.seen_messages)
 			LAZYREMOVEASSOC(owned_by.seen_messages, message_loc, src)
 		owned_by.images.Remove(message)
 	owned_by = null
 	message_loc = null
 	message = null
+	leave_subsystem()
 	return ..()
 
 /**
