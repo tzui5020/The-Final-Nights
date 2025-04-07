@@ -29,7 +29,7 @@
 #define LAZYLEN(L) length(L)
 #define LAZYCLEARLIST(L) if(L) L.Cut()
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
-#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
+#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += V;
 ///This is used to add onto lazy assoc list when the value you're adding is a /list/. This one has extra safety over lazyaddassoc because the value could be null (and thus cant be used to += objects)
 #define LAZYADDASSOCLIST(L, K, V) if(!L) { L = list(); } L[K] += list(V);
 ///Removes the value V from the item K, if the item K is empty will remove it from the list, if the list is empty will set the list to null
