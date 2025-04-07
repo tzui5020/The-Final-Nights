@@ -198,10 +198,6 @@
 
 /obj/structure/bookcase/manuals/engineering/Initialize(mapload)
 	. = ..()
-	new /obj/item/book/manual/wiki/engineering_construction(src)
-	new /obj/item/book/manual/wiki/engineering_hacking(src)
-	new /obj/item/book/manual/wiki/engineering_guide(src)
-	new /obj/item/book/manual/wiki/robotics_cyborgs(src)
 	update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -209,7 +205,6 @@
 
 /obj/structure/bookcase/manuals/research_and_development/Initialize(mapload)
 	. = ..()
-	new /obj/item/book/manual/wiki/research_and_development(src)
 	update_icon()
 
 #undef BOOKCASE_UNANCHORED
