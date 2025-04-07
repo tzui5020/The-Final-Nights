@@ -29,7 +29,6 @@
 #define LAZYLEN(L) length(L)
 #define LAZYCLEARLIST(L) if(L) L.Cut()
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
-#define reverseList(L) reverseRange(L.Copy())
 #define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
 ///This is used to add onto lazy assoc list when the value you're adding is a /list/. This one has extra safety over lazyaddassoc because the value could be null (and thus cant be used to += objects)
 #define LAZYADDASSOCLIST(L, K, V) if(!L) { L = list(); } L[K] += list(V);
@@ -439,23 +438,6 @@
 
 		for(var/i=0, i<len, ++i)
 			L.Swap(fromIndex++, toIndex++)
-
-//replaces reverseList ~Carnie
-/proc/reverseRange(list/L, start=1, end=0)
-	if(L.len)
-		start = start % L.len
-		end = end % (L.len+1)
-		if(start <= 0)
-			start += L.len
-		if(end <= 0)
-			end += L.len + 1
-
-		--end
-		while(start < end)
-			L.Swap(start++,end--)
-
-	return L
-
 
 //return first thing in L which has var/varname == value
 //this is typecaste as list/L, but you could actually feed it an atom instead.
