@@ -10,6 +10,7 @@
 	max_integrity = 150
 	/// Current number of a pinned notices
 	var/notices = 0
+
 /obj/structure/noticeboard/Initialize(mapload)
 	. = ..()
 
