@@ -205,13 +205,13 @@
 /datum/discipline_power/dominate/conditioning/activate(mob/living/target)
 	. = ..()
 	target.dir = get_dir(target, owner)
-	to_chat(target, "<span class='userdanger'><b>LOOK AT ME</b></span>")
+	to_chat(target, span_danger("LOOK AT ME"))
 	owner.say("Look at me.")
 	if(do_mob(owner, target, 20 SECONDS)) //20 seconds, VERY deliberate. This is not meant to be tossed around lightly.
 		target.conditioned = TRUE
 		target.conditioner = WEAKREF(owner)
 		target.additional_social -= 3 //Lessened charisma and ability to lead independently.
-		to_chat(target, "<span class='userdanger'><b>Your mind is filled with thoughts surrounding [owner]. Their every word and gesture carries weight to you.</b></span>")
+		to_chat(target, span_danger("Your mind is filled with thoughts surrounding [owner]. Their every word and gesture carries weight to you."))
 
 /datum/discipline_power/dominate/conditioning/deactivate(mob/living/target)
 	. = ..()
