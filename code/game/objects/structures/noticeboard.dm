@@ -4,7 +4,7 @@
 	name = "notice board"
 	desc = "A board for pinning important notices upon. It is made of the finest Spanish cork."
 	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "noticeboard"
+	icon_state = "nboard00"
 	density = FALSE
 	anchored = TRUE
 	max_integrity = 150
@@ -24,6 +24,22 @@
 			I.forceMove(src)
 			notices++
 	update_icon()
+
+/obj/structure/noticeboard/update_icon()
+	. = ..()
+	switch(notices)
+		if(0)
+			icon_state = "nboard00"
+		if(1)
+			icon_state = "nboard01"
+		if(2)
+			icon_state = "nboard02"
+		if(3)
+			icon_state = "nboard03"
+		if(4)
+			icon_state = "nboard04"
+		else
+			icon_state = "nboard05"
 
 //attaching papers!!
 /obj/structure/noticeboard/attackby(obj/item/O, mob/user, params)
@@ -87,11 +103,6 @@
 			remove_item(item, user)
 			return TRUE
 
-/obj/structure/noticeboard/update_overlays()
-	. = ..()
-	if(notices)
-		. += "notices_[notices]"
-
 /**
  * Removes an item from the notice board
  *
@@ -120,7 +131,7 @@
 	name = "notice board"
 	desc = "Right now it's more of a clipboard. Attach to a wall to use."
 	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "noticeboard"
+	icon_state = "nboard00"
 	custom_materials = list(
 		/datum/material/wood = MINERAL_MATERIAL_AMOUNT,
 	)
