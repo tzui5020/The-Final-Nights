@@ -52,20 +52,24 @@
 	if(category == BOOK_CATEGORY_RANDOM)
 		category = null
 	var/datum/db_query/query_get_random_books = SSdbcore.NewQuery({"
-		SELECT author, title, content
+		SELECT title, author, content
 		FROM [format_table_name("library")]
 		WHERE isnull(deleted) AND (:category IS NULL OR category = :category)
 		ORDER BY rand() LIMIT :limit
 	"}, list("category" = category, "limit" = amount))
 	if(query_get_random_books.Execute())
 		while(query_get_random_books.NextRow())
-			var/obj/item/book/B
-			B = existing_book ? existing_book : new(location)
-			B.starting_author = query_get_random_books.item[1]
-			B.starting_title = query_get_random_books.item[2]
-			B.starting_content = query_get_random_books.item[3]
+			var/list/book_deets = query_get_random_books.item
+			var/obj/item/book/to_randomize = existing_book ? existing_book : new(location)
+
+			to_randomize.book_data = new()
+			var/datum/book_info/data = to_randomize.book_data
+			data.set_title(book_deets[1], trusted = TRUE)
+			data.set_author(book_deets[2], trusted = TRUE)
+			data.set_content(book_deets[3], trusted = TRUE)
+			to_randomize.name = "Book: [to_randomize.book_data.title]"
 			if(!existing_book)
-				B.icon_state= "book[rand(1,B.maximum_book_state)]"
+				to_randomize.gen_random_icon_state()
 	qdel(query_get_random_books)
 
 /obj/structure/bookcase/random/fiction
