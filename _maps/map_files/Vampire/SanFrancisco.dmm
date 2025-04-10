@@ -5660,10 +5660,6 @@
 /obj/structure/dresser,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/ghetto)
-"bDr" = (
-/obj/structure/bookcase/random/fiction,
-/turf/open/floor/plating/parquetry/old,
-/area/vtm/interior/chantry)
 "bDy" = (
 /obj/effect/decal/bordur/corner{
 	dir = 4
@@ -27147,7 +27143,7 @@
 /obj/structure/railing{
 	dir = 4
 	},
-/obj/structure/bookcase/random/nonfiction,
+/obj/structure/bookcase/random,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry)
 "hRI" = (
@@ -27546,7 +27542,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/obj/structure/bookcase/random/religion,
+/obj/structure/bookcase/random/kindred,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry/basement)
 "hXE" = (
@@ -45019,10 +45015,6 @@
 	},
 /turf/open/floor/plating/sidewalk,
 /area/vtm/chinatown)
-"nfG" = (
-/obj/structure/bookcase/random/reference,
-/turf/open/floor/plating/parquetry/old,
-/area/vtm/interior/chantry)
 "nfL" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -46267,12 +46259,9 @@
 /turf/open/floor/carpet/black,
 /area/vtm/cabaret)
 "nyN" = (
-/obj/structure/bookcase/random/fiction,
-/obj/machinery/light/prince{
-	dir = 1
-	},
+/obj/structure/bookcase/random/kueijin,
 /turf/open/floor/plating/parquetry/old,
-/area/vtm/interior/chantry)
+/area/vtm/interior/chantry/basement)
 "nzg" = (
 /obj/structure/rack,
 /obj/item/clothing/gloves/color/yellow,
@@ -54723,9 +54712,9 @@
 /turf/open/floor/plating/vampplating,
 /area/vtm/clinic/haven)
 "pRH" = (
-/obj/structure/bookcase/random/religion,
+/obj/structure/bookcase/random/lupine,
 /turf/open/floor/plating/parquetry/old,
-/area/vtm/interior/chantry)
+/area/vtm/interior/chantry/basement)
 "pRI" = (
 /obj/effect/decal/bordur{
 	dir = 8
@@ -55090,7 +55079,7 @@
 /turf/open/floor/plating/rough/cave,
 /area/vtm/interior/gnawer)
 "pYb" = (
-/obj/structure/bookcase/random/religion,
+/obj/structure/bookcase/random/kindred,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry/basement)
 "pYc" = (
@@ -58243,10 +58232,10 @@
 /turf/open/floor/plating/sidewalk/poor,
 /area/vtm/pacificheights/community)
 "qRY" = (
-/obj/structure/bookcase/random/reference,
 /obj/machinery/light/prince{
 	dir = 1
 	},
+/obj/structure/bookcase/random,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry)
 "qSb" = (
@@ -63679,7 +63668,7 @@
 /turf/open/floor/plating/vampplating,
 /area/vtm/interior/millennium_tower)
 "spk" = (
-/obj/structure/bookcase/random/nonfiction,
+/obj/structure/bookcase/random,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry)
 "spr" = (
@@ -64008,13 +63997,6 @@
 	},
 /turf/open/floor/carpet,
 /area/vtm/interior/theatre)
-"ssU" = (
-/obj/structure/bookcase/random/religion,
-/obj/machinery/light/prince{
-	dir = 1
-	},
-/turf/open/floor/plating/parquetry/old,
-/area/vtm/interior/chantry)
 "std" = (
 /obj/machinery/photocopier,
 /obj/structure/sign/painting/library{
@@ -66602,7 +66584,7 @@
 /obj/machinery/light/small{
 	pixel_y = 32
 	},
-/obj/structure/bookcase/random/religion,
+/obj/structure/bookcase/random/kindred,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry/basement)
 "tjB" = (
@@ -70693,7 +70675,7 @@
 /turf/open/floor/plating/church,
 /area/vtm/church/interior/haven)
 "uvM" = (
-/obj/structure/bookcase/random/religion,
+/obj/structure/bookcase/random/kindred,
 /turf/open/floor/carpet,
 /area/vtm/interior/chantry/basement)
 "uvQ" = (
@@ -72084,7 +72066,7 @@
 /turf/closed/wall/vampwall/city,
 /area/vtm/interior/laundromat)
 "uRV" = (
-/obj/structure/bookcase/random/religion,
+/obj/structure/bookcase/random/kindred,
 /turf/open/floor/plating/vampwood,
 /area/vtm/interior/chantry/basement)
 "uRY" = (
@@ -76036,10 +76018,10 @@
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/setite)
 "vXP" = (
-/obj/structure/bookcase/random/reference,
 /obj/machinery/light/prince{
 	pixel_y = 32
 	},
+/obj/structure/bookcase/random,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/chantry)
 "vXR" = (
@@ -128421,7 +128403,7 @@ dhc
 dhc
 nYS
 vXE
-pYb
+nyN
 raq
 fRQ
 bLR
@@ -129449,7 +129431,7 @@ dhc
 dhc
 nYS
 vXE
-pYb
+pRH
 raq
 raq
 raq
@@ -129706,7 +129688,7 @@ dhc
 dhc
 nYS
 vXE
-pYb
+pRH
 raq
 raq
 mCO
@@ -193432,9 +193414,9 @@ dar
 ghj
 ppQ
 xtG
-pRH
+spk
 hoA
-pRH
+spk
 hoA
 hoA
 hoA
@@ -193689,9 +193671,9 @@ dar
 ppQ
 ppQ
 xtG
-pRH
+spk
 hoA
-pRH
+spk
 hoA
 hoA
 qwB
@@ -193714,10 +193696,10 @@ euk
 hoA
 hoA
 hoA
-nfG
+spk
 hoA
 hoA
-ssU
+qRY
 jHi
 dds
 aas
@@ -193968,13 +193950,13 @@ hoA
 hoA
 vRv
 xtG
-nfG
+spk
 hoA
 hoA
-nfG
+spk
 hoA
 hoA
-pRH
+spk
 jHi
 dxe
 nqY
@@ -194203,24 +194185,24 @@ dar
 ppQ
 ppQ
 xtG
-pRH
+spk
 hoA
-pRH
+spk
 hoA
 efx
 pvN
 bym
 uJA
 hoA
-nfG
-nfG
+spk
+spk
 hoA
 hoA
 hoA
 hoA
 hoA
-nfG
-nfG
+spk
+spk
 hoA
 hoA
 sxp
@@ -194228,7 +194210,7 @@ xtG
 vXP
 hoA
 hoA
-nfG
+spk
 hoA
 hoA
 bkw
@@ -194460,24 +194442,24 @@ dar
 ppQ
 ppQ
 xtG
-pRH
+spk
 hoA
-pRH
+spk
 hoA
 fvi
 ttw
 bym
 fvi
 hoA
-nfG
-nfG
+spk
+spk
 hoA
 fvi
 fvi
 hoA
 hoA
-nfG
-nfG
+spk
+spk
 hoA
 hoA
 hCk
@@ -194488,7 +194470,7 @@ hoA
 hoA
 hoA
 hoA
-nfG
+spk
 jHi
 uxE
 nqY
@@ -194974,24 +194956,24 @@ dar
 ppQ
 ppQ
 xtG
-pRH
+spk
 hoA
-pRH
+spk
 hoA
-pRH
-hoA
-hoA
+spk
 hoA
 hoA
-pRH
-pRH
+hoA
+hoA
+spk
+spk
 fvi
 xKr
 xKr
 fvi
 hoA
-pRH
-pRH
+spk
+spk
 hoA
 hoA
 uEr
@@ -195231,24 +195213,24 @@ dar
 ppQ
 xcp
 xtG
-pRH
+spk
 hoA
-pRH
+spk
 hoA
-pRH
-hoA
-hoA
+spk
 hoA
 hoA
-pRH
-pRH
+hoA
+hoA
+spk
+spk
 hoA
 fvi
 fvi
 hoA
 hoA
-pRH
-pRH
+spk
+spk
 hoA
 maD
 juk
@@ -195259,7 +195241,7 @@ kwF
 jYn
 lJY
 hoA
-bDr
+spk
 jHi
 nqY
 nqY
@@ -195516,7 +195498,7 @@ woi
 otl
 hoA
 hoA
-nyN
+qRY
 jHi
 jlC
 jlC
