@@ -2867,6 +2867,17 @@
 "aOT" = (
 /obj/structure/table,
 /obj/effect/decal/wallpaper/low,
+/obj/item/stamp/denied{
+	pixel_y = 12;
+	pixel_x = 12
+	},
+/obj/item/stamp{
+	pixel_x = 12
+	},
+/obj/item/folder/blue{
+	pixel_x = -2;
+	pixel_y = 5
+	},
 /turf/closed/wall/vampwall/painted/low,
 /area/vtm/interior/police)
 "aOU" = (
@@ -59421,19 +59432,26 @@
 /area/vtm/interior/millennium_tower/ventrue)
 "rik" = (
 /obj/structure/table/wood,
-/obj/item/paper_bin{
-	pixel_y = 6
-	},
 /obj/item/pen/red,
 /obj/effect/turf_decal/siding/wideplating/dark{
 	dir = 8
 	},
 /obj/item/folder/blue,
 /obj/item/folder/red,
-/obj/item/flashlight/lamp,
+/obj/item/flashlight/lamp{
+	pixel_x = -9;
+	pixel_y = 11
+	},
 /obj/item/pen/fountain,
 /obj/item/folder/yellow,
 /obj/item/folder/yellow,
+/obj/item/stamp/denied{
+	pixel_y = 12;
+	pixel_x = 12
+	},
+/obj/item/stamp{
+	pixel_x = 12
+	},
 /turf/open/floor/carpet/green,
 /area/vtm/interior/millennium_tower)
 "riq" = (
