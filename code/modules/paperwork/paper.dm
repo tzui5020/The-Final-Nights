@@ -465,7 +465,7 @@
 
 	var/mob/living/carbon/human/user = usr
 	var/obj/item/tool = user.get_active_held_item()
-	var/list/writing_stats = tool.get_writing_implement_details()
+	var/list/writing_stats = tool?.get_writing_implement_details()
 
 	if(!length(writing_stats))
 		return NONE
