@@ -52475,13 +52475,6 @@
 	},
 /turf/open/floor/plating/granite,
 /area/vtm/interior/millennium_tower)
-"pnv" = (
-/obj/effect/decal/bordur{
-	dir = 1
-	},
-/obj/machinery/fax/police,
-/turf/closed/wall/vampwall/painted,
-/area/vtm/interior/police/upstairs)
 "pnw" = (
 /obj/structure/vampdoor/glass{
 	dir = 8
@@ -262794,7 +262787,7 @@ ntq
 ntq
 ntq
 ntq
-pnv
+sYq
 bYg
 trT
 fvA
