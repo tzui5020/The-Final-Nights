@@ -50,16 +50,8 @@
 		list(fax_name = "Federal Government", fax_id = "police", color = "blue", emag_needed = FALSE),
 		list(fax_name = "Pentex Corporate", fax_id = "endron", color = "green", emag_needed = FALSE),
 		list(fax_name = "Element Relay", fax_id = "aasimites", color = "purple", emag_needed = FALSE),
-		list(fax_name = "Nightwolf Corporate", fax_id = "glasswalkers", color = "gray", emag_needed = FALSE),
+		list(fax_name = "Nightwolf Corporate", fax_id = "glasswalkers", color = "grey", emag_needed = FALSE),
 	)
-
-/obj/machinery/fax/admin/Initialize(mapload)
-	if (!fax_name)
-		fax_name = "ERROR: REPORT TO CODERBUS"
-	if(!fax_id)
-		fax_id = special_networks["WorldOfDarkness"]["fax_id"]
-	name = "[fax_name] Fax Machine"
-	return ..()
 
 /obj/machinery/fax/admin
 	fax_name = "Admin Fax Machine"
@@ -94,39 +86,40 @@
 /////////////////////////////////////////////
 
 /obj/machinery/fax/camarilla
-	fax_name = "Millenium Tower Fax Machine"
+	fax_name = "Millenium Tower"
 	fax_id = "camarilla"
 
 /obj/machinery/fax/anarch
-	fax_name = "Anarchy Rose Bar Fax Machine"
+	fax_name = "Anarchy Rose Bar"
 	fax_id = "anarchs"
 
 /obj/machinery/fax/police
-	fax_name = "San Francisco Police Department Fax Machine"
+	fax_name = "San Francisco Police Department"
 	fax_id = "police"
 
 /obj/machinery/fax/endron
-	fax_name = "Endron International HQ Fax Machine"
+	fax_name = "Endron International HQ"
 	fax_id = "endron"
 
 /obj/machinery/fax/aasimites
-	fax_name = "Chubby Lion Coffee Shop Fax Machine"
+	fax_name = "Chubby Lion Coffee Shop"
 	fax_id = "aasimites"
 
 /obj/machinery/fax/tremere
-	fax_name = "Library Fax Machine"
-	// fax_id = "tremere"
+	fax_name = "Library"
+	fax_id = "library"
 
 /obj/machinery/fax/glasswalker
-	fax_name = "Nightwolf Tech Shop Fax Machine"
+	fax_name = "Nightwolf Tech Shop"
 	fax_id = "glasswalkers"
 
 /obj/machinery/fax/Initialize(mapload)
 	. = ..()
-	if (!fax_id)
-		fax_id = SSnetworks.assign_random_name()
-	if (!fax_name)
-		fax_name = "Unregistered fax " + fax_id
+	if(!fax_name)
+		fax_name = "ERROR: REPORT TO CODERBUS"
+	if(!fax_id)
+		fax_id = special_networks["WorldOfDarkness"][fax_id]
+	name = "[fax_name] Fax Machine"
 	wires = new /datum/wires/fax(src)
 
 /obj/machinery/fax/Destroy()
