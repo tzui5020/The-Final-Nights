@@ -45,80 +45,86 @@
 	)
 	/// List with a fake-networks(not a fax actually), for request manager.
 	var/list/special_networks = list(
-		list(fax_name = "High Council", fax_id = "camarilla", color = "teal", emag_needed = FALSE),
-		list(fax_name = "Free State Movement", fax_id = "anarchs", color = "red", emag_needed = FALSE),
-		list(fax_name = "Federal Government", fax_id = "police", color = "blue", emag_needed = FALSE),
-		list(fax_name = "Pentex Corporate", fax_id = "endron", color = "green", emag_needed = FALSE),
-		list(fax_name = "Element Relay", fax_id = "aasimites", color = "purple", emag_needed = FALSE),
-		list(fax_name = "Nightwolf Corporate", fax_id = "glasswalkers", color = "grey", emag_needed = FALSE),
+		list(fax_name = "High Council", fax_id = "camarillaadmin", color = "teal", emag_needed = FALSE),
+		list(fax_name = "Free State Movement", fax_id = "anarchsadmin", color = "red", emag_needed = FALSE),
+		list(fax_name = "Federal Government", fax_id = "policeadmin", color = "blue", emag_needed = FALSE),
+		list(fax_name = "Pentex Corporate", fax_id = "endronadmin", color = "green", emag_needed = FALSE),
+		list(fax_name = "Element Relay", fax_id = "aasimitesadmin", color = "purple", emag_needed = FALSE),
+		list(fax_name = "Nightwolf Corporate", fax_id = "glasswalkeradmin", color = "grey", emag_needed = FALSE),
 	)
 
 /obj/machinery/fax/admin
 	fax_name = "Admin Fax Machine"
 	fax_id = "admin"
+	visible_to_network = FALSE
 
 /obj/machinery/fax/admin/camarilla
 	fax_name = "High Council"
-	fax_id = "camarilla"
+	fax_id = "camarillaadmin"
 
 /obj/machinery/fax/admin/anarch
 	fax_name = "Free State Movement"
-	fax_id = "anarchs"
+	fax_id = "anarchsadmin"
 
 /obj/machinery/fax/admin/police
 	fax_name = "Federal Government"
-	fax_id = "police"
+	fax_id = "policeadmin"
 
 /obj/machinery/fax/admin/endron
 	fax_name = "Pentex Corporate"
-	fax_id = "endron"
+	fax_id = "endronadmin"
 
 /obj/machinery/fax/admin/aasimites
 	fax_name = "Element Relay"
-	fax_id = "aasimites"
+	fax_id = "aasimitesadmin"
 
 //The tremere dont get a fax machine because of what happened in Vienna
 
 /obj/machinery/fax/admin/glasswalker
 	fax_name = "Nightwolf Corporate"
-	fax_id = "glasswalker"
+	fax_id = "glasswalkeradmin"
 
 /////////////////////////////////////////////
 
 /obj/machinery/fax/camarilla
 	fax_name = "Millenium Tower"
 	fax_id = "camarilla"
+	special_networks = list(list(fax_name = "High Council", fax_id = "camarillaadmin", color = "teal", emag_needed = FALSE))
 
 /obj/machinery/fax/anarch
 	fax_name = "Anarchy Rose Bar"
 	fax_id = "anarchs"
+	special_networks = list(list(fax_name = "Free State Movement", fax_id = "anarchsadmin", color = "red", emag_needed = FALSE))
 
 /obj/machinery/fax/police
 	fax_name = "San Francisco Police Department"
 	fax_id = "police"
+	special_networks = list(list(fax_name = "Federal Government", fax_id = "policeadmin", color = "blue", emag_needed = FALSE))
 
 /obj/machinery/fax/endron
 	fax_name = "Endron International HQ"
 	fax_id = "endron"
+	special_networks = list(list(fax_name = "Pentex Corporate", fax_id = "endronadmin", color = "green", emag_needed = FALSE))
 
 /obj/machinery/fax/aasimites
 	fax_name = "Chubby Lion Coffee Shop"
 	fax_id = "aasimites"
+	special_networks = list(list(fax_name = "Element Relay", fax_id = "aasimitesadmin", color = "purple", emag_needed = FALSE))
 
 /obj/machinery/fax/tremere
 	fax_name = "Library"
 	fax_id = "library"
+	special_networks = list()
 
 /obj/machinery/fax/glasswalker
 	fax_name = "Nightwolf Tech Shop"
 	fax_id = "glasswalkers"
+	special_networks = list(list(fax_name = "Nightwolf Corporate", fax_id = "glasswalkeradmin", color = "grey", emag_needed = FALSE))
 
 /obj/machinery/fax/Initialize(mapload)
 	. = ..()
 	if(!fax_name)
 		fax_name = "ERROR: REPORT TO CODERBUS"
-	if(!fax_id)
-		fax_id = special_networks["WorldOfDarkness"][fax_id]
 	name = "[fax_name] Fax Machine"
 	wires = new /datum/wires/fax(src)
 

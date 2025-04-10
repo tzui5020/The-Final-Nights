@@ -13770,10 +13770,10 @@
 /area/vtm/northbeach)
 "dXH" = (
 /obj/structure/table,
-/obj/item/storage/box/lights/mixed,
 /obj/machinery/light{
 	dir = 4
 	},
+/obj/machinery/fax/police,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/police/upstairs)
 "dXK" = (
@@ -14493,6 +14493,7 @@
 /area/vtm/northbeach)
 "eiH" = (
 /obj/structure/table/wood/fancy/red,
+/obj/machinery/fax/tremere,
 /turf/open/floor/carpet/lone,
 /area/vtm/interior/chantry)
 "eiK" = (
@@ -16708,6 +16709,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
+/obj/item/vtm_artifact/rand,
 /turf/open/floor/carpet/royalblack,
 /area/vtm/interior/millennium_tower/f4)
 "eSR" = (
@@ -22277,6 +22279,11 @@
 /obj/structure/roadsign/noparking,
 /turf/open/floor/plating/sidewalk/poor,
 /area/vtm/ghetto)
+"gtU" = (
+/obj/structure/table/wood,
+/obj/machinery/fax/anarch,
+/turf/open/floor/carpet,
+/area/vtm/anarch)
 "gtX" = (
 /obj/structure/table/wood,
 /obj/item/paper_bin{
@@ -31343,6 +31350,7 @@
 /area/vtm/pacificheights)
 "jdL" = (
 /obj/structure/table/wood,
+/obj/machinery/fax/glasswalker,
 /turf/open/floor/plating/vampplating,
 /area/vtm/interior/techshop)
 "jdP" = (
@@ -46528,7 +46536,7 @@
 	pixel_y = 32
 	},
 /obj/structure/table/wood/fancy/royalblack,
-/obj/item/vtm_artifact/rand,
+/obj/machinery/fax/camarilla,
 /turf/open/floor/carpet/royalblack,
 /area/vtm/interior/millennium_tower/f4)
 "nCZ" = (
@@ -52467,6 +52475,13 @@
 	},
 /turf/open/floor/plating/granite,
 /area/vtm/interior/millennium_tower)
+"pnv" = (
+/obj/effect/decal/bordur{
+	dir = 1
+	},
+/obj/machinery/fax/police,
+/turf/closed/wall/vampwall/painted,
+/area/vtm/interior/police/upstairs)
 "pnw" = (
 /obj/structure/vampdoor/glass{
 	dir = 8
@@ -53909,6 +53924,7 @@
 /obj/item/flashlight/seclite,
 /obj/item/flashlight/seclite,
 /obj/item/flashlight/seclite,
+/obj/item/storage/box/lights/mixed,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/police/upstairs)
 "pHq" = (
@@ -56492,9 +56508,7 @@
 /area/vtm/anarch)
 "quh" = (
 /obj/structure/table/wood,
-/obj/item/candle/infinite{
-	anchored = 1
-	},
+/obj/machinery/fax/aasimites,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior/banu/haven)
 "quq" = (
@@ -60438,6 +60452,11 @@
 	},
 /turf/open/floor/plating/vampcanal,
 /area/vtm/sewer)
+"rvf" = (
+/obj/structure/table,
+/obj/machinery/fax/endron,
+/turf/open/floor/plating/vampplating/mono,
+/area/vtm/interior/endron_facility/restricted)
 "rvj" = (
 /obj/structure/flora/ausbushes/ywflowers,
 /turf/open/floor/plating/vampdirt,
@@ -133213,7 +133232,7 @@ nYS
 tzz
 gFc
 oKK
-oKK
+rvf
 fdW
 psI
 gFc
@@ -171808,7 +171827,7 @@ pMC
 pMC
 kGg
 nYY
-bGN
+gtU
 hRA
 uda
 bGN
@@ -262775,7 +262794,7 @@ ntq
 ntq
 ntq
 ntq
-sYq
+pnv
 bYg
 trT
 fvA
