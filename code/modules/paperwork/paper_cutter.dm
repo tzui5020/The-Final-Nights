@@ -83,6 +83,19 @@
 	blade_secured = !blade_secured
 	return TRUE
 
+/obj/item/papercutter/attack_hand(mob/user)
+	. = ..()
+	if(!stored_blade)
+		balloon_alert(user, "no blade!")
+	else if(!blade_secured)
+		balloon_alert(user, "blade unsecured!")
+	else if(!stored_paper)
+		balloon_alert(user, "nothing to cut!")
+	else
+		cut_paper(user)
+
+	return TRUE
+
 /obj/item/papercutter/attackby(obj/item/inserted_item, mob/user, params)
 	if(istype(inserted_item, /obj/item/paper))
 		if(is_type_in_list(inserted_item, list(
