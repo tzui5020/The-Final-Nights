@@ -45,9 +45,81 @@
 	)
 	/// List with a fake-networks(not a fax actually), for request manager.
 	var/list/special_networks = list(
-		list(fax_name = "Central Command", fax_id = "central_command", color = "teal", emag_needed = FALSE),
-		list(fax_name = "Sabotage Department", fax_id = "syndicate", color = "red", emag_needed = TRUE),
+		list(fax_name = "High Council", fax_id = "camarilla", color = "teal", emag_needed = FALSE),
+		list(fax_name = "Free State Movement", fax_id = "anarchs", color = "red", emag_needed = FALSE),
+		list(fax_name = "Federal Government", fax_id = "police", color = "blue", emag_needed = FALSE),
+		list(fax_name = "Pentex Corporate", fax_id = "endron", color = "green", emag_needed = FALSE),
+		list(fax_name = "Element Relay", fax_id = "aasimites", color = "purple", emag_needed = FALSE),
+		list(fax_name = "Nightwolf Corporate", fax_id = "glasswalkers", color = "gray", emag_needed = FALSE),
 	)
+
+/obj/machinery/fax/admin/Initialize(mapload)
+	if (!fax_name)
+		fax_name = "ERROR: REPORT TO CODERBUS"
+	if(!fax_id)
+		fax_id = special_networks["WorldOfDarkness"]["fax_id"]
+	name = "[fax_name] Fax Machine"
+	return ..()
+
+/obj/machinery/fax/admin
+	fax_name = "Admin Fax Machine"
+	fax_id = "admin"
+
+/obj/machinery/fax/admin/camarilla
+	fax_name = "High Council"
+	fax_id = "camarilla"
+
+/obj/machinery/fax/admin/anarch
+	fax_name = "Free State Movement"
+	fax_id = "anarchs"
+
+/obj/machinery/fax/admin/police
+	fax_name = "Federal Government"
+	fax_id = "police"
+
+/obj/machinery/fax/admin/endron
+	fax_name = "Pentex Corporate"
+	fax_id = "endron"
+
+/obj/machinery/fax/admin/aasimites
+	fax_name = "Element Relay"
+	fax_id = "aasimites"
+
+//The tremere dont get a fax machine because of what happened in Vienna
+
+/obj/machinery/fax/admin/glasswalker
+	fax_name = "Nightwolf Corporate"
+	fax_id = "glasswalker"
+
+/////////////////////////////////////////////
+
+/obj/machinery/fax/camarilla
+	fax_name = "Millenium Tower Fax Machine"
+	fax_id = "camarilla"
+
+/obj/machinery/fax/anarch
+	fax_name = "Anarchy Rose Bar Fax Machine"
+	fax_id = "anarchs"
+
+/obj/machinery/fax/police
+	fax_name = "San Francisco Police Department Fax Machine"
+	fax_id = "police"
+
+/obj/machinery/fax/endron
+	fax_name = "Endron International HQ Fax Machine"
+	fax_id = "endron"
+
+/obj/machinery/fax/aasimites
+	fax_name = "Chubby Lion Coffee Shop Fax Machine"
+	fax_id = "aasimites"
+
+/obj/machinery/fax/tremere
+	fax_name = "Library Fax Machine"
+	// fax_id = "tremere"
+
+/obj/machinery/fax/glasswalker
+	fax_name = "Nightwolf Tech Shop Fax Machine"
+	fax_id = "glasswalkers"
 
 /obj/machinery/fax/Initialize(mapload)
 	. = ..()
@@ -336,7 +408,7 @@
 /obj/machinery/fax/proc/receive(obj/item/loaded, sender_name)
 	playsound(src, 'sound/machines/printer.ogg', 50, FALSE)
 	INVOKE_ASYNC(src, PROC_REF(animate_object_travel), loaded, "fax_receive", find_overlay_state(loaded, "receive"))
-	say("Received correspondence from [sender_name].")
+	say("Received correspondence.")
 	history_add("Receive", sender_name)
 	addtimer(CALLBACK(src, PROC_REF(vend_item), loaded), 1.9 SECONDS)
 
