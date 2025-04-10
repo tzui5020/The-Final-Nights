@@ -93,11 +93,15 @@
 /obj/structure/bookcase/random/reference
 	name = "bookcase (Reference)"
 	random_category = BOOK_CATEGORY_REFERENCE
-	///Chance to spawn a random manual book
-	var/ref_book_prob = 20
 
-/obj/structure/bookcase/random/reference/Initialize(mapload)
-	. = ..()
-	while(books_to_load > 0 && prob(ref_book_prob))
-		books_to_load--
-		new /obj/item/book/random(src)
+/obj/structure/bookcase/random/kindred
+	name = "bookcase (Kindred)"
+	random_category = BOOK_CATEGORY_KINDRED
+
+/obj/structure/bookcase/random/lupine
+	name = "bookcase (Lupine)"
+	random_category = BOOK_CATEGORY_LUPINE
+
+/obj/structure/bookcase/random/kueijin
+	name = "bookcase (Kuei-Jin)"
+	random_category = BOOK_CATEGORY_KUEIJIN
