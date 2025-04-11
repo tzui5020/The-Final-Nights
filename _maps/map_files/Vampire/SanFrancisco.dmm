@@ -11212,6 +11212,10 @@
 /obj/item/wire_cutters,
 /obj/item/wire_cutters,
 /obj/item/wire_cutters,
+/obj/machinery/light{
+	dir = 4;
+	light_color = "#6488EA"
+	},
 /turf/open/floor/plating/vampplating,
 /area/vtm/interior/millennium_tower)
 "dha" = (
@@ -23780,6 +23784,10 @@
 /obj/item/clothing/mask/surgical,
 /obj/item/clothing/mask/surgical,
 /obj/item/clothing/mask/surgical,
+/obj/machinery/light{
+	dir = 4;
+	light_color = "#6488EA"
+	},
 /turf/open/floor/plating/vampplating,
 /area/vtm/interior/millennium_tower)
 "gRd" = (
