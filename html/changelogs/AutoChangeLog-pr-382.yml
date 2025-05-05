@@ -1,0 +1,5 @@
+author: "shadeaware, bomby"
+delete-after: True
+changes:
+  - rscadd: "Tasers have been issued to the SFPD"
+  - sound: "New sounds for the taser"
