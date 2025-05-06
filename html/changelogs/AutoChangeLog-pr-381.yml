@@ -1,4 +1,0 @@
-author: "Hardly"
-delete-after: True
-changes:
-  - code_imp: "Colors can now be picked with better precision."
