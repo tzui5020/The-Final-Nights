@@ -1,0 +1,4 @@
+author: "Somniworld"
+delete-after: True
+changes:
+  - bugfix: "unupgrading Vissicitude's \"2nd pair of arms\" will no longer delimb one of your original limbs, you will also no longer take damage from doing so."
