@@ -1,0 +1,4 @@
+author: "ShadeAware"
+delete-after: True
+changes:
+  - image: "Gangrel claws are no longer huge."
