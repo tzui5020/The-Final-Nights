@@ -36,6 +36,8 @@
   Sparrowbird611:
   - balance: Makes melee weapons stronger.
 2025-05-07:
+  ShadeAware:
+  - image: Gangrel claws are no longer huge.
   maaacha:
   - bugfix: sanitizes garou renown integers before saving them
   molly!:
