@@ -51,3 +51,5 @@
 2025-05-08:
   EmilyFontaine:
   - rscadd: coffee & tea reagents to the soda dispenser list
+  necti-dev:
+  - bugfix: Butterflies no longer have 5 blood points for vamps to feed on.
