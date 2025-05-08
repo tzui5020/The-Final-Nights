@@ -1,0 +1,4 @@
+author: "necti-dev"
+delete-after: True
+changes:
+  - rscadd: "Having the Presence disciplines gives you the Charmer trait, so that NPCs respond more favorably to you when you grab them."
