@@ -58,3 +58,6 @@
 2025-05-10:
   darkincarnate:
   - rscadd: Endron templates
+2025-05-11:
+  XeonMations:
+  - code_imp: Made our CI/CD checks work again.
