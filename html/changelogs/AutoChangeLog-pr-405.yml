@@ -1,0 +1,4 @@
+author: "necti-dev"
+delete-after: True
+changes:
+  - bugfix: "Anarch, Tzmisce, Primogen, Noddist and Bahari id/pins no longer identify their users at a glance."
