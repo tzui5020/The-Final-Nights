@@ -1,4 +1,0 @@
-author: "XeonMations"
-delete-after: True
-changes:
-  - bugfix: "Fixed silver bullets being invisible when on the ground"
