@@ -62,6 +62,8 @@
   BlindPoet:
   - balance: increased damage of Protean 2's claws
   - rscdel: removed red screen filter from Protean 1 and 2
+  CalamaBanana:
+  - rscadd: Endron phones start with numbers
   XeonMations:
   - code_imp: Made our CI/CD checks work again.
   - bugfix: Fixed silver bullets being invisible when on the ground
