@@ -64,3 +64,6 @@
   - rscdel: removed red screen filter from Protean 1 and 2
   XeonMations:
   - code_imp: Made our CI/CD checks work again.
+  necti-dev:
+  - bugfix: Anarch, Tzmisce, Primogen, Noddist and Bahari id/pins no longer identify
+      their users at a glance.
