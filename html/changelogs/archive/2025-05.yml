@@ -67,6 +67,10 @@
   - bugfix: Fixed silver bullets being invisible when on the ground
   XeonMations, Arokha, jlsnow301, Aylong:
   - code_imp: TGUI dev server now works. Just ignore the warning it keeps spamming.
+  darkincarnate:
+  - rscadd: new endron HQ
+  - rscadd: a light outside the tower front door per request
+  - rscdel: old endron HQ
   necti-dev:
   - bugfix: Anarch, Tzmisce, Primogen, Noddist and Bahari id/pins no longer identify
       their users at a glance.
