@@ -59,5 +59,8 @@
   darkincarnate:
   - rscadd: Endron templates
 2025-05-11:
+  BlindPoet:
+  - balance: increased damage of Protean 2's claws
+  - rscdel: removed red screen filter from Protean 1 and 2
   XeonMations:
   - code_imp: Made our CI/CD checks work again.

@@ -1,5 +1,0 @@
-author: "BlindPoet"
-delete-after: True
-changes:
-  - balance: "increased damage of Protean 2's claws"
-  - rscdel: "removed red screen filter from Protean 1 and 2"
