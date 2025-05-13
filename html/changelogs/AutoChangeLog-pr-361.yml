@@ -1,6 +1,0 @@
-author: "SoreYew"
-delete-after: True
-changes:
-  - rscadd: "hollow point 45acp"
-  - rscadd: "fbi spawn items"
-  - bugfix: "fixed 45 glocks"

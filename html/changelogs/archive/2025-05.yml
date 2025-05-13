@@ -91,6 +91,10 @@
   - rscadd: added loadouts
   - spellcheck: fixed a few misspellings on the clothing store
   - spellcheck: de-ss13s a few items (eg. red letterman is no longer syndicate flavored)
+  SoreYew:
+  - rscadd: hollow point 45acp
+  - rscadd: fbi spawn items
+  - bugfix: fixed 45 glocks
   necti-dev:
   - rscadd: Some vampire jobs now have vampire-age restrictions (how long since embrace)
   - rscadd: Primogen generation requirements lowered a bit, Capo's increased
