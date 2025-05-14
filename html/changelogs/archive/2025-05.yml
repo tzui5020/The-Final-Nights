@@ -98,3 +98,6 @@
   necti-dev:
   - rscadd: Some vampire jobs now have vampire-age restrictions (how long since embrace)
   - rscadd: Primogen generation requirements lowered a bit, Capo's increased
+2025-05-14:
+  Cre77:
+  - balance: Garou Homid punch damage is now 10-20, on level with other splats.
