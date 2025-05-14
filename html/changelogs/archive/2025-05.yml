@@ -101,3 +101,5 @@
 2025-05-14:
   Cre77:
   - balance: Garou Homid punch damage is now 10-20, on level with other splats.
+  buffyuwu:
+  - bugfix: fixed the changelog template on github
