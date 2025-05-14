@@ -108,6 +108,9 @@
       Find out their clane's moral failings! Shoot fireballs! And More!
   buffyuwu:
   - bugfix: fixed the changelog template on github
+  necti-dev:
+  - bugfix: Police cars no longer spam lights in upper z-levels causing lag. They
+      use movable lights instead.
   tzui5020:
   - rscadd: 'Adds Kindred to the Species list for Tower Employee.
 

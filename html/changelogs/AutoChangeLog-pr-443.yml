@@ -1,4 +1,0 @@
-author: "necti-dev"
-delete-after: True
-changes:
-  - bugfix: "Police cars no longer spam lights in upper z-levels causing lag. They use movable lights instead."
