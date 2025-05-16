@@ -1,0 +1,6 @@
+author: "necti-dev"
+delete-after: True
+changes:
+  - rscadd: "Debtor quirk now works as advertised."
+  - rscadd: "Ventrue no longer get $100 in their backpacks. Instead, their bank accounts are fatter."
+  - rscadd: "Ventrue with the Debtor quirk get an extra loss of dignitas, reflected in their savings."
