@@ -127,6 +127,13 @@
   - bugfix: LOOC works again. To avoid collision, hotkeys to look up and down are
       bound by default to "I" (upper-case i) and "K".
 2025-05-16:
+  Magisterium2022:
+  - rscadd: Added new parts for fleshcrafting
+  - rscadd: Added armblade at boneshaping (Vicissitude 4)
+  - rscadd: Added new craftable implants
+  - balance: rebalanced speed of a few augments, allowing for faster flying and movement
+      in some cases
+  - code_imp: modified Vicissitude, Augments, Melee Weapon, and Tzimisce files.
   Sparrowbird611:
   - balance: Hispo form moves faster.
   - balance: Makes garou forms do consistent damage. This makes them stronger in melee.
@@ -147,3 +154,9 @@
       are fatter.
   - rscadd: Ventrue with the Debtor quirk get an extra loss of dignitas, reflected
       in their savings.
+  - rscadd: Vampires have in their memory the phone contact of their Clane leader,
+      when there is one.
+  - rscadd: More vampire leaders should now have each other's phone contacts, properly
+      updated on joining.
+  - rscadd: Triads, Giovanni, Tremere, Anarchs, Millenium Tower, Lasombra and Tzmisce
+      networks added. Members have each other's contacts.

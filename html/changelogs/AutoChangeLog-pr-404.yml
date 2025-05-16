@@ -1,8 +1,0 @@
-author: "Magisterium2022"
-delete-after: True
-changes:
-  - rscadd: "Added new parts for fleshcrafting"
-  - rscadd: "Added armblade at boneshaping (Vicissitude 4)"
-  - rscadd: "Added new craftable implants"
-  - balance: "rebalanced speed of a few augments, allowing for faster flying and movement in some cases"
-  - code_imp: "modified Vicissitude, Augments, Melee Weapon, and Tzimisce files."

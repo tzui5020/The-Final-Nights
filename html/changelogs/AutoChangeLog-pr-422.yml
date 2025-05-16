@@ -1,6 +1,0 @@
-author: "necti-dev"
-delete-after: True
-changes:
-  - rscadd: "Vampires have in their memory the phone contact of their Clane leader, when there is one."
-  - rscadd: "More vampire leaders should now have each other's phone contacts, properly updated on joining."
-  - rscadd: "Triads, Giovanni, Tremere, Anarchs, Millenium Tower, Lasombra and Tzmisce networks added. Members have each other's contacts."
