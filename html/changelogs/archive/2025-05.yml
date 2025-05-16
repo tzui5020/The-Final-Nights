@@ -126,3 +126,9 @@
   necti-dev:
   - bugfix: LOOC works again. To avoid collision, hotkeys to look up and down are
       bound by default to "I" (upper-case i) and "K".
+2025-05-16:
+  Sparrowbird611:
+  - balance: Hispo form moves faster.
+  - balance: Makes garou forms do consistent damage. This makes them stronger in melee.
+  - balance: Reduces AP on hispo and lupus to more reasonable levels.
+  - bugfix: Prevents crinos from being one punch KO'd by unarmed attacks.
