@@ -132,3 +132,6 @@
   - balance: Makes garou forms do consistent damage. This makes them stronger in melee.
   - balance: Reduces AP on hispo and lupus to more reasonable levels.
   - bugfix: Prevents crinos from being one punch KO'd by unarmed attacks.
+  XeonMations:
+  - code_imp: obj integrity moved to atom level, no player facing changes should be
+      seen

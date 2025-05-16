@@ -1,4 +1,0 @@
-author: "XeonMations"
-delete-after: True
-changes:
-  - code_imp: "obj integrity moved to atom level, no player facing changes should be seen"
