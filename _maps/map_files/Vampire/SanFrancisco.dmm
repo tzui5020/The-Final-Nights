@@ -1787,11 +1787,11 @@
 /area/vtm/interior/tzimisce_manor)
 "axB" = (
 /obj/structure/table/wood,
-/obj/item/vamp/phone/anarch,
-/obj/item/vamp/phone/anarch,
-/obj/item/vamp/phone/anarch,
+/obj/item/vamp/phone,
+/obj/item/vamp/phone,
+/obj/item/vamp/phone,
 /obj/item/phone_book,
-/obj/item/vamp/phone/anarch,
+/obj/item/vamp/phone,
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/anarch/basement)
 "axN" = (
