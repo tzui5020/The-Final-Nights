@@ -76,7 +76,7 @@
 	if(wielded)
 		if(istype(A, /obj/structure/window) || istype(A, /obj/structure/grille))
 			var/obj/structure/W = A
-			W.obj_destruction("fireaxe")
+			W.atom_destruction("fireaxe")
 
 /obj/item/melee/vampirearms/fireaxe/axetzi
 	icon = 'code/modules/wod13/48x32weapons.dmi'
