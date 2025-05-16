@@ -135,3 +135,10 @@
   XeonMations:
   - code_imp: obj integrity moved to atom level, no player facing changes should be
       seen
+  necti-dev:
+  - rscadd: Passports now show your name on them, they actually identify you. Unless
+      you have the Illegal Identity quirk and hail from Cobrastan.
+  - rscadd: Decapitation no longer happens by damage alone. One must aggro-grab with
+      harm intent, targeting the head, with certain cutting implements (those that
+      have the butchering component). It will only works after the throat has been
+      sliced properly. Victims needs not be dead for this to happen.

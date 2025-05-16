@@ -1,4 +1,0 @@
-author: "necti-dev"
-delete-after: True
-changes:
-  - rscadd: "Passports now show your name on them, they actually identify you. Unless you have the Illegal Identity quirk and hail from Cobrastan."
