@@ -241,6 +241,21 @@ Dancer
 	gain_text = "<span class='warning'>You feel legally unprepared.</span>"
 	lose_text = "<span class='notice'>You feel bureaucratically legitimate.</span>"
 
+/datum/quirk/illegal_identity/add()
+	. = ..()
+	if(!ishuman(quirk_holder))
+		return
+	var/mob/living/carbon/human/debtor = quirk_holder
+	var/obj/item/passport/passport = locate() in debtor // In pockets
+	if(!passport && debtor.back)
+		passport = locate() in debtor.back // In backpack
+	if(passport && passport.owner == debtor.real_name)
+		passport.fake = TRUE
+		if(debtor.dna?.species)
+			passport.owner = debtor.dna.species.random_name(debtor.gender, unique = TRUE)
+		else
+			passport.owner = random_unique_name(debtor.gender)
+
 /datum/quirk/potent_blood
 	name = "Potent Blood"
 	desc = "There's some spark of vital life in your veins. Vampires gain extra blood points for feeding off of you."
