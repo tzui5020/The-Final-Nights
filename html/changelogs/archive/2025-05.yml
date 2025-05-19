@@ -168,3 +168,6 @@
   XeonMations, ComradeNiobe:
   - bugfix: You can no longer hear all sounds in auspex 5
   - refactor: Refactored auspex 5 avatars
+2025-05-19:
+  XeonMations, buffyuwu:
+  - bugfix: fixed CI/CD AGAIN
