@@ -1,4 +1,0 @@
-author: "XeonMations"
-delete-after: True
-changes:
-  - rscadd: "Added a new preference to flavor text, to hide it when your character's identity is hidden."
