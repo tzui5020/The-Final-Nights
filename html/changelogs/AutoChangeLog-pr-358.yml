@@ -1,0 +1,4 @@
+author: "Sparrowbird611"
+delete-after: True
+changes:
+  - rscadd: "Wearing a mask now conceals your voice. This can be toggled by alt clicking the mask."
