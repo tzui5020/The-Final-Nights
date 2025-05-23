@@ -176,3 +176,7 @@
 2025-05-21:
   XeonMations:
   - bugfix: Fixed strongdmm failing to load the map due to alist()
+2025-05-23:
+  necti-dev:
+  - balance: 'Kindred cannot maintain two of the following disciplines active at the
+      same time: fortitude, potence, celerity, obfuscate'
