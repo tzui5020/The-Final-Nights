@@ -177,6 +177,9 @@
   XeonMations:
   - bugfix: Fixed strongdmm failing to load the map due to alist()
 2025-05-23:
+  Sparrowbird611:
+  - rscadd: Wearing a mask now conceals your voice. This can be toggled by alt clicking
+      the mask.
   XeonMations:
   - rscadd: Added a new preference to flavor text, to hide it when your character's
       identity is hidden.
