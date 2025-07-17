@@ -15,8 +15,6 @@
 	punchdamagehigh = 20
 	dust_anim = "dust-h"
 	var/mob/living/carbon/human/master
-	var/changed_master = FALSE
-	var/last_vitae = 0
 	var/list/datum/discipline/disciplines = list()
 	selectable = TRUE
 
@@ -127,6 +125,7 @@
 	var/datum/discipline/bloodheal/giving_bloodheal = new(1)
 	C.give_discipline(giving_bloodheal)
 
+	C.set_clan(null)
 	C.generation = 13
 	C.bloodpool = 10
 	C.maxbloodpool = 10
@@ -234,8 +233,7 @@
 		button.color = "#970000"
 		animate(button, color = "#ffffff", time = 20, loop = 1)
 		if(length(H.all_wounds))
-			for(var/i in 1 to min(5, length(H.all_wounds)))
-				var/datum/wound/W = pick(H.all_wounds)
+			for(var/datum/wound/W as anything in H.all_wounds)
 				W.remove_wound()
 		H.adjustCloneLoss(-5, TRUE)
 		var/obj/item/organ/eyes/eyes = H.getorganslot(ORGAN_SLOT_EYES)

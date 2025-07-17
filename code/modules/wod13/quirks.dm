@@ -99,6 +99,15 @@ Dancer
 	allowed_species = list("Vampire", "Kuei-Jin")
 	excluded_clans = list(CLAN_NAGARAJA)
 
+/datum/quirk/baby_teeth
+	name = "Baby Teeth"
+	desc = "Your fangs have been pulled out and have not regrown normally or they did not grow at all."
+	mob_trait = TRAIT_BABY_TEETH
+	value = -4
+	gain_text = "<span class='warning'>You lost your fangs.</span>"
+	lose_text = "<span class='notice'>You regrow your fangs.</span>"
+	allowed_species = list("Vampire")
+
 /datum/quirk/lazy
 	name = "Lazy"
 	desc = "You do things much more slowly than others."
@@ -625,7 +634,7 @@ Dancer
 	name = "Unbonding"
 	desc = "Your vitae, for one reason or another, doesn't produce blood bonds with anybody."
 	value = -1
-	mob_trait = TRAIT_UNBONDING
+	mob_trait = TRAIT_DEFICIENT_VITAE
 	gain_text = "<span class='notice'>Your blood feels vacant.</span>"
 	lose_text = "<span class='notice'>You feel like something that was missing just came back to you.</span>"
 	allowed_species = list("Vampire")
