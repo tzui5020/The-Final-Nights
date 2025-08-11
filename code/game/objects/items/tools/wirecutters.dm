@@ -87,8 +87,6 @@
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		return
-	if(!iskindred(target))
-		return
 	if(HAS_TRAIT(target, TRAIT_BABY_TEETH))
 		visible_message(usr, span_warning("[user] can't pull out the fangs of [target] because they are already deformed!"))
 	else
@@ -98,6 +96,9 @@
 		user.do_attack_animation(target)
 		user.visible_message(span_warning("[user] rips out [target]'s fangs!"), span_warning("You rip out [target]'s fangs!"))
 		target.emote("scream")
+		if(!iskindred(target))
+			target.apply_damage(80,BRUTE)
+			return
 		if(target.has_quirk(/datum/quirk/permafangs))
 			REMOVE_TRAIT(target, TRAIT_PERMAFANGS, ROUNDSTART_TRAIT)
 		if (permanent == TRUE)
