@@ -52,3 +52,5 @@
       now correctly work and are no longer invisible
   - bugfix: Fixed Dominate 1's (Command) case sensitivity problem causing commands
       to not have their effects apply
+  darkincarnate:
+  - rscadd: giovanni second/third floor/basement ritual room
